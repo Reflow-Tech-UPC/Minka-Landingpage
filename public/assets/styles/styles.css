@@ -11,7 +11,54 @@
 /* T01 - Andy Salcedo: Sección hero */
 
 /* T03 - Miguel Sanca: Sección cómo funciona */
+.how-it-works {
+  padding: var(--space-64) 0;
+  background-color: var(--color-white);
+}
 
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-32);
+}
+
+.step-card {
+  background: var(--color-white);
+  border-radius: var(--space-16);
+  padding: var(--space-32);
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.step-card__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-24);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-card__icon img {
+  width: 48px;
+  height: 48px;
+}
+
+.step-card__description {
+  font-size: 0.95rem;
+}
 /* T04 - Lucero Pipa: Sección beneficios */
 
 /* T06 - Miguel Sanca: Sección impacto */
