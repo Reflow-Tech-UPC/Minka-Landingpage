@@ -13,7 +13,57 @@
 /* T03 - Miguel Sanca: Sección cómo funciona */
 
 /* T04 - Lucero Pipa: Sección beneficios */
+.benefits {
+  padding: var(--space-64) 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f8f6 100%);
+}
 
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-24);
+}
+
+.benefit-card {
+  background: var(--color-white);
+  border-radius: var(--space-12);
+  padding: var(--space-24);
+  border: 2px solid var(--color-gray-50);
+  transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.benefit-card__icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-16);
+  border-radius: 50%;
+  background: rgba(46, 204, 113, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefit-card__icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.benefit-card__title {
+  font-size: 1.125rem;
+  color: var(--color-secondary-dark);
+  margin-bottom: var(--space-8);
+}
+
+.benefit-card__description {
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+}
 /* T06 - Miguel Sanca: Sección impacto */
 
 /* T05 - Lucero Pipa: Sección testimonios */
