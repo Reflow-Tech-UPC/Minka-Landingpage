@@ -59,8 +59,6 @@ public/
     └── scripts/main.js     # Comportamientos interactivos y componentes dinámicos
 ```
 
-> Tip: mantén los recursos estáticos optimizados y versiones mayores del prototipo en ramas dedicadas.
-
 <a id="tecnologias-utilizadas"></a>
 
 ## 🚀 Tecnologías Utilizadas
@@ -82,8 +80,6 @@ public/
 5. **Haz commit con convenciones claras** (ej. `feat: agrega sección de preguntas frecuentes`).
 6. **Publica en GitHub Pages:** al fusionar con la rama principal, el despliegue se actualiza automáticamente.
 
-> Recomendaciones: valida cambios con herramientas de accesibilidad (axe DevTools o Lighthouse) y comprueba el contraste de color antes de publicar.
-
 <a id="autores"></a>
 
 ## 👥 Autores
@@ -102,7 +98,4 @@ public/
 - Landing Page: [https://reflow-tech-upc.github.io/Minka-Landingpage](https://reflow-tech-upc.github.io/Minka-Landingpage)
 - Repositorio: [https://github.com/Reflow-Tech-UPC/Minka-Landingpage](https://github.com/Reflow-Tech-UPC/Minka-Landingpage)
 
-<p align="center">💚 Construido con dedicación para impulsar la colaboración y la sostenibilidad.</p>
-
-<p align="center" style="font-size: 12px;">Iconografía cortesía de <a href="https://fonts.google.com/icons" target="_blank" rel="noopener">Material Symbols</a> (licencia Apache 2.0).</p>
-<!-- markdownlint-enable MD033 -->
+<p align="center">💚 Construido con dedicación para impulsar la colaboración y la sostenibilidad por el team Reflow Tech.</p>
