@@ -62,7 +62,48 @@
 /* T04 - Lucero Pipa: Sección beneficios */
 
 /* T06 - Miguel Sanca: Sección impacto */
+.impact {
+  padding: var(--space-64) 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-dark) 0%,
+    var(--color-secondary) 100%
+  );
+  color: var(--color-white);
+}
 
+.impact .section-header__title,
+.impact .section-header__subtitle {
+  color: var(--color-white);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-32);
+}
+
+.stat-card {
+  text-align: center;
+  padding: var(--space-32);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--space-16);
+  backdrop-filter: blur(10px);
+}
+
+.stat-card__number {
+  font-family: var(--font-secondary);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  margin-bottom: var(--space-8);
+}
+
+.stat-card__label {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-white);
+}
 /* T05 - Lucero Pipa: Sección testimonios */
 
 /* T05 - Lucero Pipa: CTA final */
