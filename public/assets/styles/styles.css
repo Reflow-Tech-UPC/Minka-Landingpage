@@ -17,8 +17,109 @@
 /* T06 - Miguel Sanca: Sección impacto */
 
 /* T05 - Lucero Pipa: Sección testimonios */
+.testimonials {
+  padding: var(--space-64) 0;
+  background-color: var(--color-white);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-24);
+}
+
+.testimonial-card {
+  background: var(--color-white);
+  border-radius: var(--space-16);
+  padding: var(--space-24);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonial-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  margin-bottom: var(--space-16);
+}
+
+.testimonial-card__avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary);
+}
+
+.testimonial-card__name {
+  font-weight: 600;
+  color: var(--color-secondary-dark);
+  margin-bottom: var(--space-4);
+}
+
+.testimonial-card__date {
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+}
+
+.testimonial-card__rating {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-16);
+}
+
+.testimonial-card__rating img {
+  width: 20px;
+  height: 20px;
+}
+
+.testimonial-card__content {
+  color: var(--color-gray-600);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
 
 /* T05 - Lucero Pipa: CTA final */
+.cta-final {
+  padding: var(--space-64) 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark) 100%
+  );
+  text-align: center;
+}
+
+.cta-final__content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.cta-final__title {
+  font-size: 2.5rem;
+  color: var(--color-white);
+  margin-bottom: var(--space-16);
+}
+
+.cta-final__subtitle {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: var(--space-32);
+}
+
+.cta-final__button {
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-size: 1.125rem;
+  padding: var(--space-16) var(--space-48);
+}
+
+.cta-final__button:hover {
+  background: var(--color-gray-50);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
 
 /* T07 - Jahat Trinidad: Footer institucional */
 
