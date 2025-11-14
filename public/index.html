@@ -11,7 +11,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/public/assets/styles/styles.css" />
-    <script src="/public/assets/scripts/main.js" defer></script>
   </head>
   <body>
     <!-- T02 & T09 - Ronel Rojas: Header y navegación accesible -->
@@ -19,7 +18,7 @@
       <div class="header__container">
         <a href="#" class="header__logo">
           <img
-            src="../../public/assets/images/minka-logo.png"
+            src="/public/assets/images/minka-logo.png"
             alt="Mink'a"
             class="logo-image"
           />
@@ -45,12 +44,9 @@
         </button>
       </div>
     </header>
-
     <main>
-    <main>
-      
       <!-- T01 - Andy Salcedo: Sección hero y CTA principal -->
-       <section class="hero" id="inicio">
+      <section class="hero" id="inicio">
         <div class="container">
           <div class="hero__grid">
             <div class="hero__content">
@@ -86,7 +82,7 @@
             </div>
           </div>
         </div>
-      </section>      
+      </section>
       <!-- T03 - Miguel Sanca: Sección cómo funciona -->
       <section id="como-funciona" class="how-it-works">
         <div class="container">
@@ -380,7 +376,6 @@
           </div>
         </div>
       </section>
-
     </main>
     <!-- T07 - Jahat Trinidad: Footer institucional -->
     <footer class="footer">
@@ -444,5 +439,7 @@
         </div>
       </div>
     </footer>
+    <!-- T11 - Jahat Trinidad: accessibility improvements -->
+    <script src="/public/assets/scripts/main.js" defer></script>
   </body>
 </html>
