@@ -1,0 +1,119 @@
+/* T10 - Leonardo Chavez: Tokens y variables base */
+
+/* T10 - Leonardo Chavez: Reset global */
+
+/* T10 - Leonardo Chavez: Tipografia base */
+
+/* T02/T09 - Ronel Rojas: Header y navegación */
+
+/* T01 - Andy Salcedo: Botones compartidos hero */
+
+/* T01 - Andy Salcedo: Sección hero */
+
+/* T03 - Miguel Sanca: Sección cómo funciona */
+
+/* T04 - Lucero Pipa: Sección beneficios */
+
+/* T06 - Miguel Sanca: Sección impacto */
+
+/* T05 - Lucero Pipa: Sección testimonios */
+
+/* T05 - Lucero Pipa: CTA final */
+
+/* T07 - Jahat Trinidad: Footer institucional */
+.footer {
+  background-color: var(--color-secondary-dark);
+  color: var(--color-white);
+  padding: var(--space-48) 0 var(--space-24);
+}
+
+.footer__content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-48);
+  margin-bottom: var(--space-32);
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.footer__description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+.footer__section-title {
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: var(--space-16);
+}
+
+.footer__links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.footer__link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.footer__link:hover {
+  color: var(--color-primary);
+}
+
+.footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-24);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer__copyright {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.footer__social {
+  display: flex;
+  gap: var(--space-16);
+}
+
+.footer__social-link {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.footer__social-link:hover {
+  background: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+/* T02 - Ronel Rojas: Toggle de menú */
+
+/* T08 - Leonardo Chavez: Breakpoint tablet/desktop */
+
+/* T08 - Leonardo Chavez: Breakpoint mobile */
