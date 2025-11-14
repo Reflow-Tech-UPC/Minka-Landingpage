@@ -3,8 +3,6 @@
 <p align="center"><strong>Economía circular al alcance de tu comunidad</strong></p>
 <p align="center">
   <a href="https://reflow-tech-upc.github.io/Minka-Landingpage" target="_blank">🚀 Demo en vivo</a>
-  ·
-  <a href="https://github.com/Reflow-Tech-UPC/Minka-Landingpage" target="_blank">📦 Repositorio</a>
 </p>
 
 ## 🧭 Tabla de Contenidos
