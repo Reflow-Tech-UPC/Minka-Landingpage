@@ -1,8 +1,116 @@
 /* T10 - Leonardo Chavez: Tokens y variables base */
+:root {
+  --color-primary: #2ecc71;
+  --color-primary-dark: #27ae60;
+  --color-primary-darker: #229954;
+  --color-secondary: #34495e;
+  --color-secondary-dark: #2c3e50;
+  --color-accent: #f1c40f;
+  --color-white: #ffffff;
+  --color-gray-50: #ecf0f1;
+  --color-gray-100: #bdc3c7;
+  --color-gray-300: #95a5a6;
+  --color-gray-600: #7f8c8d;
+  --color-gray-800: #2c3e50;
+  --color-gray-900: #1a1a1a;
+  --font-primary: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-secondary: "Nunito", "Helvetica Neue", Arial, sans-serif;
+  --font-accent: "Pacifico", cursive;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --shadow-sm: 0 2px 4px rgba(46, 204, 113, 0.1);
+  --shadow-md: 0 4px 8px rgba(46, 204, 113, 0.15);
+  --shadow-lg: 0 8px 16px rgba(46, 204, 113, 0.2);
+  --shadow-xl: 0 12px 24px rgba(46, 204, 113, 0.25);
+}
 
 /* T10 - Leonardo Chavez: Reset global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-gray-900);
+  background-color: var(--color-white);
+}
+
+/* T10 - Leonardo Chavez: Iconografia generica */
+.icon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+
+.icon--inline {
+  width: 20px;
+  height: 20px;
+  margin-left: var(--space-8);
+  vertical-align: middle;
+}
+
+.logo-image {
+  display: block;
+  height: 48px;
+  width: auto;
+}
+
+.logo-image--footer {
+  height: 56px;
+}
 
 /* T10 - Leonardo Chavez: Tipografia base */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-secondary-dark);
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: var(--space-24);
+}
+
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-16);
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-12);
+}
+
+p {
+  font-size: 1rem;
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-16);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
 
 /* T02/T09 - Ronel Rojas: Header y navegación */
 .header {
@@ -51,9 +159,121 @@
 .header__cta {
   display: none;
 }
+
 /* T01 - Andy Salcedo: Botones compartidos hero */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: var(--space-12) var(--space-24);
+  border-radius: var(--space-8);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  background: var(--color-primary-darker);
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background: rgba(46, 204, 113, 0.1);
+}
+
+.btn-large {
+  padding: var(--space-16) var(--space-32);
+  font-size: 1.125rem;
+}
 
 /* T01 - Andy Salcedo: Sección hero */
+.hero {
+  padding: var(--space-64) 0;
+  background: linear-gradient(135deg, #f6f8f6 0%, #ffffff 100%);
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-48);
+  align-items: center;
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.hero__title {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  color: var(--color-secondary-dark);
+}
+
+.hero__title-accent {
+  color: var(--color-primary);
+}
+
+.hero__subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--color-gray-600);
+}
+
+.hero__cta-group {
+  display: flex;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+}
+
+.hero__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--space-16);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.hero__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-48);
+}
+
+.section-header__subtitle {
+  font-size: 1.125rem;
+  color: var(--color-gray-600);
+  max-width: 600px;
+  margin: 0 auto;
+}
 
 /* T03 - Miguel Sanca: Sección cómo funciona */
 .how-it-works {
@@ -104,6 +324,7 @@
 .step-card__description {
   font-size: 0.95rem;
 }
+
 /* T04 - Lucero Pipa: Sección beneficios */
 .benefits {
   padding: var(--space-64) 0;
@@ -156,6 +377,7 @@
   color: var(--color-gray-600);
   line-height: 1.5;
 }
+
 /* T06 - Miguel Sanca: Sección impacto */
 .impact {
   padding: var(--space-64) 0;
@@ -199,6 +421,7 @@
   font-weight: 500;
   color: var(--color-white);
 }
+
 /* T05 - Lucero Pipa: Sección testimonios */
 .testimonials {
   padding: var(--space-64) 0;
@@ -405,6 +628,106 @@
   color: var(--color-secondary);
   cursor: pointer;
 }
+
 /* T08 - Leonardo Chavez: Breakpoint tablet/desktop */
+@media (min-width: 769px) {
+  .header__cta {
+    display: inline-flex;
+  }
+}
 
 /* T08 - Leonardo Chavez: Breakpoint mobile */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  .header__container {
+    padding: var(--space-16) 16px;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__nav.header__nav--open {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-24) 0;
+  }
+
+  .header__menu-toggle {
+    display: block;
+  }
+
+  .hero {
+    padding: var(--space-48) 0;
+  }
+
+  .hero__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+  }
+
+  .hero__title {
+    font-size: 2.25rem;
+    text-align: center;
+  }
+
+  .hero__subtitle {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .hero__cta-group {
+    flex-direction: column;
+  }
+
+  .steps-grid,
+  .benefits-grid,
+  .stats-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
+  }
+
+  .impact {
+    padding: var(--space-48) 0;
+  }
+
+  .testimonials {
+    padding: var(--space-48) 0;
+  }
+
+  .cta-final {
+    padding: var(--space-48) 0;
+  }
+
+  .cta-final__title {
+    font-size: 2rem;
+  }
+
+  .footer__content {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    gap: var(--space-16);
+    text-align: center;
+  }
+}

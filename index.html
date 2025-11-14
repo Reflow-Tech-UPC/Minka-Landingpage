@@ -10,8 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800&family=Pacifico&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/public/assets/styles/styles.css" />
-    <script src="/public/assets/scripts/main.js" defer></script>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./main.js" defer></script>
   </head>
   <body>
     <!-- T02 & T09 - Ronel Rojas: Header y navegación accesible -->
@@ -19,7 +19,7 @@
       <div class="header__container">
         <a href="#" class="header__logo">
           <img
-            src="../../public/assets/images/minka-logo.png"
+            src="/public/assets/images/minka-logo.png"
             alt="Mink'a"
             class="logo-image"
           />
@@ -47,8 +47,44 @@
     </header>
 
     <main>
-    <main>
       <!-- T01 - Andy Salcedo: Sección hero y CTA principal -->
+      <section class="hero" id="inicio">
+        <div class="container">
+          <div class="hero__grid">
+            <div class="hero__content">
+              <h1 class="hero__title">
+                ¡Bienvenido a <span class="hero__title-accent">Mink'a</span>!
+                <br />
+                Tu clóset es tesoro para otros
+              </h1>
+              <p class="hero__subtitle">
+                Únete a la plataforma de trueque que está transformando Lima.
+                Intercambia objetos y servicios, ahorra dinero y construye una
+                comunidad más sostenible
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/481/481724.png"
+                  alt=""
+                  class="icon icon--inline"
+                />
+              </p>
+              <div class="hero__cta-group">
+                <a href="#" class="btn btn-primary btn-large"
+                  >Truequea Ahora y Suma Impacto</a
+                >
+                <a href="#como-funciona" class="btn btn-secondary btn-large"
+                  >Explorar Plataforma</a
+                >
+              </div>
+            </div>
+            <div class="hero__image">
+              <img
+                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800"
+                alt="Comunidad Mink'a intercambiando objetos"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- T03 - Miguel Sanca: Sección cómo funciona -->
       <section id="como-funciona" class="how-it-works">
@@ -103,6 +139,7 @@
           </div>
         </div>
       </section>
+
       <!-- T04 - Lucero Pipa: Sección beneficios -->
       <section id="beneficios" class="benefits">
         <div class="container">
@@ -191,6 +228,7 @@
           </div>
         </div>
       </section>
+
       <!-- T05 - Lucero Pipa: Sección testimonios -->
       <section id="testimonios" class="testimonials">
         <div class="container">
@@ -343,8 +381,8 @@
           </div>
         </div>
       </section>
-
     </main>
+
     <!-- T07 - Jahat Trinidad: Footer institucional -->
     <footer class="footer">
       <div class="container">
@@ -352,7 +390,7 @@
           <div class="footer__brand">
             <div class="footer__logo">
               <img
-                src="/public/assets/images/minka-logo-negativo-2.png"
+                src="../../public/assets/images/minka-logo-negativo-2.png"
                 alt="Mink'a"
                 class="logo-image logo-image--footer"
               />
@@ -394,15 +432,15 @@
         </div>
         <div class="footer__bottom">
           <p class="footer__copyright">
-            © 2025 Mink'a. Todos los derechos reservados.
+            © 2024 Mink'a. Todos los derechos reservados.
           </p>
           <div class="footer__social">
-            <a href="#" class="footer__social-link" aria-label="Facebook">FB</a>
+            <a href="#" class="footer__social-link" aria-label="Facebook">f</a>
             <a href="#" class="footer__social-link" aria-label="Instagram"
-              >IG</a
+              >📷</a
             >
-            <a href="#" class="footer__social-link" aria-label="Twitter">TW</a>
-            <a href="#" class="footer__social-link" aria-label="LinkedIn">IN</a>
+            <a href="#" class="footer__social-link" aria-label="Twitter">🐦</a>
+            <a href="#" class="footer__social-link" aria-label="LinkedIn">in</a>
           </div>
         </div>
       </div>
