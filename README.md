@@ -2,7 +2,7 @@
 <h1 align="center">✨ Mink’a Landing Page</h1>
 <p align="center"><strong>Economía circular al alcance de tu comunidad</strong></p>
 <p align="center">
-  <a href="https://reflow-tech-upc.github.io/Minka-Landingpage" target="_blank">🚀 Demo en vivo</a>
+  <a href="https://reflow-tech-upc.github.io/Minka-Landingpage" target="_blank">🚀 Demo en vivo ⭐</a>
 </p>
 
 ## 🧭 Tabla de Contenidos
