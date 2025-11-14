@@ -1,8 +1,11 @@
 <!-- markdownlint-disable MD033 -->
-<h1 align="center">✨ Mink’a Landing Page</h1>
+<h1 align="center">Mink’a Landing Page</h1>
+<p align="center">
+  <img src="public/assets/images/minka-logo.png" alt="Logotipo de Mink’a" width="160">
+</p>
 <p align="center"><strong>Economía circular al alcance de tu comunidad</strong></p>
 <p align="center">
-  <a href="https://reflow-tech-upc.github.io/Minka-Landingpage" target="_blank">🚀 Demo en vivo ⭐</a>
+  <a href="https://reflow-tech-upc.github.io/Minka-Landingpage" target="_blank" style="display:inline-block;padding:0.6rem 1.2rem;background:#00a86b;color:#fff;border-radius:999px;text-decoration:none;font-weight:600;">Ver demo en vivo</a>
 </p>
 
 ## 🧭 Tabla de Contenidos
