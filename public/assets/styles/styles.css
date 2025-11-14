@@ -5,7 +5,52 @@
 /* T10 - Leonardo Chavez: Tipografia base */
 
 /* T02/T09 - Ronel Rojas: Header y navegación */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--color-gray-50);
+  box-shadow: var(--shadow-sm);
+}
 
+.header__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-16) 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header__logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-32);
+}
+
+.header__nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-gray-800);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.header__nav-link:hover,
+.header__nav-link:focus {
+  color: var(--color-primary);
+}
+
+.header__cta {
+  display: none;
+}
 /* T01 - Andy Salcedo: Botones compartidos hero */
 
 /* T01 - Andy Salcedo: Sección hero */
@@ -23,7 +68,14 @@
 /* T07 - Jahat Trinidad: Footer institucional */
 
 /* T02 - Ronel Rojas: Toggle de menú */
-
+.header__menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+  cursor: pointer;
+}
 /* T08 - Leonardo Chavez: Breakpoint tablet/desktop */
 
 /* T08 - Leonardo Chavez: Breakpoint mobile */
