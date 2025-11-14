@@ -11,11 +11,99 @@
 /* T01 - Andy Salcedo: Sección hero */
 
 /* T03 - Miguel Sanca: Sección cómo funciona */
+.how-it-works {
+  padding: var(--space-64) 0;
+  background-color: var(--color-white);
+}
 
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-32);
+}
+
+.step-card {
+  background: var(--color-white);
+  border-radius: var(--space-16);
+  padding: var(--space-32);
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.step-card__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-24);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-card__icon img {
+  width: 48px;
+  height: 48px;
+}
+
+.step-card__description {
+  font-size: 0.95rem;
+}
 /* T04 - Lucero Pipa: Sección beneficios */
 
 /* T06 - Miguel Sanca: Sección impacto */
+.impact {
+  padding: var(--space-64) 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-dark) 0%,
+    var(--color-secondary) 100%
+  );
+  color: var(--color-white);
+}
 
+.impact .section-header__title,
+.impact .section-header__subtitle {
+  color: var(--color-white);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-32);
+}
+
+.stat-card {
+  text-align: center;
+  padding: var(--space-32);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--space-16);
+  backdrop-filter: blur(10px);
+}
+
+.stat-card__number {
+  font-family: var(--font-secondary);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  margin-bottom: var(--space-8);
+}
+
+.stat-card__label {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-white);
+}
 /* T05 - Lucero Pipa: Sección testimonios */
 .testimonials {
   padding: var(--space-64) 0;
