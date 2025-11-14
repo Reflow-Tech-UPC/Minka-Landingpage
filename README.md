@@ -5,7 +5,9 @@
 </p>
 <p align="center"><strong>Economía circular al alcance de tu comunidad</strong></p>
 <p align="center">
-  <a href="https://reflow-tech-upc.github.io/Minka-Landingpage" target="_blank" style="display:inline-block;padding:0.6rem 1.2rem;background:#00a86b;color:#fff;border-radius:999px;text-decoration:none;font-weight:600;">Ver demo en vivo</a>
+  <a href="https://reflow-tech-upc.github.io/Minka-Landingpage" target="_blank">
+    <img src="https://img.shields.io/badge/Demo%20en%20vivo-00a86b?style=for-the-badge&logo=github&logoColor=white" alt="Abrir demo en vivo" />
+  </a>
 </p>
 
 ## 🧭 Tabla de Contenidos
