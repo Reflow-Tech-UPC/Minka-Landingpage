@@ -346,3 +346,322 @@ function insertMessage(text, fromUser = false) {
   thread.messages.push({ from: fromUser ? "me" : "them", text, time: label });
   renderConversation();
 }
+// T34 - Ronel Rojas: Mejoras de chat (fotos, lectura)
+const STORAGE_KEY = "minka-chat-thread";
+
+const threads = [
+  {
+    id: "th-001",
+    user: "Lucía P.",
+    item: "Bicicleta urbana vintage",
+    location: "Miraflores",
+    rating: 4.8,
+    distanceKm: 4,
+    muted: false,
+    messages: [
+      { from: "them", text: "¡Hola! ¿Sigue disponible?", time: "09:10" },
+      { from: "me", text: "Sí, sigue disponible.", time: "09:11" },
+    ],
+  },
+  {
+    id: "th-002",
+    user: "Carlos R.",
+    item: "Mesa de centro reciclada",
+    location: "Barranco",
+    rating: 4.2,
+    distanceKm: 6,
+    muted: false,
+    messages: [
+      { from: "them", text: "¿Podemos vernos sábado?", time: "10:05" },
+    ],
+  },
+];
+
+const templates = [
+  "¿En qué distrito estás?",
+  "Propongo vernos el sábado a las 10am",
+  "Confirmado, nos vemos ahí",
+  "Lo siento, debo cancelar el encuentro",
+];
+
+const meetingPoints = [
+  "Parque Kennedy, Miraflores",
+  "Estación Metropolitano Benavides",
+  "Plaza Barranco",
+  "CC Larcomar (zona pública)",
+];
+
+const els = {
+  list: document.getElementById("thread-list"),
+  messages: document.getElementById("messages"),
+  templateList: document.getElementById("template-list"),
+  meetingList: document.getElementById("meeting-list"),
+  composer: document.getElementById("composer"),
+  composerInput: document.getElementById("composer-input"),
+  convItem: document.getElementById("conv-item"),
+  convUser: document.getElementById("conv-user"),
+  convMeta: document.getElementById("conv-meta"),
+  btnMute: document.getElementById("btn-mute"),
+  btnReport: document.getElementById("btn-report"),
+  btnRate: document.getElementById("btn-rate"),
+  btnShareLocation: document.getElementById("btn-share-location"), // T31
+  btnAttachPhoto: document.getElementById("btn-attach-photo"), // T34
+  fileInput: document.getElementById("file-input"), // T34
+  typingIndicator: document.getElementById("typing-indicator"), // T34
+};
+attachPhotoSharing(); // T34
+attachMute();
+attachReport();
+attachRating();
+bindCloseTriggers();
+
+function restoreThread() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved && threads.some((t) => t.id === saved)) {
+    currentThreadId = saved;
+  }
+}
+
+function persistThread() {
+  localStorage.setItem(STORAGE_KEY, currentThreadId);
+}
+
+function renderThreads() {
+  els.list.innerHTML = threads
+    .map(
+      (t) => `
+        <li class="thread ${
+          t.id === currentThreadId ? "thread--active" : ""
+        }" data-id="$${t.id}">
+          <div class="thread__title">${t.user}</div>
+          <div class="thread__meta">${t.item}</div>
+          <div class="thread__meta">${
+            t.location
+          } · <i class="fas fa-star"></i> ${t.rating}</div>
+        </li>
+      `
+    )
+    .join("");
+
+  els.list.querySelectorAll(".thread").forEach((node) => {
+    node.addEventListener("click", () => {
+      currentThreadId = node.dataset.id.replace("$", "");
+      persistThread();
+      renderThreads();
+      renderConversation();
+    });
+  });
+}
+
+function renderConversation() {
+  const thread = threads.find((t) => t.id === currentThreadId);
+  if (!thread) return;
+
+  els.convItem.textContent = thread.item;
+  els.convUser.textContent = thread.user;
+  els.convMeta.innerHTML = `${thread.location} · <i class="fas fa-star"></i> ${thread.rating} · ${thread.distanceKm} km`;
+
+  if (thread.muted) {
+    els.btnMute.innerHTML = '<i class="fa-solid fa-bell"></i> Activar';
+    els.btnMute.classList.add("btn-outline");
+    els.btnMute.classList.remove("btn-secondary");
+  } else {
+    els.btnMute.innerHTML = '<i class="fa-solid fa-bell-slash"></i> Silenciar';
+    els.btnMute.classList.remove("btn-outline");
+    els.btnMute.classList.add("btn-secondary");
+  }
+
+  els.messages.innerHTML = thread.messages
+    .map((msg) => {
+      // T34 - Status Icon Logic
+      let statusIcon = "";
+      if (msg.from === "me") {
+        if (msg.status === "read")
+          statusIcon =
+            '<i class="fas fa-check-double message__status read"></i>';
+        else if (msg.status === "delivered")
+          statusIcon = '<i class="fas fa-check-double message__status"></i>';
+        else statusIcon = '<i class="fas fa-check message__status"></i>';
+      }
+
+      // T34 - Image Rendering
+      const content = msg.image
+        ? `<img src="${msg.image}" alt="Foto adjunta" class="message__image" loading="lazy" />`
+        : `<div>${msg.text}</div>`;
+
+      return `
+        <div class="message ${msg.from === "me" ? "message--me" : ""}">
+          <div class="message__meta">${
+            msg.from === "me" ? "Tú" : thread.user
+          } · ${msg.time} ${statusIcon}</div>
+          ${content}
+        </div>
+      `;
+    })
+    .join("");
+
+  els.messages.scrollTop = els.messages.scrollHeight;
+}
+
+function renderTemplates() {
+  els.templateList.innerHTML = templates
+    .map(
+      (tpl) =>
+        `<button type="button" class="template" data-template="${tpl}">${tpl}</button>`
+    )
+    .join("");
+
+  els.templateList.querySelectorAll("[data-template]").forEach((btn) => {
+    btn.addEventListener("click", () => insertMessage(btn.dataset.template));
+  });
+}
+
+function renderMeetings() {
+  els.meetingList.innerHTML = meetingPoints
+    .map(
+      (place) =>
+        `<button type="button" class="meeting-chip" data-place="${place}">${place}</button>`
+    )
+    .join("");
+
+  els.meetingList.querySelectorAll("[data-place]").forEach((btn) => {
+    btn.addEventListener("click", () =>
+      insertMessage(`📍 Sugiero punto de encuentro: ${btn.dataset.place}`, true)
+    );
+  });
+}
+
+function attachComposer() {
+  els.composer.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const text = els.composerInput.value.trim();
+    if (!text) return;
+    insertMessage(text, true);
+    els.composerInput.value = "";
+  });
+}
+
+function attachMute() {
+  if (!els.btnMute) return;
+  els.btnMute.addEventListener("click", () => {
+    const thread = threads.find((t) => t.id === currentThreadId);
+    if (thread) {
+      thread.muted = !thread.muted;
+      renderConversation();
+    }
+  });
+}
+
+function attachReport() {
+  if (!els.btnReport) return;
+  els.btnReport.addEventListener("click", () => {
+    const thread = threads.find((t) => t.id === currentThreadId);
+    if (thread) {
+      // Reset form
+      forms.report.reset();
+      feedback.report.textContent = "";
+      feedback.report.classList.remove("is-success", "is-error");
+      openModal(modals.report);
+    }
+  });
+
+  forms.report.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const reason = document.getElementById("report-reason");
+    const details = document.getElementById("report-details");
+    const selected = reason?.value;
+    const detailText = details?.value?.trim() || "";
+
+    if (!selected) {
+      feedback.report.textContent = "Selecciona un motivo para continuar.";
+      feedback.report.classList.add("is-error");
+      return;
+    }
+
+    if (selected === "otro" && detailText.length < 12) {
+      feedback.report.textContent =
+        "Agrega más contexto para procesar el reporte.";
+      feedback.report.classList.add("is-error");
+      return;
+    }
+
+    feedback.report.textContent =
+      "Reporte enviado. Revisaremos la información.";
+    feedback.report.classList.remove("is-error");
+    feedback.report.classList.add("is-success");
+
+    setTimeout(() => {
+      closeModal(modals.report);
+    }, 1500);
+  });
+}
+
+function attachRating() {
+  if (!els.btnRate) return;
+
+  let currentRating = 0;
+  const stars = forms.rating.querySelectorAll(".rating-star");
+
+  els.btnRate.addEventListener("click", () => {
+    const thread = threads.find((t) => t.id === currentThreadId);
+    if (thread) {
+      const userSpan = document.getElementById("rating-user");
+      if (userSpan) userSpan.textContent = thread.user;
+
+      forms.rating.reset();
+      currentRating = 0;
+      updateStars(0);
+      feedback.rating.textContent = "";
+      feedback.rating.classList.remove("is-success", "is-error");
+      openModal(modals.rating);
+    }
+  });
+
+  stars.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentRating = parseInt(btn.dataset.value, 10);
+      updateStars(currentRating);
+    });
+  });
+
+  function updateStars(value) {
+    stars.forEach((btn) => {
+      const starVal = parseInt(btn.dataset.value, 10);
+      const icon = btn.querySelector("i");
+      if (starVal <= value) {
+        btn.classList.add("is-active");
+      } else {
+        btn.classList.remove("is-active");
+      }
+    });
+  }
+
+  forms.rating.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (currentRating === 0) {
+      feedback.rating.textContent = "Por favor selecciona una calificación.";
+      feedback.rating.classList.add("is-error");
+      return;
+    }
+
+    feedback.rating.textContent = "¡Gracias! Tu calificación ha sido enviada.";
+    feedback.rating.classList.remove("is-error");
+    feedback.rating.classList.add("is-success");
+
+    setTimeout(() => {
+      closeModal(modals.rating);
+    }, 1500);
+  });
+}
+
+function openModal(modal) {
+  if (!modal) return;
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeModal(modal) {
+  if (!modal) return;
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
