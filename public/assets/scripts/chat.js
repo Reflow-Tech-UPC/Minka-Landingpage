@@ -1,4 +1,6 @@
 // T17 - Lucero Pipa: Chat con plantillas y puntos de encuentro
+// T31 - Andy Salcedo: Geolocalización en chat
+// T34 - Ronel Rojas: Mejoras de chat (fotos, lectura)
 const STORAGE_KEY = "minka-chat-thread";
 
 const threads = [
@@ -56,6 +58,10 @@ const els = {
   btnMute: document.getElementById("btn-mute"),
   btnReport: document.getElementById("btn-report"),
   btnRate: document.getElementById("btn-rate"),
+  btnShareLocation: document.getElementById("btn-share-location"), // T31
+  btnAttachPhoto: document.getElementById("btn-attach-photo"), // T34
+  fileInput: document.getElementById("file-input"), // T34
+  typingIndicator: document.getElementById("typing-indicator"), // T34
 };
 
 // T18 - Modal elements
@@ -81,6 +87,8 @@ renderConversation();
 renderTemplates();
 renderMeetings();
 attachComposer();
+attachLocationSharing(); // T31
+attachPhotoSharing(); // T34
 attachMute();
 attachReport();
 attachRating();
@@ -143,16 +151,32 @@ function renderConversation() {
   }
 
   els.messages.innerHTML = thread.messages
-    .map(
-      (msg) => `
+    .map((msg) => {
+      // T34 - Status Icon Logic
+      let statusIcon = "";
+      if (msg.from === "me") {
+        if (msg.status === "read")
+          statusIcon =
+            '<i class="fas fa-check-double message__status read"></i>';
+        else if (msg.status === "delivered")
+          statusIcon = '<i class="fas fa-check-double message__status"></i>';
+        else statusIcon = '<i class="fas fa-check message__status"></i>';
+      }
+
+      // T34 - Image Rendering
+      const content = msg.image
+        ? `<img src="${msg.image}" alt="Foto adjunta" class="message__image" loading="lazy" />`
+        : `<div>${msg.text}</div>`;
+
+      return `
         <div class="message ${msg.from === "me" ? "message--me" : ""}">
           <div class="message__meta">${
             msg.from === "me" ? "Tú" : thread.user
-          } · ${msg.time}</div>
-          <div>${msg.text}</div>
+          } · ${msg.time} ${statusIcon}</div>
+          ${content}
         </div>
-      `
-    )
+      `;
+    })
     .join("");
 
   els.messages.scrollTop = els.messages.scrollHeight;
@@ -321,6 +345,24 @@ function closeModal(modal) {
   document.body.classList.remove("modal-open");
 }
 
+// T31 - Location Sharing (HU45)
+function attachLocationSharing() {
+  if (!els.btnShareLocation) return;
+
+  els.btnShareLocation.addEventListener("click", () => {
+    const duration = prompt(
+      "¿Por cuánto tiempo quieres compartir tu ubicación? (minutos)",
+      "15"
+    );
+    if (!duration) return;
+
+    insertMessage(
+      `📍 Compartiendo ubicación en tiempo real por ${duration} min.`,
+      true
+    );
+  });
+}
+
 function bindCloseTriggers() {
   document.querySelectorAll("[data-close-modal]").forEach((trigger) => {
     const modalId = trigger.getAttribute("data-close-modal");
@@ -335,7 +377,7 @@ function bindCloseTriggers() {
   });
 }
 
-function insertMessage(text, fromUser = false) {
+function insertMessage(text, fromUser = false, image = null) {
   const thread = threads.find((t) => t.id === currentThreadId);
   if (!thread) return;
   const time = new Date();
@@ -343,6 +385,95 @@ function insertMessage(text, fromUser = false) {
     time.getMinutes()
   ).padStart(2, "0")}`;
 
-  thread.messages.push({ from: fromUser ? "me" : "them", text, time: label });
+  const newMessage = {
+    from: fromUser ? "me" : "them",
+    text,
+    time: label,
+    image: image, // T34
+    status: fromUser ? "sent" : "read", // T34
+  };
+
+  thread.messages.push(newMessage);
   renderConversation();
+
+  // T34 - Simulate Status Updates (Sent -> Delivered -> Read)
+  if (fromUser) {
+    setTimeout(() => {
+      newMessage.status = "delivered";
+      renderConversation();
+    }, 1500);
+
+    setTimeout(() => {
+      newMessage.status = "read";
+      renderConversation();
+    }, 3500);
+
+    // Simulate Reply Typing
+    setTimeout(() => {
+      showTyping();
+    }, 4000);
+  }
+}
+
+// T34 - Typing Indicator (HU44)
+function showTyping() {
+  if (els.typingIndicator) {
+    els.typingIndicator.classList.remove("hidden");
+    els.messages.scrollTop = els.messages.scrollHeight;
+
+    setTimeout(() => {
+      els.typingIndicator.classList.add("hidden");
+    }, 3000);
+  }
+}
+
+// T34 - Photo Sharing with Watermark (HU43)
+function attachPhotoSharing() {
+  if (!els.btnAttachPhoto || !els.fileInput) return;
+
+  els.btnAttachPhoto.addEventListener("click", () => {
+    els.fileInput.click();
+  });
+
+  els.fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        // Create canvas for watermark
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set dimensions
+        canvas.width = 800; // Normalize width
+        canvas.height = (img.height / img.width) * 800;
+
+        // Draw original image
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // Add Watermark
+        ctx.font = "bold 24px Arial";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.textAlign = "right";
+        ctx.fillText(
+          `Mink'a ID: ${currentThreadId}`,
+          canvas.width - 20,
+          canvas.height - 20
+        );
+        ctx.fillText(`User: Me`, canvas.width - 20, canvas.height - 50);
+
+        // Send as message
+        const watermarkedUrl = canvas.toDataURL("image/jpeg", 0.8);
+        insertMessage("", true, watermarkedUrl);
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Reset input
+    els.fileInput.value = "";
+  });
 }

@@ -1,4 +1,4 @@
-/* T13 - Lucero Pipa: Estilos específicos de perfil */
+/* T13 - Lucero Pipa: Estilos especÃ­ficos de perfil */
 :root {
   color-scheme: light;
 }
@@ -12,7 +12,7 @@
   padding-bottom: var(--space-48);
 }
 
-/* T13 - Lucero Pipa: Navbar idéntico al home */
+/* T13 - Lucero Pipa: Navbar idÃ©ntico al home */
 .auth-header {
   border-bottom: 1px solid var(--color-gray-50);
   background: rgba(255, 255, 255, 0.98);
@@ -543,7 +543,7 @@
     align-items: flex-start;
   }
 
-  /* T13 - Navbar responsivo en móvil */
+  /* T13 - Navbar responsivo en mÃ³vil */
   .auth-header__nav {
     gap: 8px;
   }

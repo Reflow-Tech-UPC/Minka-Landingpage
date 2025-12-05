@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!-- 
+  Tarea: T31 - Responsable: Andy Salcedo - Descripción: Compartir ubicación en tiempo real y cálculo de distancia.
+  Tarea: T34 - Responsable: Ronel Rojas - Descripción: Mejoras en chat: fotos con marca de agua y estados de lectura.
+-->
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -12,6 +16,10 @@
     <link rel="stylesheet" href="./assets/styles/styles.css" />
     <link rel="stylesheet" href="./assets/styles/home.css" />
     <link rel="stylesheet" href="./assets/styles/chat.css" />
+    <link rel="stylesheet" href="./assets/styles/chat-improvements.css" />
+    <!-- T27 - Miguel Sanca: Scripts de Internacionalización Global -->
+    <script src="./assets/scripts/translations.js"></script>
+    <script src="./assets/scripts/i18n.js"></script>
   </head>
   <body class="chat-page">
     <!-- T17 - Lucero Pipa: Interfaz de chat con plantillas y puntos de encuentro -->
@@ -83,6 +91,11 @@
 
             <div class="messages" id="messages" aria-live="polite"></div>
 
+            <!-- T34 - Ronel Rojas: Indicador de tipeo (HU44) -->
+            <div id="typing-indicator" class="typing-indicator hidden">
+              <span>Escribiendo...</span>
+            </div>
+
             <div class="meeting" aria-label="Puntos sugeridos">
               <div class="meeting__header">
                 <h4>Puntos de encuentro sugeridos</h4>
@@ -92,6 +105,33 @@
             </div>
 
             <form class="composer" id="composer" aria-label="Enviar mensaje">
+              <!-- T31 - Andy Salcedo: Botón Compartir Ubicación (HU45) -->
+              <button
+                type="button"
+                class="btn btn-secondary btn-icon"
+                id="btn-share-location"
+                title="Compartir ubicación en tiempo real"
+                style="margin-right: 0.5rem"
+              >
+                <i class="fa-solid fa-location-dot"></i>
+              </button>
+              <!-- T34 - Ronel Rojas: Botón Adjuntar Foto (HU43) -->
+              <button
+                type="button"
+                class="btn btn-secondary btn-icon"
+                id="btn-attach-photo"
+                title="Adjuntar foto"
+                style="margin-right: 0.5rem"
+              >
+                <i class="fa-solid fa-camera"></i>
+              </button>
+              <input
+                type="file"
+                id="file-input"
+                accept="image/*"
+                style="display: none"
+              />
+
               <input
                 type="text"
                 id="composer-input"
