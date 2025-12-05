@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<!-- 
+  Tarea: T27 - Responsable: Miguel Sanca - Descripción: Opciones de accesibilidad, alto contraste y selector de idioma.
+  Tarea: T29 - Responsable: Lucero Pipa - Descripción: Configuración de privacidad, visibilidad y verificación de identidad.
+-->
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mink'a - Configuración y Accesibilidad</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./assets/styles/styles.css" />
+    <link rel="stylesheet" href="./assets/styles/settings.css" />
+  </head>
+  <body class="settings-page">
+    <!-- T27 - Miguel Sanca: Header de navegación principal -->
+    <header class="auth-header">
+      <div class="auth-header__container">
+        <a href="home.html" class="auth-header__logo" aria-label="Ir a inicio">
+          <img
+            src="./assets/images/minka-logo.png"
+            alt="Mink'a"
+            class="logo-image"
+          />
+        </a>
+        <nav class="auth-header__nav" aria-label="Navegación principal">
+          <a href="home.html" class="auth-header__link">Inicio</a>
+          <a href="busqueda.html" class="auth-header__link">Buscar</a>
+          <a href="publicar.html" class="auth-header__link">Publicar</a>
+          <a href="chat.html" class="auth-header__link">Chats</a>
+          <a href="notificaciones.html" class="auth-header__link">
+            Notificaciones
+            <span
+              class="nav-badge"
+              data-unread-badge
+              aria-label="notificaciones no leídas"
+              >0</span
+            >
+          </a>
+          <a href="perfil.html" class="auth-header__link">Perfil</a>
+          <a href="auth.html" class="auth-header__link">Salir</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="settings-main">
+      <div class="container">
+        <section class="settings-header">
+          <h1 data-i18n="settings_title">Configuración y Accesibilidad</h1>
+          <p data-i18n="settings_subtitle">
+            Personaliza tu experiencia en Mink'a.
+          </p>
+        </section>
+
+        <div class="settings-grid">
+          <!-- T27 - Miguel Sanca: Preferencias de Idioma (HU49) -->
+          <section class="settings-card">
+            <div class="settings-card__header">
+              <div class="settings-icon"><i class="fas fa-language"></i></div>
+              <h2 data-i18n="language_title">Idioma</h2>
+            </div>
+            <div class="settings-card__body">
+              <p data-i18n="language_desc">
+                Selecciona el idioma de la interfaz.
+              </p>
+              <select
+                id="language-select"
+                class="form-select"
+                aria-label="Seleccionar idioma"
+              >
+                <option value="es">Español</option>
+                <option value="qu">Quechua</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </section>
+
+          <!-- T27 - Miguel Sanca: Accesibilidad Visual (HU48) -->
+          <section class="settings-card">
+            <div class="settings-card__header">
+              <div class="settings-icon"><i class="fas fa-eye"></i></div>
+              <h2 data-i18n="visual_title">Accesibilidad Visual</h2>
+            </div>
+            <div class="settings-card__body">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <strong data-i18n="contrast_label">Alto Contraste</strong>
+                  <p data-i18n="contrast_desc">
+                    Aumenta el contraste para mejorar la legibilidad.
+                  </p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="high-contrast-toggle" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <strong data-i18n="font_size_label">Tamaño de Fuente</strong>
+                  <p data-i18n="font_size_desc">Ajusta el tamaño del texto.</p>
+                </div>
+                <div class="font-controls">
+                  <button
+                    class="btn btn-small btn-outline"
+                    id="font-decrease"
+                    aria-label="Disminuir fuente"
+                  >
+                    A-
+                  </button>
+                  <button
+                    class="btn btn-small btn-outline"
+                    id="font-reset"
+                    aria-label="Restablecer fuente"
+                  >
+                    A
+                  </button>
+                  <button
+                    class="btn btn-small btn-outline"
+                    id="font-increase"
+                    aria-label="Aumentar fuente"
+                  >
+                    A+
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- T28 - Leonardo Chavez: Seguridad y Reautenticación (HU24) -->
+          <section class="settings-card">
+            <div class="settings-card__header">
+              <div class="settings-icon"><i class="fas fa-shield-alt"></i></div>
+              <h2 data-i18n="security_title">Seguridad</h2>
+            </div>
+            <div class="settings-card__body">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <strong data-i18n="password_label">Contraseña</strong>
+                  <p data-i18n="password_desc">
+                    Cambia tu contraseña periódicamente para mantener tu cuenta
+                    segura.
+                  </p>
+                </div>
+                <button class="btn btn-secondary" id="change-password-btn">
+                  Cambiar Contraseña
+                </button>
+              </div>
+
+              <!-- T28 - Leonardo Chavez: Gestión de Sesiones (HU23) -->
+              <div class="setting-divider"></div>
+              <h3 class="setting-subtitle">Sesiones Activas</h3>
+              <div id="sessions-list" class="sessions-list">
+                <!-- Se llena dinámicamente con JS -->
+              </div>
+              <button
+                class="btn btn-outline btn-danger full-width"
+                id="logout-all-sessions"
+              >
+                Cerrar todas las sesiones
+              </button>
+            </div>
+          </section>
+
+          <!-- T29 - Lucero Pipa: Privacidad y Disponibilidad (HU25, HU26) -->
+          <section class="settings-card">
+            <div class="settings-card__header">
+              <div class="settings-icon">
+                <i class="fas fa-user-shield"></i>
+              </div>
+              <h2 data-i18n="privacy_title">Privacidad y Disponibilidad</h2>
+            </div>
+            <div class="settings-card__body">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <strong data-i18n="visibility_label"
+                    >Visibilidad del Perfil</strong
+                  >
+                  <p data-i18n="visibility_desc">
+                    Controla quién puede ver tu información.
+                  </p>
+                </div>
+                <select id="visibility-select" class="form-select">
+                  <option value="public">Público (Todos)</option>
+                  <option value="verified">Solo Verificados</option>
+                  <option value="private">Privado</option>
+                </select>
+              </div>
+
+              <!-- HU25: Ocultar distrito exacto -->
+              <div class="setting-row">
+                <div class="setting-info">
+                  <strong>Ocultar distrito exacto</strong>
+                  <p>Muestra solo una ubicación aproximada en tu perfil.</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="hide-district-toggle" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="setting-row">
+                <button
+                  class="btn btn-outline btn-small"
+                  id="preview-profile-btn"
+                >
+                  <i class="fas fa-eye"></i> Ver cómo ven mi perfil otros
+                </button>
+              </div>
+
+              <div class="setting-divider"></div>
+
+              <!-- HU26: Disponibilidad Granular -->
+              <div class="setting-row">
+                <div class="setting-info">
+                  <strong data-i18n="availability_label"
+                    >Horario de Intercambio</strong
+                  >
+                  <p data-i18n="availability_desc">
+                    Define tus días y horas disponibles.
+                  </p>
+                </div>
+                <button class="btn btn-secondary" id="open-availability-modal">
+                  Configurar Horarios
+                </button>
+              </div>
+              <div id="availability-summary" class="availability-summary">
+                <!-- Resumen se llena con JS -->
+              </div>
+            </div>
+          </section>
+
+          <!-- T27 - Miguel Sanca: Optimización de Datos (HU20, HU47) -->
+          <section class="settings-card">
+            <div class="settings-card__header">
+              <div class="settings-icon"><i class="fas fa-wifi"></i></div>
+              <h2 data-i18n="data_title">Datos y Rendimiento</h2>
+            </div>
+            <div class="settings-card__body">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <strong data-i18n="low_data_label">Modo Bajo Consumo</strong>
+                  <p data-i18n="low_data_desc">
+                    Reduce calidad de imágenes y desactiva animaciones.
+                  </p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="low-data-toggle" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="settings-footer">
+          <button
+            class="btn btn-primary"
+            id="save-settings"
+            data-i18n="save_btn"
+          >
+            Guardar Preferencias
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- T28 - Leonardo Chavez: Modal de Reautenticación (HU24) -->
+    <div id="reauth-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Confirmar Identidad</h3>
+        <p>Por seguridad, ingresa tu contraseña actual para continuar.</p>
+        <input
+          type="password"
+          id="reauth-password"
+          class="form-input"
+          placeholder="Contraseña actual"
+        />
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="cancel-reauth">Cancelar</button>
+          <button class="btn btn-primary" id="confirm-reauth">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- T29 - Lucero Pipa: Modal de Disponibilidad (HU26) -->
+    <div id="availability-modal" class="modal hidden">
+      <div class="modal-content modal-large">
+        <h3>Configurar Disponibilidad</h3>
+        <p>
+          Selecciona los días y franjas horarias en las que puedes realizar
+          intercambios.
+        </p>
+
+        <div class="availability-grid">
+          <div class="day-row">
+            <label
+              ><input type="checkbox" name="day" value="Lunes" /> Lun</label
+            >
+            <div class="time-slots">
+              <label
+                ><input type="checkbox" name="time_Lunes" value="Mañana" />
+                Mañana</label
+              >
+              <label
+                ><input type="checkbox" name="time_Lunes" value="Tarde" />
+                Tarde</label
+              >
+              <label
+                ><input type="checkbox" name="time_Lunes" value="Noche" />
+                Noche</label
+              >
+            </div>
+          </div>
+          <div class="day-row">
+            <label
+              ><input type="checkbox" name="day" value="Martes" /> Mar</label
+            >
+            <div class="time-slots">
+              <label
+                ><input type="checkbox" name="time_Martes" value="Mañana" />
+                Mañana</label
+              >
+              <label
+                ><input type="checkbox" name="time_Martes" value="Tarde" />
+                Tarde</label
+              >
+              <label
+                ><input type="checkbox" name="time_Martes" value="Noche" />
+                Noche</label
+              >
+            </div>
+          </div>
+          <div class="day-row">
+            <label
+              ><input type="checkbox" name="day" value="Miércoles" /> Mié</label
+            >
+            <div class="time-slots">
+              <label
+                ><input type="checkbox" name="time_Miércoles" value="Mañana" />
+                Mañana</label
+              >
+              <label
+                ><input type="checkbox" name="time_Miércoles" value="Tarde" />
+                Tarde</label
+              >
+              <label
+                ><input type="checkbox" name="time_Miércoles" value="Noche" />
+                Noche</label
+              >
+            </div>
+          </div>
+          <div class="day-row">
+            <label
+              ><input type="checkbox" name="day" value="Jueves" /> Jue</label
+            >
+            <div class="time-slots">
+              <label
+                ><input type="checkbox" name="time_Jueves" value="Mañana" />
+                Mañana</label
+              >
+              <label
+                ><input type="checkbox" name="time_Jueves" value="Tarde" />
+                Tarde</label
+              >
+              <label
+                ><input type="checkbox" name="time_Jueves" value="Noche" />
+                Noche</label
+              >
+            </div>
+          </div>
+          <div class="day-row">
+            <label
+              ><input type="checkbox" name="day" value="Viernes" /> Vie</label
+            >
+            <div class="time-slots">
+              <label
+                ><input type="checkbox" name="time_Viernes" value="Mañana" />
+                Mañana</label
+              >
+              <label
+                ><input type="checkbox" name="time_Viernes" value="Tarde" />
+                Tarde</label
+              >
+              <label
+                ><input type="checkbox" name="time_Viernes" value="Noche" />
+                Noche</label
+              >
+            </div>
+          </div>
+          <div class="day-row">
+            <label
+              ><input type="checkbox" name="day" value="Sábado" /> Sáb</label
+            >
+            <div class="time-slots">
+              <label
+                ><input type="checkbox" name="time_Sábado" value="Mañana" />
+                Mañana</label
+              >
+              <label
+                ><input type="checkbox" name="time_Sábado" value="Tarde" />
+                Tarde</label
+              >
+              <label
+                ><input type="checkbox" name="time_Sábado" value="Noche" />
+                Noche</label
+              >
+            </div>
+          </div>
+          <div class="day-row">
+            <label
+              ><input type="checkbox" name="day" value="Domingo" /> Dom</label
+            >
+            <div class="time-slots">
+              <label
+                ><input type="checkbox" name="time_Domingo" value="Mañana" />
+                Mañana</label
+              >
+              <label
+                ><input type="checkbox" name="time_Domingo" value="Tarde" />
+                Tarde</label
+              >
+              <label
+                ><input type="checkbox" name="time_Domingo" value="Noche" />
+                Noche</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="cancel-availability">
+            Cancelar
+          </button>
+          <button class="btn btn-primary" id="save-availability">
+            Guardar Horarios
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./assets/scripts/notif-badge.js"></script>
+    <script src="./assets/scripts/settings.js"></script>
+  </body>
+</html>
