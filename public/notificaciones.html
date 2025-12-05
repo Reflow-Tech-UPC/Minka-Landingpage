@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mink'a - Notificaciones</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./assets/styles/styles.css" />
+    <link rel="stylesheet" href="./assets/styles/notifications.css" />
+  </head>
+  <body class="notifications-page">
+    <!-- T22 - Miguel Sanca: Centro de notificaciones y preferencias -->
+    <header class="auth-header">
+      <div class="auth-header__container">
+        <a href="home.html" class="auth-header__logo">
+          <img
+            src="./assets/images/minka-logo.png"
+            alt="Mink'a"
+            class="logo-image"
+          />
+        </a>
+        <nav class="auth-header__nav" aria-label="Navegación secundaria">
+          <a href="home.html" class="auth-header__link">Inicio</a>
+          <a href="busqueda.html" class="auth-header__link">Buscar</a>
+          <a href="publicar.html" class="auth-header__link">Publicar</a>
+          <a href="chat.html" class="auth-header__link">Chats</a>
+          <a
+            href="notificaciones.html"
+            class="auth-header__link auth-header__link--active"
+            >Notificaciones
+            <span class="nav-badge" data-unread-badge>0</span></a
+          >
+          <a href="perfil.html" class="auth-header__link">Perfil</a>
+          <a href="auth.html" class="auth-header__link">Salir</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="notifications-main">
+      <section class="notifications-hero">
+        <div class="container notifications-hero__grid">
+          <div>
+            <p class="notifications-hero__eyebrow">Centro de alertas</p>
+            <h1>Notificaciones y recordatorios</h1>
+            <p class="notifications-hero__subtitle">
+              Consulta avisos de mensajes, coincidencias y recordatorios de
+              entrega. Configura tus preferencias para recibir solo lo
+              necesario.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="notifications-layout"
+        aria-label="Centro de notificaciones"
+      >
+        <div class="container notifications-grid">
+          <section class="card feed-card" aria-label="Lista de notificaciones">
+            <div class="card__header feed-card__header">
+              <div class="feed-header__top">
+                <h2>Tu bandeja</h2>
+                <div class="feed-actions">
+                  <button
+                    class="btn btn-primary btn-sm"
+                    id="mark-all-read"
+                    type="button"
+                  >
+                    Marcar todo
+                  </button>
+                  <button
+                    class="btn btn-secondary btn-sm"
+                    id="clear-read"
+                    type="button"
+                  >
+                    Borrar leídas
+                  </button>
+                </div>
+              </div>
+              <div class="feed-filters">
+                <select id="filter-type">
+                  <option value="all">Todos los tipos</option>
+                  <option value="message">Mensajes</option>
+                  <option value="match">Coincidencias</option>
+                  <option value="reminder">Recordatorios</option>
+                </select>
+              </div>
+            </div>
+            <div
+              class="card__body"
+              id="notifications-list"
+              aria-live="polite"
+            ></div>
+          </section>
+
+          <aside class="prefs">
+            <div
+              class="card prefs__card"
+              aria-label="Preferencias de notificación"
+            >
+              <div class="card__header">
+                <h3>Preferencias</h3>
+              </div>
+              <div class="card__body">
+                <div class="pref-toggle">
+                  <label for="filter-unread">Solo no leídas</label>
+                  <input type="checkbox" id="filter-unread" checked />
+                </div>
+                <div class="pref-toggle">
+                  <label for="pref-messages"
+                    >Mensajes y actividad de chat</label
+                  >
+                  <input type="checkbox" id="pref-messages" checked />
+                </div>
+                <div class="pref-toggle">
+                  <label for="pref-matches">Coincidencias y sugerencias</label>
+                  <input type="checkbox" id="pref-matches" checked />
+                </div>
+                <div class="pref-toggle">
+                  <label for="pref-reminders">Recordatorios de encuentro</label>
+                  <input type="checkbox" id="pref-reminders" checked />
+                </div>
+                <div class="pref-toggle">
+                  <label for="pref-reviews">Reseñas y reputación</label>
+                  <input type="checkbox" id="pref-reviews" />
+                </div>
+                <div class="pref-toggle">
+                  <label for="pref-news">Novedades y tips</label>
+                  <input type="checkbox" id="pref-news" />
+                </div>
+                <div class="pref-select">
+                  <label for="pref-quiet">Horario silencioso</label>
+                  <select id="pref-quiet">
+                    <option value="none">Sin silencio</option>
+                    <option value="21-7">21:00 - 07:00</option>
+                    <option value="22-6">22:00 - 06:00</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="card prefs__card" aria-label="Consejos de seguridad">
+              <div class="card__header">
+                <h3>Consejos rápidos</h3>
+              </div>
+              <div class="card__body tips">
+                <p>• Confirma el punto de encuentro dentro del chat.</p>
+                <p>• Marca recordatorios para llegar a tiempo.</p>
+                <p>• Reporta actividad inusual desde la ficha de detalle.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <script src="./assets/scripts/notif-badge.js"></script>
+    <script src="./assets/scripts/notifications.js"></script>
+  </body>
+</html>
