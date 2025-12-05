@@ -56,6 +56,7 @@ const els = {
   btnMute: document.getElementById("btn-mute"),
   btnReport: document.getElementById("btn-report"),
   btnRate: document.getElementById("btn-rate"),
+    btnShareLocation: document.getElementById("btn-share-location"),
 };
 
 // T18 - Modal elements
@@ -81,6 +82,7 @@ renderConversation();
 renderTemplates();
 renderMeetings();
 attachComposer();
+attachLocationSharing(); 
 attachMute();
 attachReport();
 attachRating();
@@ -319,6 +321,23 @@ function closeModal(modal) {
   if (!modal) return;
   modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
+}
+
+ function attachLocationSharing() {
+  if (!els.btnShareLocation) return;
+
+  els.btnShareLocation.addEventListener("click", () => {
+    const duration = prompt(
+      "¿Por cuánto tiempo quieres compartir tu ubicación? (minutos)",
+      "15"
+    );
+    if (!duration) return;
+
+    insertMessage(
+      `📍 Compartiendo ubicación en tiempo real por ${duration} min.`,
+      true
+    );
+  });
 }
 
 function bindCloseTriggers() {
