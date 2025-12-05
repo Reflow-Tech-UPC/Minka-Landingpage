@@ -1,3 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mink'a - Perfil</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./assets/styles/styles.css" />
+    <link rel="stylesheet" href="./assets/styles/profile.css" />
+  </head>
+  <body class="profile-page">
     <!-- T13 - Lucero Pipa: Header de navegación principal -->
     <header class="auth-header">
       <div class="auth-header__container">
@@ -117,8 +132,94 @@
                   </button>
                 </div>
               </article>
-    
-    
+
+              <!-- T14 - Ronel Rojas: Listado de publicaciones del usuario -->
+              <section class="profile-items" aria-labelledby="my-items-title">
+                <h3 id="my-items-title" class="profile-items__title">
+                  Mis Publicaciones
+                </h3>
+                <div id="my-items-list" class="profile-items__list">
+                  <p class="form__hint">No tienes publicaciones activas.</p>
+                </div>
+              </section>
+            </div>
+
+            <form class="profile-form" id="profile-form" novalidate>
+              <div class="form__group">
+                <label for="profile-name">Nombre completo</label>
+                <input
+                  type="text"
+                  id="profile-name"
+                  name="name"
+                  value="Usuario Demo"
+                  required
+                />
+                <p class="form__error" data-error-for="profile-name"></p>
+              </div>
+              <div class="form__group">
+                <label for="profile-email">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="profile-email"
+                  name="email"
+                  value="demo@minka.com"
+                  required
+                />
+                <p class="form__error" data-error-for="profile-email"></p>
+              </div>
+              <div class="form__group">
+                <label for="profile-phone">Teléfono</label>
+                <input
+                  type="tel"
+                  id="profile-phone"
+                  name="phone"
+                  value="+51 000 000 000"
+                  required
+                />
+                <p class="form__error" data-error-for="profile-phone"></p>
+              </div>
+              <div class="form__group">
+                <label for="profile-location"
+                  >Distrito / Ciudad <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="profile-location"
+                  name="location"
+                  placeholder="Ej: Miraflores, Lima"
+                  required
+                />
+                <p class="form__error" data-error-for="profile-location"></p>
+                <small class="form__hint"
+                  >Campo obligatorio para guardar cambios</small
+                >
+              </div>
+              <div class="form__group">
+                <label for="profile-bio">Descripción breve (opcional)</label>
+                <textarea
+                  id="profile-bio"
+                  name="bio"
+                  rows="4"
+                  maxlength="150"
+                  placeholder="Cuenta algo sobre tus intereses de trueque (máximo 150 caracteres)"
+                ></textarea>
+                <div class="form__char-count">
+                  <span id="bio-char-count">0</span> / 150 caracteres
+                </div>
+                <p class="form__error" data-error-for="profile-bio"></p>
+              </div>
+              <div class="profile-form__footer">
+                <small class="form__hint">
+                  <i class="fas fa-info-circle"></i>
+                  Los datos ayudan a mejorar tu reputación y coincidencias.
+                </small>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
     <!-- T13 - Lucero Pipa: Modal de verificación de identidad (simulada) -->
     <section
       class="modal"
@@ -177,3 +278,8 @@
         </div>
       </div>
     </section>
+
+    <script src="./assets/scripts/notif-badge.js" defer></script>
+    <script src="./assets/scripts/profile.js" defer></script>
+  </body>
+</html>

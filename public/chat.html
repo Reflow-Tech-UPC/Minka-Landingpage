@@ -1,3 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mink'a - Chats</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./assets/styles/styles.css" />
+    <link rel="stylesheet" href="./assets/styles/home.css" />
+    <link rel="stylesheet" href="./assets/styles/chat.css" />
+  </head>
+  <body class="chat-page">
     <!-- T17 - Lucero Pipa: Interfaz de chat con plantillas y puntos de encuentro -->
     <header class="auth-header">
       <div class="auth-header__container">
@@ -89,3 +105,195 @@
         </div>
       </section>
     </main>
+
+    <!-- T18 - Modal de Reporte -->
+    <section class="modal" id="report-modal" aria-hidden="true">
+      <div class="modal__overlay" data-close-modal="report-modal"></div>
+      <div
+        class="modal__content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="report-title"
+      >
+        <div class="modal__header">
+          <h3 id="report-title">Reportar usuario</h3>
+          <button
+            class="modal__close"
+            type="button"
+            data-close-modal="report-modal"
+            aria-label="Cerrar modal"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal__body">
+          <p class="modal__subtitle">
+            Cuéntanos qué sucede con este usuario. Revisaremos tu reporte.
+          </p>
+          <form id="report-form" novalidate>
+            <label class="form-label" for="report-reason">Motivo</label>
+            <select id="report-reason" name="report-reason" required>
+              <option value="" disabled selected>Selecciona un motivo</option>
+              <option value="spam">Spam o publicidad</option>
+              <option value="acoso">Acoso o comportamiento ofensivo</option>
+              <option value="fraude">Intento de fraude</option>
+              <option value="contenido">Contenido inapropiado</option>
+              <option value="otro">Otro</option>
+            </select>
+
+            <label class="form-label" for="report-details">Detalles</label>
+            <textarea
+              id="report-details"
+              name="report-details"
+              rows="3"
+              maxlength="280"
+              placeholder="Incluye detalles de lo sucedido."
+            ></textarea>
+
+            <div class="form-check">
+              <input
+                type="checkbox"
+                id="report-include-chat"
+                name="report-include-chat"
+                checked
+              />
+              <label for="report-include-chat"
+                >Adjuntar historial del chat</label
+              >
+            </div>
+
+            <div class="modal__actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-close-modal="report-modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Enviar reporte
+              </button>
+            </div>
+            <p
+              class="form-feedback"
+              id="report-feedback"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- T18 - Modal de Calificación -->
+    <section class="modal" id="rating-modal" aria-hidden="true">
+      <div class="modal__overlay" data-close-modal="rating-modal"></div>
+      <div
+        class="modal__content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="rating-title"
+      >
+        <div class="modal__header">
+          <h3 id="rating-title">Calificar intercambio</h3>
+          <button
+            class="modal__close"
+            type="button"
+            data-close-modal="rating-modal"
+            aria-label="Cerrar modal"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal__body">
+          <p class="modal__subtitle">
+            Cuéntanos cómo fue el intercambio con
+            <strong id="rating-user">Usuario</strong>.
+          </p>
+          <form id="rating-form" novalidate>
+            <div
+              class="rating-stars"
+              role="radiogroup"
+              aria-label="Selecciona la calificación"
+            >
+              <button
+                type="button"
+                class="rating-star"
+                data-value="1"
+                aria-label="1 estrella"
+              >
+                <i class="fas fa-star"></i>
+              </button>
+              <button
+                type="button"
+                class="rating-star"
+                data-value="2"
+                aria-label="2 estrellas"
+              >
+                <i class="fas fa-star"></i>
+              </button>
+              <button
+                type="button"
+                class="rating-star"
+                data-value="3"
+                aria-label="3 estrellas"
+              >
+                <i class="fas fa-star"></i>
+              </button>
+              <button
+                type="button"
+                class="rating-star"
+                data-value="4"
+                aria-label="4 estrellas"
+              >
+                <i class="fas fa-star"></i>
+              </button>
+              <button
+                type="button"
+                class="rating-star"
+                data-value="5"
+                aria-label="5 estrellas"
+              >
+                <i class="fas fa-star"></i>
+              </button>
+            </div>
+            <label class="form-label" for="rating-comment"
+              >Comentario (opcional)</label
+            >
+            <textarea
+              id="rating-comment"
+              name="rating-comment"
+              rows="3"
+              maxlength="240"
+              placeholder="¿Qué salió bien? ¿Hay algo a mejorar?"
+            ></textarea>
+            <p class="modal__hint">
+              Se publicará en el perfil después de ser revisado.
+            </p>
+            <div class="modal__actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-close-modal="rating-modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Enviar calificación
+              </button>
+            </div>
+            <p
+              class="form-feedback"
+              id="rating-feedback"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script src="./assets/scripts/notif-badge.js" defer></script>
+    <script src="./assets/scripts/chat.js"></script>
+  </body>
+</html>
