@@ -4,13 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mink'a - Plataforma de Trueque para Economía Circular</title>
-    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800&family=Pacifico&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./assets/styles/styles.css" />
   </head>
   <body>
@@ -34,7 +28,10 @@
           <a href="#impacto" class="header__nav-link">Impacto</a>
           <a href="#testimonios" class="header__nav-link">Testimonios</a>
         </nav>
-        <a href="#" class="btn btn-primary header__cta">Empezar Ahora</a>
+        <!-- T12 - Leonardo Chavez: CTA redirige a página de autenticación -->
+        <a href="auth.html" class="btn btn-primary header__cta"
+          >Empezar Ahora</a
+        >
         <button
           class="header__menu-toggle"
           aria-label="Abrir menú"
@@ -67,7 +64,8 @@
                 />
               </p>
               <div class="hero__cta-group">
-                <a href="#" class="btn btn-primary btn-large"
+                <!-- T12 - Leonardo Chavez: CTA redirige a página de autenticación -->
+                <a href="auth.html" class="btn btn-primary btn-large"
                   >Truequea Ahora y Suma Impacto</a
                 >
                 <a href="#como-funciona" class="btn btn-secondary btn-large"
@@ -373,7 +371,7 @@
                 class="icon icon--inline"
               />
             </p>
-            <a href="#" class="btn cta-final__button">Empezar Ahora</a>
+            <a href="auth.html" class="btn cta-final__button">Empezar Ahora</a>
           </div>
         </div>
       </section>
