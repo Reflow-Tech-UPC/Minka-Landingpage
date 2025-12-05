@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+ <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,6 +63,19 @@
             <button type="button" class="btn btn-primary" id="search-btn">
               Buscar
             </button>
+             <button
+              type="button"
+              class="btn btn-outline"
+              id="save-search-btn"
+              title="Guardar esta búsqueda"
+            >
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+          <!-- T30 - Andy Salcedo: Lista de Búsquedas Guardadas (HU32) -->
+          <div id="saved-searches-container" class="saved-searches hidden">
+            <h3>Búsquedas Guardadas</h3>
+            <ul id="saved-searches-list"></ul>
           </div>
         </div>
       </section>
@@ -88,6 +101,19 @@
                   <option value="Hogar">Hogar</option>
                   <option value="Servicios">Servicios</option>
                   <option value="Otros">Otros</option>
+                </select>
+              </div>
+
+                            <!-- T30 - Andy Salcedo: Exclusiones (HU34) -->
+              <div class="filter-group">
+                <label for="filter-exclude">Excluir Categoría</label>
+                <select id="filter-exclude">
+                  <option value="">Ninguna</option>
+                  <option value="Ropa y accesorios">Ropa y accesorios</option>
+                  <option value="Libros">Libros</option>
+                  <option value="Electrónica">Electrónica</option>
+                  <option value="Hogar">Hogar</option>
+                  <option value="Servicios">Servicios</option>
                 </select>
               </div>
 
