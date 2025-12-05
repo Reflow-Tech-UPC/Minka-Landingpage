@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mink'a - Autenticación</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./assets/styles/styles.css" />
+    <link rel="stylesheet" href="./assets/styles/auth.css" />
+  </head>
+  <body class="auth-page">
+    <!-- T12 - Leonardo Chavez: Header simple para auth -->
+    <header class="auth-header">
+      <div class="auth-header__container">
+        <a href="index.html" class="auth-header__logo">
+          <img
+            src="./assets/images/minka-logo.png"
+            alt="Mink'a"
+            class="logo-image"
+          />
+        </a>
+      </div>
+    </header>
+
+    <main class="auth-layout">
+      <section class="auth-hero">
+        <div class="auth-hero__content">
+          <h1>Ingresa a Mink'a</h1>
+          <p>
+            Usa el usuario demo para probar la plataforma:
+            <strong>lucero.pipa@minka.com</strong> / <strong>Minka123</strong>.
+          </p>
+          <ul class="auth-hero__bullets">
+            <li>Inicio de sesión</li>
+            <li>Registro con validaciones</li>
+            <li>Recuperación de contraseña</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="auth-panel" aria-label="Autenticación">
+        <div class="auth-card" role="region" aria-live="polite">
+          <div
+            class="modal__tabs"
+            role="tablist"
+            aria-label="Selector de autenticación"
+          >
+            <button
+              class="modal__tab modal__tab--active"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              data-tab-target="login"
+              id="auth-tab-login"
+            >
+              Iniciar Sesión
+            </button>
+            <button
+              class="modal__tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-tab-target="register"
+              id="auth-tab-register"
+            >
+              Crear Cuenta
+            </button>
+            <button
+              class="modal__tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-tab-target="recovery"
+              id="auth-tab-recovery"
+            >
+              Recuperar
+            </button>
+          </div>
+          <p class="auth-card__subtitle">
+            Valida tus datos y te redirigiremos al perfil demo.
+          </p>
+
+          <form
+            class="auth-form"
+            data-form="login"
+            novalidate
+            aria-labelledby="auth-tab-login"
+          >
+            <div class="form__group">
+              <label for="login-email">Correo electrónico</label>
+              <input
+                type="email"
+                id="login-email"
+                name="email"
+                required
+                placeholder="tu@correo.com"
+              />
+              <p class="form__error" data-error-for="login-email"></p>
+            </div>
+            <div class="form__group">
+              <label for="login-password">Contraseña</label>
+              <input
+                type="password"
+                id="login-password"
+                name="password"
+                required
+                minlength="8"
+              />
+              <p class="form__error" data-error-for="login-password"></p>
+            </div>
+            <div class="form__row">
+              <label class="form__checkbox">
+                <input type="checkbox" name="remember" />
+                <span>Mantener sesión activa</span>
+              </label>
+              <button
+                type="button"
+                class="form__link"
+                data-switch-tab="recovery"
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
+            </div>
+            <p class="form__hint">
+              Usuario demo: lucero.pipa@minka.com · Minka123
+            </p>
+            <button type="submit" class="btn btn-primary btn-large">
+              Ingresar
+            </button>
+          </form>
+
+          <form
+            class="auth-form is-hidden"
+            data-form="register"
+            novalidate
+            aria-labelledby="auth-tab-register"
+          >
+            <div class="form__group">
+              <label for="register-name">Nombre completo</label>
+              <input
+                type="text"
+                id="register-name"
+                name="name"
+                required
+                minlength="3"
+                placeholder="Tu nombre"
+              />
+              <p class="form__error" data-error-for="register-name"></p>
+            </div>
+            <div class="form__group">
+              <label for="register-email">Correo electrónico o teléfono</label>
+              <input
+                type="text"
+                id="register-email"
+                name="email"
+                required
+                placeholder="tu@correo.com o +51 987 654 321"
+              />
+              <p class="form__error" data-error-for="register-email"></p>
+            </div>
+            <div class="form__group">
+              <label for="register-password"
+                >Contraseña (mínimo 8 caracteres)</label
+              >
+              <input
+                type="password"
+                id="register-password"
+                name="password"
+                required
+                minlength="8"
+              />
+              <div class="password-strength" id="password-strength">
+                <div class="password-strength__bar">
+                  <div class="password-strength__fill"></div>
+                </div>
+                <span class="password-strength__label"></span>
+              </div>
+              <p class="form__error" data-error-for="register-password"></p>
+            </div>
+            <div class="form__group">
+              <label for="register-confirm">Confirmar contraseña</label>
+              <input
+                type="password"
+                id="register-confirm"
+                name="confirm"
+                required
+                minlength="8"
+              />
+              <p class="form__error" data-error-for="register-confirm"></p>
+            </div>
+            <label class="form__checkbox">
+              <input type="checkbox" name="terms" required />
+              <span>Acepto los Términos y la Política de Privacidad</span>
+            </label>
+            <button
+              type="submit"
+              class="btn btn-primary btn-large"
+              id="register-submit"
+              disabled
+            >
+              Crear Cuenta
+            </button>
+          </form>
+
+          <form
+            class="auth-form is-hidden"
+            data-form="recovery"
+            novalidate
+            aria-labelledby="auth-tab-recovery"
+          >
+            <div class="form__group">
+              <label for="recovery-email">Correo electrónico</label>
+              <input
+                type="email"
+                id="recovery-email"
+                name="email"
+                required
+                placeholder="tu@correo.com"
+              />
+              <p class="form__error" data-error-for="recovery-email"></p>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large">
+              Enviar instrucciones
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal OTP para verificación -->
+    <div class="modal-overlay" id="otp-modal" hidden>
+      <div
+        class="modal-dialog"
+        role="dialog"
+        aria-labelledby="otp-title"
+        aria-modal="true"
+      >
+        <div class="modal-header">
+          <h2 id="otp-title">Verificación de Cuenta</h2>
+        </div>
+        <div class="modal-body">
+          <p>
+            Hemos enviado un código de verificación a
+            <strong id="otp-destination"></strong>
+          </p>
+          <p class="form__hint">
+            Ingresa el código de 6 dígitos para verificar tu cuenta.
+          </p>
+          <div class="form__group">
+            <label for="otp-input">Código OTP</label>
+            <input
+              type="text"
+              id="otp-input"
+              maxlength="6"
+              pattern="[0-9]{6}"
+              placeholder="123456"
+              autocomplete="off"
+            />
+            <p class="form__error" id="otp-error"></p>
+          </div>
+          <p class="form__hint">Código de prueba: <strong>123456</strong></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="otp-cancel">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-primary" id="otp-verify">
+            Verificar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./assets/scripts/auth.js" defer></script>
+  </body>
+</html>
