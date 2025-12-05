@@ -68,18 +68,28 @@ const PUBLISHED_KEY = "minka_published_items";
 const state = {
   query: "",
   category: "",
+  exclude: "",
   minRating: 0,
   maxDistance: 15,
   sort: "relevance",
 };
 
 const STORAGE_KEY = "minka_search_filters";
+const SAVED_SEARCHES_KEY = "minka_saved_searches";
+const FAVORITES_KEY = "minka_favorites";
+const HISTORY_KEY = "minka_search_history";
 
 const el = {
   results: document.getElementById("results-list"),
   count: document.getElementById("results-count"),
   query: document.getElementById("search-query"),
   searchBtn: document.getElementById("search-btn"),
+  saveSearchBtn: document.getElementById("save-search-btn"), // T30
+  savedSearchesContainer: document.getElementById("saved-searches-container"), // T30
+  savedSearchesList: document.getElementById("saved-searches-list"), // T30
+  historyList: document.getElementById("search-history-list"), // T30
+  category: document.getElementById("filter-category"),
+  exclude: document.getElementById("filter-exclude"), // T30
   category: document.getElementById("filter-category"),
   rating: document.getElementById("filter-rating"),
   ratingValue: document.getElementById("filter-rating-value"),
@@ -90,16 +100,32 @@ const el = {
 };
 
 restoreFilters();
+loadSavedSearches(); // T30
+loadSearchHistory(); // T30
 attachEvents();
 render();
 
 function attachEvents() {
   el.searchBtn.addEventListener("click", () => {
     state.query = el.query.value.trim().toLowerCase();
+    addToHistory(state.query); // T30
     render();
     persist();
   });
 
+  // T30 - Guardar Búsqueda
+  if (el.saveSearchBtn) {
+    el.saveSearchBtn.addEventListener("click", saveCurrentSearch);
+  }
+
+  // T30 - Exclusiones
+  if (el.exclude) {
+    el.exclude.addEventListener("change", (e) => {
+      state.exclude = e.target.value;
+      render();
+      persist();
+    });
+  }
   el.query.addEventListener("keyup", (e) => {
     if (e.key === "Enter") {
       state.query = el.query.value.trim().toLowerCase();
@@ -167,6 +193,7 @@ function persist() {
 function syncUI() {
   el.query.value = state.query;
   el.category.value = state.category;
+  if (el.exclude) el.exclude.value = state.exclude || "";//31
   el.rating.value = state.minRating;
   el.ratingValue.textContent = state.minRating;
   el.distance.value = state.maxDistance;
@@ -177,11 +204,21 @@ function syncUI() {
 function render() {
   const localItems = JSON.parse(localStorage.getItem(PUBLISHED_KEY) || "[]");
   const allItems = [...localItems, ...mockItems];
+  const favorites = getFavorites(); // T30
 
   const results = allItems
-    .filter((item) =>
-      state.category ? item.category === state.category : true
-    )
+    .filter((item) => {
+      // T30 - Filtro de Favoritos
+      if (state.category === "favorites") {
+        return favorites.includes(item.id);
+      }
+      return state.category ? item.category === state.category : true;
+    })
+    .filter((item) => {
+      // T30 - Exclusiones (HU34)
+      if (state.exclude && item.category === state.exclude) return false;
+      return true;
+    })
     .filter((item) => item.rating >= state.minRating)
     .filter((item) => item.distanceKm <= state.maxDistance)
     .filter((item) => {
@@ -201,18 +238,36 @@ function render() {
 
   el.count.textContent = `${sorted.length} resultados`;
   el.results.innerHTML = sorted
-    .map(
-      (item) => `
+.map((item) => {
+      const isFav = favorites.includes(item.id);
+
+      let displayDist = item.distanceKm;
+      if (state.userLocation) {
+        const offset = (state.userLocation.length % 3) + 1;
+        displayDist = Math.abs(item.distanceKm - offset).toFixed(1);
+        if (displayDist == 0) displayDist = 0.5;
+      }
+
+      return `
         <article class="result-card" aria-label="${item.title}">
-          <img src="${item.images ? item.images[0] : item.image}" alt="${
+          <div style="position: relative;">
+            <img src="${item.images ? item.images[0] : item.image}" alt="${
         item.title
       }" class="result-card__img" loading="lazy" style="object-fit: cover;" />
+            <button class="item-card__favorite ${
+              isFav ? "active" : ""
+            }" onclick="toggleFavorite('${item.id}')" aria-label="${
+        isFav ? "Quitar de favoritos" : "Añadir a favoritos"
+      }">
+              <i class="fas fa-heart"></i>
+            </button>
+          </div>
           <div class="result-card__body">
             <h3 class="result-card__title">${item.title}</h3>
             <div class="result-card__meta">
               <span class="badge">${item.category}</span>
               <span>${item.location}</span>
-              <span>${item.distanceKm} km</span>
+              <span>${displayDist} km</span>
               <span><i class="fa-solid fa-star star-rating"></i> ${item.rating.toFixed(
                 1
               )}</span>
@@ -230,7 +285,110 @@ function render() {
             </div>
           </div>
         </article>
-      `
+      `;
+    })
+    .join("");
+}
+// T30 - Funciones de Favoritos (HU33)
+function getFavorites() {
+  return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+}
+
+window.toggleFavorite = (id) => {
+  const favorites = getFavorites();
+  const index = favorites.indexOf(id);
+  if (index === -1) {
+    favorites.push(id);
+  } else {
+    favorites.splice(index, 1);
+  }
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  render();
+};
+
+// T30 - Funciones de Búsquedas Guardadas (HU32)
+function saveCurrentSearch() {
+  const searches = JSON.parse(localStorage.getItem(SAVED_SEARCHES_KEY) || "[]");
+  const newSearch = {
+    id: Date.now(),
+    query: state.query,
+    category: state.category,
+    exclude: state.exclude,
+    timestamp: new Date().toISOString(),
+  };
+
+  // Evitar duplicados exactos
+  const exists = searches.some(
+    (s) => s.query === newSearch.query && s.category === newSearch.category
+  );
+  if (!exists) {
+    searches.unshift(newSearch);
+    localStorage.setItem(SAVED_SEARCHES_KEY, JSON.stringify(searches));
+    loadSavedSearches();
+    alert("Búsqueda guardada correctamente");
+  }
+}
+
+function loadSavedSearches() {
+  if (!el.savedSearchesContainer || !el.savedSearchesList) return;
+
+  const searches = JSON.parse(localStorage.getItem(SAVED_SEARCHES_KEY) || "[]");
+  if (searches.length === 0) {
+    el.savedSearchesContainer.classList.add("hidden");
+    return;
+  }
+
+  el.savedSearchesContainer.classList.remove("hidden");
+  el.savedSearchesList.innerHTML = searches
+    .map(
+      (s) => `
+    <li class="saved-search-tag" onclick="applySavedSearch(${s.id})">
+      <span>${s.query || "Todo"} ${s.category ? `(${s.category})` : ""}</span>
+      <span class="saved-search-remove" onclick="removeSavedSearch(event, ${
+        s.id
+      })">&times;</span>
+    </li>
+  `
     )
+    .join("");
+}
+
+window.applySavedSearch = (id) => {
+  const searches = JSON.parse(localStorage.getItem(SAVED_SEARCHES_KEY) || "[]");
+  const search = searches.find((s) => s.id === id);
+  if (search) {
+    state.query = search.query;
+    state.category = search.category;
+    state.exclude = search.exclude || "";
+    syncUI();
+    render();
+  }
+};
+
+window.removeSavedSearch = (e, id) => {
+  e.stopPropagation();
+  const searches = JSON.parse(localStorage.getItem(SAVED_SEARCHES_KEY) || "[]");
+  const filtered = searches.filter((s) => s.id !== id);
+  localStorage.setItem(SAVED_SEARCHES_KEY, JSON.stringify(filtered));
+  loadSavedSearches();
+};
+
+// T30 - Historial y Sugerencias (HU35)
+function addToHistory(query) {
+  if (!query) return;
+  const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+  if (!history.includes(query)) {
+    history.unshift(query);
+    if (history.length > 10) history.pop(); // Mantener solo últimos 10
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    loadSearchHistory();
+  }
+}
+
+function loadSearchHistory() {
+  if (!el.historyList) return;
+  const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+  el.historyList.innerHTML = history
+    .map((term) => `<option value="${term}">`)
     .join("");
 }
