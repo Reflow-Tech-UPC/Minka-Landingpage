@@ -1,4 +1,5 @@
 // T12 - Leonardo Chavez: Lógica de autenticación en página dedicada (simulada)
+// T28 - Leonardo Chavez: Login social y Auth Avanzado
 const demoUser = {
   email: "lucero.pipa@minka.com",
   password: "Minka123",
@@ -240,6 +241,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (userData) {
         saveSession(userData);
+
+        // T28 - Leonardo Chavez: Guardar consentimiento legal (HU22)
+        const consent = {
+          termsVersion: "v1.2",
+          privacyVersion: "v1.0",
+          timestamp: new Date().toISOString(),
+          method: "standard_registration",
+        };
+        localStorage.setItem("minka_legal_consent", JSON.stringify(consent));
+
         hideOTPModal();
 
         // Mostrar mensaje de éxito
@@ -495,3 +506,34 @@ authForms.forEach((form) => {
 
 // Seleccionar tab inicial
 switchAuthTab("login");
+
+// T28 - Leonardo Chavez: Simulación de Social Login (HU21)
+window.simulateSocialLogin = (provider) => {
+  const confirmLogin = confirm(
+    `Mink'a dice:\n\n¿Deseas continuar usando tu cuenta de ${provider}?`
+  );
+
+  if (confirmLogin) {
+    // Simular proceso de autenticación
+    const socialUser = {
+      ...demoUser,
+      name: `Usuario ${provider}`,
+      email: `usuario.${provider.toLowerCase()}@ejemplo.com`,
+      provider: provider,
+    };
+
+    saveSession(socialUser);
+
+    // Simular registro de consentimiento (HU22)
+    const consent = {
+      termsVersion: "v1.2",
+      privacyVersion: "v1.0",
+      timestamp: new Date().toISOString(),
+      method: "social_login",
+    };
+    localStorage.setItem("minka_legal_consent", JSON.stringify(consent));
+
+    alert(`¡Bienvenido! Has iniciado sesión correctamente con ${provider}.`);
+    window.location.href = "home.html";
+  }
+};
