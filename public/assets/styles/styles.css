@@ -1,3 +1,57 @@
+/* T21 - Andy Salcedo: Estilos globales y branding */
+.form__success {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Fuentes locales */
+@font-face {
+  font-family: "Inter";
+  src: local("Inter"),
+    url("../fonts/Inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: local("Inter Italic"), local("Inter-Italic"),
+    url("../fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf")
+      format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: local("Nunito"),
+    url("../fonts/Nunito/Nunito-VariableFont_wght.ttf") format("truetype");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: local("Nunito Italic"), local("Nunito-Italic"),
+    url("../fonts/Nunito/Nunito-Italic-VariableFont_wght.ttf")
+      format("truetype");
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pacifico";
+  src: local("Pacifico"),
+    url("../fonts/Pacifico/Pacifico-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* T10 - Leonardo Chavez: Tokens y variables base */
 :root {
   --color-primary: #2ecc71;
@@ -6,6 +60,9 @@
   --color-secondary: #34495e;
   --color-secondary-dark: #2c3e50;
   --color-accent: #f1c40f;
+  --color-success: #27ae60;
+  --color-error: #e74c3c;
+  --color-warning: #f39c12;
   --color-white: #ffffff;
   --color-gray-50: #ecf0f1;
   --color-gray-100: #bdc3c7;
@@ -49,6 +106,33 @@ body {
   background-color: var(--color-white);
 }
 
+a {
+  color: var(--color-secondary-dark);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--color-primary);
+}
+
+:focus-visible {
+  outline: 3px solid rgba(46, 204, 113, 0.4);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 /* T10 - Leonardo Chavez: Iconografia generica */
 .icon {
   display: inline-block;
@@ -71,6 +155,37 @@ body {
 
 .logo-image--footer {
   height: 56px;
+}
+
+.nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  padding: 2px 6px;
+  margin-left: var(--space-8);
+  border-radius: 999px;
+  background: var(--color-error);
+  color: var(--color-white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.nav-badge.is-hidden {
+  display: none;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 4px 10px;
+  border-radius: var(--space-12);
+  background: rgba(46, 204, 113, 0.12);
+  color: var(--color-secondary-dark);
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 /* T10 - Leonardo Chavez: Tipografia base */
@@ -104,6 +219,38 @@ p {
   font-size: 1rem;
   color: var(--color-gray-600);
   margin-bottom: var(--space-16);
+}
+
+label {
+  font-weight: 600;
+  color: var(--color-secondary-dark);
+  display: inline-block;
+  margin-bottom: var(--space-8);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: var(--space-12);
+  border: 1.5px solid var(--color-gray-100);
+  border-radius: var(--space-10, 10px);
+  font: inherit;
+  color: var(--color-gray-900);
+  background: var(--color-white);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.18);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-gray-300);
 }
 
 .container {
@@ -157,8 +304,18 @@ p {
 }
 
 .header__cta {
-  display: none;
+  display: inline-flex;
 }
+
+.header__menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+  cursor: pointer;
+}
+
 /* T01 - Andy Salcedo: Botones compartidos hero */
 .btn {
   display: inline-flex;
@@ -173,6 +330,10 @@ p {
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+}
+
+.btn i {
+  margin-right: var(--space-8);
 }
 
 .btn-primary {
@@ -200,6 +361,18 @@ p {
 
 .btn-secondary:hover {
   background: rgba(46, 204, 113, 0.1);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-gray-700);
+  border: 1.5px solid var(--color-gray-300);
+}
+
+.btn-outline:hover {
+  background: var(--color-gray-50);
+  border-color: var(--color-gray-400);
+  color: var(--color-gray-900);
 }
 
 .btn-large {
@@ -323,6 +496,7 @@ p {
 .step-card__description {
   font-size: 0.95rem;
 }
+
 /* T04 - Lucero Pipa: Sección beneficios */
 .benefits {
   padding: var(--space-64) 0;
@@ -375,6 +549,7 @@ p {
   color: var(--color-gray-600);
   line-height: 1.5;
 }
+
 /* T06 - Miguel Sanca: Sección impacto */
 .impact {
   padding: var(--space-64) 0;
@@ -418,6 +593,7 @@ p {
   font-weight: 500;
   color: var(--color-white);
 }
+
 /* T05 - Lucero Pipa: Sección testimonios */
 .testimonials {
   padding: var(--space-64) 0;
@@ -615,15 +791,6 @@ p {
   transform: translateY(-2px);
 }
 
-/* T02 - Ronel Rojas: Toggle de menú */
-.header__menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: var(--color-secondary);
-  cursor: pointer;
-}
 /* T08 - Leonardo Chavez: Breakpoint tablet/desktop */
 @media (min-width: 769px) {
   .header__cta {
@@ -724,5 +891,447 @@ p {
     flex-direction: column;
     gap: var(--space-16);
     text-align: center;
+  }
+}
+
+.form__hint {
+  font-size: 0.9rem;
+  color: var(--color-gray-600);
+}
+
+/* T13 - Lucero Pipa: Perfil de usuario */
+.profile {
+  padding: var(--space-64) 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f8f6 100%);
+}
+
+.profile__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-32);
+  align-items: start;
+}
+
+.profile-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-50);
+  border-radius: var(--space-16);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.profile-card__header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-16);
+  align-items: center;
+}
+
+.profile-card__avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.profile-card__avatar img {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.profile-card__meta {
+  margin: 0;
+  color: var(--color-gray-600);
+  font-size: 0.95rem;
+}
+
+.profile-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: var(--space-8);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+  background: var(--color-gray-50);
+}
+
+.profile-card__badge--verified {
+  color: var(--color-primary);
+  background: rgba(46, 204, 113, 0.12);
+}
+
+.profile-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.profile-progress__top {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+
+.profile-progress__bar {
+  width: 100%;
+  height: 12px;
+  background: var(--color-gray-50);
+  border-radius: var(--space-12);
+  overflow: hidden;
+}
+
+.profile-progress__fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
+  border-radius: var(--space-12);
+  transition: width 0.3s ease;
+}
+
+.profile-card__actions {
+  display: flex;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+}
+
+.profile-form {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-50);
+  border-radius: var(--space-16);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.profile-form__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-12);
+  color: var(--color-gray-600);
+}
+
+.btn-small {
+  padding: var(--space-8) var(--space-16);
+  font-size: 0.9rem;
+}
+
+.identity-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.identity-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+.identity-step__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(46, 204, 113, 0.12);
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.identity-step__title {
+  margin: 0 0 4px 0;
+}
+
+.identity-step__text {
+  margin: 0;
+  color: var(--color-gray-600);
+}
+
+.identity-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-top: var(--space-8);
+}
+
+/* T02 - Ronel Rojas: Toggle de menú */
+.header__menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+  cursor: pointer;
+}
+/* T08 - Leonardo Chavez: Breakpoint tablet/desktop */
+@media (min-width: 769px) {
+  .header__cta {
+    display: inline-flex;
+  }
+}
+
+/* T08 - Leonardo Chavez: Breakpoint mobile */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  .header__container {
+    padding: var(--space-16) 16px;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__nav.header__nav--open {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-24) 0;
+  }
+
+  .header__menu-toggle {
+    display: block;
+  }
+
+  .hero {
+    padding: var(--space-48) 0;
+  }
+
+  .hero__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+  }
+
+  .hero__title {
+    font-size: 2.25rem;
+    text-align: center;
+  }
+
+  .hero__subtitle {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .hero__cta-group {
+    flex-direction: column;
+  }
+
+  .modal__content {
+    padding: var(--space-24);
+    max-width: 100%;
+  }
+
+  .form__row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card__header {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .profile-card__info {
+    align-items: center;
+  }
+
+  .profile-form__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .steps-grid,
+  .benefits-grid,
+  .stats-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
+  }
+
+  .impact {
+    padding: var(--space-48) 0;
+  }
+
+  .testimonials {
+    padding: var(--space-48) 0;
+  }
+
+  .cta-final {
+    padding: var(--space-48) 0;
+  }
+
+  .cta-final__title {
+    font-size: 2rem;
+  }
+
+  .footer__content {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    gap: var(--space-16);
+    text-align: center;
+  }
+}
+
+/* T19 - Andy Salcedo: Navbar de la aplicaci�n (Moved from home.css) */
+.auth-header {
+  border-bottom: 1px solid var(--color-gray-50);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.auth-header__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-12) 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+}
+
+.auth-header__logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-image {
+  height: 36px;
+  width: auto;
+}
+
+.auth-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.auth-header__link {
+  position: relative;
+  text-decoration: none;
+  color: var(--color-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.auth-header__link:hover {
+  color: var(--color-primary);
+  background: #f6f8f6;
+}
+
+.auth-header__link[aria-current="page"],
+.auth-header__link--active {
+  color: var(--color-primary);
+  background: rgba(46, 204, 113, 0.12);
+  font-weight: 700;
+}
+
+.nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.nav-badge:empty {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .auth-header__nav {
+    gap: 4px;
+  }
+
+  .auth-header__link {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-header__container {
+    padding: var(--space-8) 16px;
+    flex-wrap: wrap;
+  }
+
+  .auth-header__nav {
+    width: 100%;
+    justify-content: space-between;
+    order: 3;
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-gray-50);
+  }
+
+  .auth-header__link {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+
+  .logo-image {
+    height: 30px;
   }
 }

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mink'a - Home</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./assets/styles/styles.css" />
+    <link rel="stylesheet" href="./assets/styles/home.css" />
+  </head>
+  <body class="home-page">
+    <!-- T19 - Andy Salcedo: Header de navegación principal -->
+    <header class="auth-header">
+      <div class="auth-header__container">
+        <a href="home.html" class="auth-header__logo" aria-label="Ir a inicio">
+          <img
+            src="./assets/images/minka-logo.png"
+            alt="Mink'a"
+            class="logo-image"
+          />
+        </a>
+        <nav class="auth-header__nav" aria-label="Navegación principal">
+          <a href="home.html" class="auth-header__link" aria-current="page"
+            >Inicio</a
+          >
+          <a href="busqueda.html" class="auth-header__link">Buscar</a>
+          <a href="publicar.html" class="auth-header__link">Publicar</a>
+          <a href="chat.html" class="auth-header__link">Chats</a>
+          <a href="notificaciones.html" class="auth-header__link">
+            Notificaciones
+            <span
+              class="nav-badge"
+              data-unread-badge
+              aria-label="notificaciones no leídas"
+              >0</span
+            >
+          </a>
+          <a href="perfil.html" class="auth-header__link">Perfil</a>
+          <a href="auth.html" class="auth-header__link">Salir</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="home-main">
+      <!-- T19 - Andy Salcedo: Hero bienvenida -->
+      <section class="home-hero">
+        <div class="container home-hero__grid">
+          <div class="home-hero__content">
+            <p class="home-hero__eyebrow">Bienvenido de nuevo</p>
+            <h1 id="home-username">Hola, Mink'a user</h1>
+            <p class="home-hero__subtitle">
+              Explora trueques populares, publica algo nuevo o revisa tus chats
+              pendientes. Todo está listo para que sigas sumando impacto.
+            </p>
+            <div class="home-search">
+              <form
+                class="home-search__form"
+                action="busqueda.html"
+                method="get"
+              >
+                <svg
+                  class="home-search__icon"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input
+                  type="text"
+                  class="home-search__input"
+                  name="q"
+                  placeholder="Buscar objetos, categorías, ubicaciones..."
+                  aria-label="Buscar trueques"
+                />
+                <button type="submit" class="home-search__button">
+                  Buscar
+                </button>
+              </form>
+              <a class="home-search__publish" href="publicar.html">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 5v14M5 12h14"></path>
+                </svg>
+                <span>Publicar</span>
+              </a>
+            </div>
+          </div>
+          <div class="home-hero__card" aria-label="Tu progreso">
+            <h3>Tu impacto</h3>
+            <div class="impact-stats">
+              <div class="impact-stat">
+                <div class="impact-stat__icon impact-stat__icon--primary">
+                  <i class="fas fa-leaf"></i>
+                </div>
+                <div class="impact-stat__content">
+                  <span class="impact-stat__value" id="eco-points">250</span>
+                  <span class="impact-stat__label">Eco-puntos</span>
+                </div>
+              </div>
+              <div class="impact-stat">
+                <div class="impact-stat__icon impact-stat__icon--success">
+                  <i class="fas fa-sync-alt"></i>
+                </div>
+                <div class="impact-stat__content">
+                  <span class="impact-stat__value" id="exchanges">8</span>
+                  <span class="impact-stat__label">Intercambios</span>
+                </div>
+              </div>
+              <div class="impact-stat">
+                <div class="impact-stat__icon impact-stat__icon--warning">
+                  <i class="fas fa-award"></i>
+                </div>
+                <div class="impact-stat__content">
+                  <span class="impact-stat__value" id="reputation">4.8</span>
+                  <span class="impact-stat__label">Reputación</span>
+                </div>
+              </div>
+              <div class="impact-stat">
+                <div class="impact-stat__icon impact-stat__icon--info">
+                  <i class="fas fa-cloud"></i>
+                </div>
+                <div class="impact-stat__content">
+                  <span class="impact-stat__value" id="co2-saved">12.5</span>
+                  <span class="impact-stat__label">kg CO₂ ahorrado</span>
+                </div>
+              </div>
+            </div>
+            <div class="impact-progress">
+              <div class="impact-progress__header">
+                <span class="impact-progress__label">Nivel: Eco-Guerrero</span>
+                <span class="impact-progress__count">250 / 500 pts</span>
+              </div>
+              <div class="impact-progress__bar">
+                <div class="impact-progress__fill" style="width: 50%"></div>
+              </div>
+            </div>
+            <a href="perfil.html" class="impact-link">
+              Ver mi perfil completo
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- T19 - Andy Salcedo: Populares -->
+      <section class="popular" aria-label="Publicaciones populares">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-header__title">Publicaciones populares</h2>
+            <p class="section-header__subtitle">
+              Basadas en reputación, cercanía y actividad reciente. Datos
+              simulados para la demo.
+            </p>
+          </div>
+          <div class="popular-grid" id="popular-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- T19 - Andy Salcedo: Footer minimalista -->
+    <footer class="home-footer">
+      <div class="container home-footer__content">
+        <div class="home-footer__brand">
+          <img
+            src="./assets/images/minka-logo-negativo-blanco.png"
+            alt="Mink'a"
+            class="home-footer__logo"
+          />
+          <p>&copy; 2025 Mink'a. Trueque con propósito.</p>
+        </div>
+        <div class="home-footer__links">
+          <a href="index.html">Acerca de</a>
+          <a href="index.html#impacto">Impacto</a>
+          <a href="index.html">Términos</a>
+          <a href="index.html">Privacidad</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./assets/scripts/notif-badge.js" defer></script>
+    <script src="./assets/scripts/home.js"></script>
+  </body>
+</html>

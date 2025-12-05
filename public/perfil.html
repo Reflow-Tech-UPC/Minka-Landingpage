@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mink'a - Perfil</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./assets/styles/styles.css" />
+    <link rel="stylesheet" href="./assets/styles/profile.css" />
+  </head>
+  <body class="profile-page">
+    <!-- T13 - Lucero Pipa: Header de navegación principal -->
+    <header class="auth-header">
+      <div class="auth-header__container">
+        <a href="home.html" class="auth-header__logo" aria-label="Ir a inicio">
+          <img
+            src="./assets/images/minka-logo.png"
+            alt="Mink'a"
+            class="logo-image"
+          />
+        </a>
+        <nav class="auth-header__nav" aria-label="Navegación principal">
+          <a href="home.html" class="auth-header__link">Inicio</a>
+          <a href="busqueda.html" class="auth-header__link">Buscar</a>
+          <a href="publicar.html" class="auth-header__link">Publicar</a>
+          <a href="chat.html" class="auth-header__link">Chats</a>
+          <a href="notificaciones.html" class="auth-header__link">
+            Notificaciones
+            <span
+              class="nav-badge"
+              data-unread-badge
+              aria-label="notificaciones no leídas"
+              >0</span
+            >
+          </a>
+          <a href="perfil.html" class="auth-header__link" aria-current="page"
+            >Perfil</a
+          >
+          <a href="auth.html" class="auth-header__link">Salir</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="profile-page__main">
+      <section class="profile">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-header__title">Tu Perfil</h2>
+            <p class="section-header__subtitle">
+              Completa tus datos, sube tu foto y verifica tu identidad para
+              aumentar la confianza.
+            </p>
+          </div>
+          <div class="profile__grid">
+            <div class="profile-left-column">
+              <article class="profile-card" aria-labelledby="perfil-resumen">
+                <div class="profile-card__header">
+                  <div class="profile-card__avatar">
+                    <img
+                      src="https://i.pravatar.cc/200?u=minka-user"
+                      alt="Foto de perfil"
+                      id="profile-photo-preview"
+                    />
+                    <input
+                      type="file"
+                      id="profile-photo-input"
+                      accept="image/*"
+                      hidden
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-secondary btn-small"
+                      data-photo-upload
+                    >
+                      Subir nueva foto
+                    </button>
+                  </div>
+                  <div class="profile-card__info">
+                    <h3 id="perfil-resumen">Usuario Demo</h3>
+                    <p class="profile-card__meta" id="perfil-email">
+                      demo@minka.com
+                    </p>
+                    <p class="profile-card__meta" id="perfil-telefono">
+                      +51 000 000 000
+                    </p>
+                    <p class="profile-card__meta" id="perfil-ubicacion">
+                      Lima, Perú
+                    </p>
+                    <span class="profile-card__badge" id="perfil-verificacion"
+                      >Verificación pendiente</span
+                    >
+                  </div>
+                </div>
+                <div class="profile-progress" aria-label="Progreso de perfil">
+                  <div class="profile-progress__top">
+                    <span>Completitud</span>
+                    <span id="profile-progress-value">60%</span>
+                  </div>
+                  <div
+                    class="profile-progress__bar"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="60"
+                  >
+                    <div
+                      class="profile-progress__fill"
+                      style="width: 60%"
+                    ></div>
+                  </div>
+                </div>
+                <div class="profile-card__actions">
+                  <button
+                    type="button"
+                    class="btn btn-outline"
+                    data-open-modal="identity"
+                  >
+                    <i class="fas fa-shield-alt"></i>
+                    Verificar identidad
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-save-profile
+                  >
+                    <i class="fas fa-save"></i>
+                    Actualizar perfil
+                  </button>
+                </div>
+              </article>
+
+              <!-- T14 - Ronel Rojas: Listado de publicaciones del usuario -->
+              <section class="profile-items" aria-labelledby="my-items-title">
+                <h3 id="my-items-title" class="profile-items__title">
+                  Mis Publicaciones
+                </h3>
+                <div id="my-items-list" class="profile-items__list">
+                  <p class="form__hint">No tienes publicaciones activas.</p>
+                </div>
+              </section>
+            </div>
+
+            <form class="profile-form" id="profile-form" novalidate>
+              <div class="form__group">
+                <label for="profile-name">Nombre completo</label>
+                <input
+                  type="text"
+                  id="profile-name"
+                  name="name"
+                  value="Usuario Demo"
+                  required
+                />
+                <p class="form__error" data-error-for="profile-name"></p>
+              </div>
+              <div class="form__group">
+                <label for="profile-email">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="profile-email"
+                  name="email"
+                  value="demo@minka.com"
+                  required
+                />
+                <p class="form__error" data-error-for="profile-email"></p>
+              </div>
+              <div class="form__group">
+                <label for="profile-phone">Teléfono</label>
+                <input
+                  type="tel"
+                  id="profile-phone"
+                  name="phone"
+                  value="+51 000 000 000"
+                  required
+                />
+                <p class="form__error" data-error-for="profile-phone"></p>
+              </div>
+              <div class="form__group">
+                <label for="profile-location"
+                  >Distrito / Ciudad <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="profile-location"
+                  name="location"
+                  placeholder="Ej: Miraflores, Lima"
+                  required
+                />
+                <p class="form__error" data-error-for="profile-location"></p>
+                <small class="form__hint"
+                  >Campo obligatorio para guardar cambios</small
+                >
+              </div>
+              <div class="form__group">
+                <label for="profile-bio">Descripción breve (opcional)</label>
+                <textarea
+                  id="profile-bio"
+                  name="bio"
+                  rows="4"
+                  maxlength="150"
+                  placeholder="Cuenta algo sobre tus intereses de trueque (máximo 150 caracteres)"
+                ></textarea>
+                <div class="form__char-count">
+                  <span id="bio-char-count">0</span> / 150 caracteres
+                </div>
+                <p class="form__error" data-error-for="profile-bio"></p>
+              </div>
+              <div class="profile-form__footer">
+                <small class="form__hint">
+                  <i class="fas fa-info-circle"></i>
+                  Los datos ayudan a mejorar tu reputación y coincidencias.
+                </small>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- T13 - Lucero Pipa: Modal de verificación de identidad (simulada) -->
+    <section
+      class="modal"
+      id="identity-modal"
+      aria-hidden="true"
+      role="dialog"
+      aria-labelledby="identity-modal-title"
+    >
+      <div class="modal__overlay" data-close-modal></div>
+      <div class="modal__content" role="document">
+        <button
+          class="modal__close"
+          type="button"
+          aria-label="Cerrar"
+          data-close-modal
+        >
+          x
+        </button>
+        <div class="modal__header">
+          <h3 class="modal__title" id="identity-modal-title">
+            Verificación de Identidad
+          </h3>
+          <p class="modal__subtitle">
+            Simula la captura de selfie y documento. Este flujo es una maqueta
+            sin integración real.
+          </p>
+        </div>
+        <div class="identity-steps">
+          <div class="identity-step">
+            <div class="identity-step__icon" aria-hidden="true">1</div>
+            <div>
+              <h4 class="identity-step__title">Selfie en vivo</h4>
+              <p class="identity-step__text">
+                Activa tu cámara y asegura buena iluminación.
+              </p>
+            </div>
+          </div>
+          <div class="identity-step">
+            <div class="identity-step__icon" aria-hidden="true">2</div>
+            <div>
+              <h4 class="identity-step__title">Documento de identidad</h4>
+              <p class="identity-step__text">
+                Toma foto del DNI/Pasaporte con datos legibles.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="identity-actions">
+          <button type="button" class="btn btn-primary" data-simulate-identity>
+            Simular selfie y DNI
+          </button>
+          <p class="form__error" data-identity-error></p>
+          <p class="form__success" data-identity-success hidden>
+            Verificación completada. Confianza +20%
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script src="./assets/scripts/notif-badge.js" defer></script>
+    <script src="./assets/scripts/profile.js" defer></script>
+  </body>
+</html>
