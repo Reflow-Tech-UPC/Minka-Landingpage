@@ -1,4 +1,5 @@
 // T13 - Lucero Pipa: Lógica de perfil e identidad simulada
+// T35 - Leonardo Chavez: Gestión de reputación
 const SESSION_KEY = "minka-demo-session";
 
 const demoUser = {
@@ -44,7 +45,7 @@ const profileSummary = {
   location: document.getElementById("perfil-ubicacion"),
 };
 const saveProfileButtons = document.querySelectorAll("[data-save-profile]");
-const simulateIdentityBtn = document.querySelector("[data-simulate-identity]");
+// const simulateIdentityBtn = document.querySelector("[data-simulate-identity]"); // Removed in favor of data-verify-action
 const identityError = document.querySelector("[data-identity-error]");
 const identitySuccess = document.querySelector("[data-identity-success]");
 const identityModal = document.getElementById("identity-modal");
@@ -59,6 +60,7 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const profileState = {
   photo: true,
   verified: false,
+  verificationLevel: "none", // none, basic, advanced
 };
 
 init();
@@ -67,6 +69,7 @@ function init() {
   loadSession();
   bindEvents();
   renderMyItems();
+  setupVerificationTabs(); // T29
 }
 
 function renderMyItems() {
@@ -96,6 +99,81 @@ function renderMyItems() {
   `
     )
     .join("");
+}
+
+// T29 - HU27: Lógica de Tabs y Verificación
+function setupVerificationTabs() {
+  const tabs = document.querySelectorAll("[data-verify-tab]");
+  const sections = {
+    basic: document.getElementById("verify-basic"),
+    advanced: document.getElementById("verify-advanced"),
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      // Update tabs
+      tabs.forEach((t) => t.classList.remove("modal__tab--active"));
+      tab.classList.add("modal__tab--active");
+
+      // Update sections
+      const target = tab.dataset.verifyTab;
+      Object.values(sections).forEach((s) => s.classList.add("hidden"));
+      if (sections[target]) sections[target].classList.remove("hidden");
+
+      // Clear messages
+      if (identityError) identityError.textContent = "";
+      if (identitySuccess) identitySuccess.hidden = true;
+    });
+  });
+
+  // Handle Verification Actions
+  document.querySelectorAll("[data-verify-action]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const level = e.target.dataset.verifyAction;
+      handleVerification(level);
+    });
+  });
+}
+
+function handleVerification(level) {
+  if (!identitySuccess || !identityError) return;
+
+  identityError.textContent = "";
+  identitySuccess.hidden = true;
+
+  // Simulación de proceso
+  const btn = document.querySelector(`[data-verify-action="${level}"]`);
+  const originalText = btn.textContent;
+  btn.textContent = "Procesando...";
+  btn.disabled = true;
+
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.disabled = false;
+
+    if (level === "basic") {
+      // HU27: Basic <= 5 mins (Simulated instant)
+      profileState.verified = true;
+      profileState.verificationLevel = "basic";
+      identitySuccess.textContent =
+        "✓ Teléfono verificado. Insignia 'Brote Verificado' otorgada.";
+    } else if (level === "advanced") {
+      // HU27: Advanced <= 24 hours (Simulated instant for demo)
+      profileState.verified = true;
+      profileState.verificationLevel = "advanced";
+      identitySuccess.textContent =
+        "✓ Documentos enviados. Insignia 'Raíz Verificada' otorgada.";
+    }
+
+    identitySuccess.hidden = false;
+    updateProfileProgress();
+
+    // Close modal after delay
+    setTimeout(() => {
+      toggleModalVisibility(identityModal, false);
+      identitySuccess.hidden = true;
+    }, 2000);
+  }, 1500);
 }
 
 const toggleModalVisibility = (modal, open) => {
@@ -232,8 +310,16 @@ const updateProfileProgress = () => {
   if (profileProgressValue) profileProgressValue.textContent = `${percent}%`;
 
   if (profileState.verified && profileBadge) {
-    profileBadge.textContent = "Identidad verificada";
-    profileBadge.classList.add("profile-card__badge--verified");
+    // T29 - Lucero Pipa: Niveles de verificación (HU27)
+    if (profileState.verificationLevel === "advanced") {
+      profileBadge.textContent = "Raíz Verificada";
+      profileBadge.classList.add("profile-card__badge--verified");
+      profileBadge.style.backgroundColor = "var(--color-primary-darker)";
+    } else {
+      profileBadge.textContent = "Brote Verificado";
+      profileBadge.classList.add("profile-card__badge--verified");
+      profileBadge.style.backgroundColor = ""; // Reset to default verified color
+    }
   }
 };
 
@@ -290,103 +376,213 @@ const hydrateProfileWithUser = (user) => {
   updateProfileProgress();
 };
 
-if (profilePhotoInput && profilePhotoPreview) {
-  const photoButtons = document.querySelectorAll("[data-photo-upload]");
-  photoButtons.forEach((btn) => {
-    btn.addEventListener("click", () => profilePhotoInput.click());
-  });
+function bindEvents() {
+  if (profilePhotoInput && profilePhotoPreview) {
+    const photoButtons = document.querySelectorAll("[data-photo-upload]");
+    photoButtons.forEach((btn) => {
+      btn.addEventListener("click", () => profilePhotoInput.click());
+    });
 
-  profilePhotoInput.addEventListener("change", () => {
-    const file = profilePhotoInput.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      profilePhotoPreview.src = event.target?.result;
-      profileState.photo = true;
-      updateProfileProgress();
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-if (profileInputs.length) {
-  profileInputs.forEach((input) => {
-    input.addEventListener("input", updateProfileProgress);
-  });
-}
-
-if (profileForm) {
-  profileForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const hasErrors = handleProfileValidation(profileForm);
-    if (!hasErrors) {
-      setFormSuccess(profileForm, "Perfil actualizado (simulado).");
-      const user = {
-        name: profileForm.name.value,
-        email: profileForm.email.value,
-        phone: profileForm.phone.value,
-        location: profileForm.location.value,
+    profilePhotoInput.addEventListener("change", () => {
+      const file = profilePhotoInput.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        profilePhotoPreview.src = event.target?.result;
+        profileState.photo = true;
+        updateProfileProgress();
       };
-      hydrateProfileWithUser(user);
-      try {
-        localStorage.setItem(SESSION_KEY, JSON.stringify(user));
-      } catch (error) {
-        console.warn("No se pudo persistir el perfil", error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (profileInputs.length) {
+    profileInputs.forEach((input) => {
+      input.addEventListener("input", updateProfileProgress);
+    });
+  }
+
+  if (profileForm) {
+    profileForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const hasErrors = handleProfileValidation(profileForm);
+      if (!hasErrors) {
+        setFormSuccess(profileForm, "Perfil actualizado (simulado).");
+        const user = {
+          name: profileForm.name.value,
+          email: profileForm.email.value,
+          phone: profileForm.phone.value,
+          location: profileForm.location.value,
+        };
+        hydrateProfileWithUser(user);
+        try {
+          localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+        } catch (error) {
+          console.warn("No se pudo persistir el perfil", error);
+        }
       }
-    }
+    });
+  }
+
+  if (saveProfileButtons.length && profileForm) {
+    saveProfileButtons.forEach((btn) => {
+      btn.addEventListener("click", () => profileForm.requestSubmit());
+    });
+  }
+
+  modalOpeners.forEach((opener) => {
+    opener.addEventListener("click", (event) => {
+      event.preventDefault();
+      const target = opener.dataset.openModal;
+      if (target === "identity") toggleModalVisibility(identityModal, true);
+    });
   });
-}
 
-if (saveProfileButtons.length && profileForm) {
-  saveProfileButtons.forEach((btn) => {
-    btn.addEventListener("click", () => profileForm.requestSubmit());
+  modalClosers.forEach((closer) => {
+    closer.addEventListener("click", () =>
+      toggleModalVisibility(identityModal, false)
+    );
   });
-}
 
-modalOpeners.forEach((opener) => {
-  opener.addEventListener("click", (event) => {
-    event.preventDefault();
-    const target = opener.dataset.openModal;
-    if (target === "identity") toggleModalVisibility(identityModal, true);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") toggleModalVisibility(identityModal, false);
   });
-});
 
-modalClosers.forEach((closer) => {
-  closer.addEventListener("click", () =>
-    toggleModalVisibility(identityModal, false)
-  );
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") toggleModalVisibility(identityModal, false);
-});
-
-if (simulateIdentityBtn) {
-  simulateIdentityBtn.addEventListener("click", () => {
-    if (identityError) identityError.textContent = "Procesando verificación...";
-    if (identitySuccess) identitySuccess.hidden = true;
-    simulateIdentityBtn.disabled = true;
-    setTimeout(() => {
-      if (identityError) identityError.textContent = "";
-      if (identitySuccess) {
-        identitySuccess.hidden = false;
-        identitySuccess.textContent = "Verificación completada. Confianza +20%";
-      }
-      profileState.verified = true;
-      updateProfileProgress();
-      toggleModalVisibility(identityModal, false);
-      simulateIdentityBtn.disabled = false;
-    }, 1000);
-  });
-}
-
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", () => {
-    clearSession();
-    window.location.href = "auth.html";
-  });
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      clearSession();
+      window.location.href = "auth.html";
+    });
+  }
 }
 
 const sessionUser = getSessionUser();
 hydrateProfileWithUser(sessionUser || demoUser);
 updateProfileProgress();
+
+// T35 - Gestión de Reputación (HU28)
+const mockReviews = [
+  {
+    id: 1,
+    author: "María González",
+    avatar: "./assets/images/items/default.jpg",
+    date: "Hace 2 días",
+    rating: 5,
+    content:
+      "Excelente vendedora, muy amable y el producto estaba en perfectas condiciones. Recomendada 100%.",
+    canAppeal: false,
+  },
+  {
+    id: 2,
+    author: "Juan Pérez",
+    avatar: "./assets/images/items/default.jpg",
+    date: "Hace 1 semana",
+    rating: 4,
+    content:
+      "Todo bien, aunque demoró un poco en responder los mensajes. El producto cumple con lo descrito.",
+    canAppeal: false,
+  },
+  {
+    id: 3,
+    author: "Carlos Ruiz",
+    avatar: "./assets/images/items/default.jpg",
+    date: "Hace 2 semanas",
+    rating: 1,
+    content:
+      "No se presentó al lugar acordado y no contestó mis llamadas. Pésima experiencia.",
+    canAppeal: true,
+  },
+];
+
+const reviewsList = document.getElementById("reviews-list");
+const appealModal = document.getElementById("appeal-modal");
+const appealForm = document.getElementById("appeal-form");
+const appealReviewIdInput = document.getElementById("appeal-review-id");
+const closeAppealModalBtns = document.querySelectorAll(
+  "[data-close-appeal-modal]"
+);
+
+function renderReviews() {
+  if (!reviewsList) return;
+
+  reviewsList.innerHTML = mockReviews
+    .map(
+      (review) => `
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-author">
+          <img src="${review.avatar}" alt="${
+        review.author
+      }" class="review-avatar">
+          <div class="review-meta">
+            <span class="review-name">${review.author}</span>
+            <span class="review-date">${review.date}</span>
+          </div>
+        </div>
+        <div class="review-rating">
+          ${Array(5)
+            .fill(0)
+            .map(
+              (_, i) =>
+                `<i class="${i < review.rating ? "fas" : "far"} fa-star"></i>`
+            )
+            .join("")}
+        </div>
+      </div>
+      <p class="review-content">${review.content}</p>
+      ${
+        review.canAppeal
+          ? `
+        <div class="review-actions">
+          <button class="btn-appeal" onclick="openAppealModal(${review.id})">
+            <i class="fas fa-flag"></i> Apelar reseña
+          </button>
+        </div>
+      `
+          : ""
+      }
+    </div>
+  `
+    )
+    .join("");
+}
+
+function openAppealModal(reviewId) {
+  if (appealReviewIdInput) appealReviewIdInput.value = reviewId;
+  toggleModalVisibility(appealModal, true);
+}
+
+if (closeAppealModalBtns) {
+  closeAppealModalBtns.forEach((btn) => {
+    btn.addEventListener("click", () =>
+      toggleModalVisibility(appealModal, false)
+    );
+  });
+}
+
+if (appealForm) {
+  appealForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const reason = document.getElementById("appeal-reason").value;
+    const details = document.getElementById("appeal-details").value;
+
+    // Simular envío de apelación
+    const submitBtn = appealForm.querySelector("button[type='submit']");
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando...";
+
+    setTimeout(() => {
+      alert(
+        "Tu apelación ha sido enviada y será revisada por nuestro equipo de moderación."
+      );
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+      appealForm.reset();
+      toggleModalVisibility(appealModal, false);
+    }, 1500);
+  });
+}
+
+// Inicializar reseñas
+renderReviews();
