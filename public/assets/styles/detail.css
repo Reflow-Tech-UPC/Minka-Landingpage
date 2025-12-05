@@ -183,24 +183,6 @@
 .modal {
   position: fixed;
   inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(0, 0, 0, 0.38);
-  padding: var(--space-16);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  z-index: 40;
-}
-
-.modal[aria-hidden="false"] {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.modal {
-  position: fixed;
-  inset: 0;
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -352,9 +334,32 @@ select:focus {
 .form-check {
   display: flex;
   align-items: center;
-  gap: var(--space-8);
+  gap: var(--space-12);
   margin-top: var(--space-12);
   color: var(--color-gray-700);
+  padding: var(--space-8);
+  border-radius: var(--space-8);
+  transition: background-color 0.2s ease;
+}
+
+.form-check:hover {
+  background-color: var(--color-gray-50);
+}
+
+.form-check input[type="radio"],
+.form-check input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+  width: 1.2em;
+  height: 1.2em;
+  accent-color: var(--color-primary);
+}
+
+.form-check label {
+  margin-bottom: 0;
+  cursor: pointer;
+  flex: 1;
 }
 
 .form-feedback {
