@@ -1,0 +1,91 @@
+    <!-- T17 - Lucero Pipa: Interfaz de chat con plantillas y puntos de encuentro -->
+    <header class="auth-header">
+      <div class="auth-header__container">
+        <a href="home.html" class="auth-header__logo" aria-label="Ir a inicio">
+          <img
+            src="./assets/images/minka-logo.png"
+            alt="Mink'a"
+            class="logo-image"
+          />
+        </a>
+        <nav class="auth-header__nav" aria-label="Navegación principal">
+          <a href="home.html" class="auth-header__link">Inicio</a>
+          <a href="busqueda.html" class="auth-header__link">Buscar</a>
+          <a href="publicar.html" class="auth-header__link">Publicar</a>
+          <a href="chat.html" class="auth-header__link" aria-current="page"
+            >Chats</a
+          >
+          <a href="notificaciones.html" class="auth-header__link">
+            Notificaciones
+            <span
+              class="nav-badge"
+              data-unread-badge
+              aria-label="notificaciones no leídas"
+              >0</span
+            >
+          </a>
+          <a href="perfil.html" class="auth-header__link">Perfil</a>
+          <a href="auth.html" class="auth-header__link">Salir</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="chat-main">
+      <section class="chat-layout" aria-label="Mensajes">
+        <div class="container chat-grid">
+          <aside class="threads" aria-label="Conversaciones">
+            <div class="threads__header">
+              <h2>Chats</h2>
+            </div>
+            <ul class="thread-list" id="thread-list"></ul>
+          </aside>
+
+          <section class="conversation" aria-label="Conversación seleccionada">
+            <div class="conversation__header">
+              <div>
+                <p class="conversation__eyebrow" id="conv-item">Publicación</p>
+                <h3 id="conv-user">Usuario</h3>
+                <p class="conversation__meta" id="conv-meta">
+                  Ubicación · Reputación
+                </p>
+              </div>
+              <button class="btn btn-secondary" type="button" id="btn-mute">
+                <i class="fa-solid fa-bell-slash"></i> Silenciar
+              </button>
+              <button class="btn btn-secondary" type="button" id="btn-report">
+                <i class="fa-solid fa-flag"></i> Reportar
+              </button>
+              <button class="btn btn-primary" type="button" id="btn-rate">
+                <i class="fa-solid fa-star"></i> Calificar
+              </button>
+            </div>
+
+            <div class="templates" aria-label="Respuestas rápidas">
+              <span>Plantillas:</span>
+              <div class="template-list" id="template-list"></div>
+            </div>
+
+            <div class="messages" id="messages" aria-live="polite"></div>
+
+            <div class="meeting" aria-label="Puntos sugeridos">
+              <div class="meeting__header">
+                <h4>Puntos de encuentro sugeridos</h4>
+                <p>Basado en cercanía.</p>
+              </div>
+              <div class="meeting__chips" id="meeting-list"></div>
+            </div>
+
+            <form class="composer" id="composer" aria-label="Enviar mensaje">
+              <input
+                type="text"
+                id="composer-input"
+                placeholder="Escribe un mensaje"
+                autocomplete="off"
+                required
+              />
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
