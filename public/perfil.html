@@ -122,6 +122,22 @@
                     <i class="fas fa-shield-alt"></i>
                     Verificar identidad
                   </button>
+                  <!-- T24 - Lucero Pipa: Acceso a Gamificación -->
+                  <a
+                    href="gamification.html"
+                    class="btn btn-outline"
+                    style="
+                      text-decoration: none;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      gap: 0.5rem;
+                      color: var(--text-color);
+                    "
+                  >
+                    <i class="fas fa-trophy" style="color: #f1c40f"></i>
+                    Eco-Puntos y Premios
+                  </a>
                   <button
                     type="button"
                     class="btn btn-primary"
@@ -247,6 +263,48 @@
             sin integración real.
           </p>
         </div>
+        <!-- T29 - HU27: Niveles de Verificación -->
+        <div class="verification-tabs">
+          <button class="modal__tab modal__tab--active" data-verify-tab="basic">
+            Básico (Teléfono)
+          </button>
+          <button class="modal__tab" data-verify-tab="advanced">
+            Avanzado (DNI + Selfie)
+          </button>
+        </div>
+
+        <!-- Nivel Básico -->
+        <div id="verify-basic" class="verify-section">
+          <div class="identity-steps">
+            <div class="identity-step">
+              <div class="identity-step__icon" aria-hidden="true">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+              <div>
+                <h4 class="identity-step__title">Validar número celular</h4>
+                <p class="identity-step__text">
+                  Te enviaremos un código SMS para confirmar tu número.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="identity-actions">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-verify-action="basic"
+            >
+              Enviar SMS y Verificar
+            </button>
+          </div>
+        </div>
+
+        <!-- Nivel Avanzado -->
+        <div id="verify-advanced" class="verify-section hidden">
+          <div class="identity-steps">
+          
+
+    
         <div class="identity-steps">
           <div class="identity-step">
             <div class="identity-step__icon" aria-hidden="true">1</div>
