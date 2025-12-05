@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!-- 
+  Tarea: T25 - Responsable: Ronel Rojas - Descripción: Cálculo y visualización de métricas ambientales (CO₂, agua) al cerrar trueques.
+  Tarea: T31 - Responsable: Andy Salcedo - Descripción: Compartir ubicación en tiempo real y cálculo de distancia.
+  Tarea: T33 - Responsable: Miguel Sanca - Descripción: Timeline del objeto, reemisión de QR y cierre offline.
+-->
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -12,6 +17,7 @@
     <link rel="stylesheet" href="./assets/styles/styles.css" />
     <link rel="stylesheet" href="./assets/styles/home.css" />
     <link rel="stylesheet" href="./assets/styles/detail.css" />
+    <link rel="stylesheet" href="./assets/styles/timeline.css" />
   </head>
   <body class="detail-page">
     <!-- T16 - Miguel Sanca: Ficha de detalle con QR y acciones -->
@@ -149,7 +155,27 @@
                   <button class="btn btn-secondary" id="qr-share" disabled>
                     Compartir
                   </button>
+                  <!-- T33 - Miguel Sanca: Reemitir QR (HU39) -->
+                  <button
+                    class="btn btn-outline"
+                    id="qr-reissue"
+                    title="Reemitir QR perdido"
+                  >
+                    <i class="fas fa-sync-alt"></i>
+                  </button>
                 </div>
+              </div>
+            </div>
+
+            <!-- T33 - Miguel Sanca: Historial de Trazabilidad (HU40) -->
+            <div class="card">
+              <div class="card__header">
+                <h3>Historial del Objeto</h3>
+              </div>
+              <div class="card__body">
+                <ul class="timeline" id="item-timeline">
+                  <!-- Injected by JS -->
+                </ul>
               </div>
             </div>
 
@@ -161,6 +187,10 @@
                 <a href="chat.html" class="btn btn-primary" id="action-contact">
                   Contactar
                 </a>
+                <!-- T33 - Miguel Sanca: Cierre Offline (HU41) -->
+                <button class="btn btn-primary" id="action-offline-close">
+                  Cierre Offline (Código)
+                </button>
                 <button class="btn btn-secondary" id="action-edit">
                   Editar publicación
                 </button>
@@ -191,6 +221,61 @@
         </div>
       </section>
     </main>
+
+    <section class="modal" id="offline-modal" aria-hidden="true">
+      <div class="modal__overlay" data-close-modal="offline-modal"></div>
+      <div class="modal__content" role="dialog" aria-modal="true">
+        <div class="modal__header">
+          <h2>Cierre Offline</h2>
+          <button
+            class="modal__close"
+            data-close-modal="offline-modal"
+            aria-label="Cerrar"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal__body">
+          <p>
+            Ingresa el código alfanumérico proporcionado por la contraparte para
+            cerrar el intercambio sin conexión.
+          </p>
+          <form id="offline-form">
+            <div class="form-group">
+              <label for="offline-code">Código de Intercambio</label>
+              <input
+                type="text"
+                id="offline-code"
+                class="form-input"
+                placeholder="Ej. A1B2-C3D4"
+                required
+                minlength="8"
+                maxlength="10"
+                style="
+                  text-transform: uppercase;
+                  letter-spacing: 2px;
+                  text-align: center;
+                  font-size: 1.2rem;
+                "
+              />
+            </div>
+            <div id="offline-feedback" class="form-feedback"></div>
+            <div class="form-actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-close-modal="offline-modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Validar y Cerrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
 
     <section class="modal" id="rating-modal" aria-hidden="true">
       <div class="modal__overlay" data-close-modal="rating-modal"></div>
@@ -378,6 +463,199 @@
     </section>
 
     <script src="./assets/scripts/notif-badge.js" defer></script>
+    <!-- <script src="./assets/scripts/detail.js"></script> Moved to end of body -->
+
+    <!-- Modal de Motivo de Cierre -->
+    <section class="modal" id="close-reason-modal" aria-hidden="true">
+      <div class="modal__overlay" data-close-modal="close-reason-modal"></div>
+      <div
+        class="modal__content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="close-reason-title"
+      >
+        <header class="modal__header">
+          <h3 id="close-reason-title">Cerrar Publicación</h3>
+          <button
+            class="modal__close"
+            aria-label="Cerrar modal"
+            data-close-modal="close-reason-modal"
+          >
+            &times;
+          </button>
+        </header>
+        <div class="modal__body">
+          <form id="close-reason-form">
+            <p>¿Por qué deseas cerrar esta publicación?</p>
+            <div class="form-check">
+              <input
+                type="radio"
+                id="reason-exchanged"
+                name="close-reason"
+                value="exchanged"
+                checked
+              />
+              <label for="reason-exchanged"
+                >¡Ya lo intercambié! (Trueque exitoso)</label
+              >
+            </div>
+            <div class="form-check">
+              <input
+                type="radio"
+                id="reason-other"
+                name="close-reason"
+                value="other"
+              />
+              <label for="reason-other">Ya no lo tengo / Otro motivo</label>
+            </div>
+            <div class="modal__actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-close-modal="close-reason-modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">Confirmar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- T25 - Ronel Rojas: Modal de Métricas Ambientales -->
+    <section class="modal" id="eco-modal" aria-hidden="true">
+      <div class="modal__overlay" data-close-modal="eco-modal"></div>
+      <div
+        class="modal__content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="eco-title"
+      >
+        <header class="modal__header">
+          <h2 id="eco-title" class="modal__title">¡Trueque Exitoso!</h2>
+          <button
+            class="modal__close"
+            aria-label="Cerrar modal"
+            data-close-modal="eco-modal"
+          >
+            &times;
+          </button>
+        </header>
+        <div class="modal__body">
+          <p>
+            Gracias por darle una segunda vida a este objeto. Aquí está tu
+            impacto ambiental estimado:
+          </p>
+
+          <div
+            class="eco-receipt"
+            style="
+              display: flex;
+              gap: 1rem;
+              justify-content: center;
+              margin: 1.5rem 0;
+            "
+          >
+            <div
+              class="eco-metric"
+              style="
+                text-align: center;
+                padding: 1rem;
+                background: #f0fdf4;
+                border-radius: 8px;
+                flex: 1;
+              "
+            >
+              <div
+                class="eco-icon"
+                style="
+                  font-size: 2rem;
+                  color: var(--color-primary);
+                  margin-bottom: 0.5rem;
+                "
+              >
+                <i class="fas fa-cloud"></i>
+              </div>
+              <div class="eco-data">
+                <span
+                  class="eco-value"
+                  id="eco-co2"
+                  style="display: block; font-weight: 700; font-size: 1.2rem"
+                  >0 kg</span
+                >
+                <span class="eco-label" style="font-size: 0.9rem; color: #666"
+                  >CO₂ Evitado</span
+                >
+              </div>
+            </div>
+            <div
+              class="eco-metric"
+              style="
+                text-align: center;
+                padding: 1rem;
+                background: #eef2f7;
+                border-radius: 8px;
+                flex: 1;
+              "
+            >
+              <div
+                class="eco-icon"
+                style="font-size: 2rem; color: #3498db; margin-bottom: 0.5rem"
+              >
+                <i class="fas fa-tint"></i>
+              </div>
+              <div class="eco-data">
+                <span
+                  class="eco-value"
+                  id="eco-water"
+                  style="display: block; font-weight: 700; font-size: 1.2rem"
+                  >0 L</span
+                >
+                <span class="eco-label" style="font-size: 0.9rem; color: #666"
+                  >Agua Ahorrada</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="eco-comparison"
+            style="text-align: center; margin-bottom: 1rem; color: #2c3e50"
+          >
+            <p>
+              <i class="fas fa-chart-line"></i> Tu impacto es
+              <strong
+                id="eco-comparison-val"
+                style="color: var(--color-primary)"
+                >superior</strong
+              >
+              al promedio de tu barrio.
+            </p>
+          </div>
+
+          <div
+            class="eco-reference"
+            style="text-align: center; font-size: 0.8rem; color: #999"
+          >
+            <small>
+              * Cálculo basado en ciclo de vida promedio por categoría.
+              <a
+                href="#"
+                id="eco-methodology-link"
+                style="color: var(--color-primary)"
+                >Ver metodología</a
+              >.
+            </small>
+          </div>
+        </div>
+        <footer class="modal__footer">
+          <button class="btn btn-primary" data-close-modal="eco-modal">
+            Entendido
+          </button>
+        </footer>
+      </div>
+    </section>
     <script src="./assets/scripts/detail.js"></script>
   </body>
 </html>
