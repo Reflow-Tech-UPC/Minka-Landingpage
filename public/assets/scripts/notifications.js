@@ -116,6 +116,7 @@
     ui.filterType?.addEventListener("change", renderFeed);
     ui.markAll?.addEventListener("click", markAllRead);
     ui.clearRead?.addEventListener("click", clearRead);
+    document.addEventListener("languageChanged", renderFeed);
 
     Object.entries(ui.prefs).forEach(([key, element]) => {
       if (!element) return;
@@ -141,8 +142,7 @@
     });
 
     if (!filtered.length) {
-      ui.list.innerHTML =
-        '<p class="empty">No hay notificaciones para mostrar.</p>';
+      ui.list.innerHTML = `<p class="empty">${I18n.t("notif_empty")}</p>`;
       updateSummary();
       return;
     }
@@ -160,7 +160,11 @@
             <div class="notification-meta">
               <span class="${badgeClass}">${labelForType(item.type)}</span>
               ${
-                item.unread ? '<span class="badge badge--new">Nuevo</span>' : ""
+                item.unread
+                  ? `<span class="badge badge--new">${I18n.t(
+                      "notif_badge_new"
+                    )}</span>`
+                  : ""
               }
               <span>${item.time}</span>
             </div>
@@ -169,11 +173,15 @@
           </div>
           <div class="notification-actions">
             <button type="button" data-action="read" data-id="${item.id}">
-              ${item.unread ? "Marcar leído" : "Marcar no leído"}
+              ${
+                item.unread
+                  ? I18n.t("notif_action_read")
+                  : I18n.t("notif_action_unread")
+              }
             </button>
             <button type="button" data-action="remove" data-id="${
               item.id
-            }">Eliminar</button>
+            }">${I18n.t("notif_action_remove")}</button>
           </div>
         </article>
       `;
@@ -226,10 +234,10 @@
   }
 
   function labelForType(type) {
-    if (type === "message") return "Mensaje";
-    if (type === "match") return "Coincidencia";
-    if (type === "reminder") return "Recordatorio";
-    return "Notificación";
+    if (type === "message") return I18n.t("notif_label_message");
+    if (type === "match") return I18n.t("notif_label_match");
+    if (type === "reminder") return I18n.t("notif_label_reminder");
+    return I18n.t("notif_label_default");
   }
 
   function iconForType(type) {
