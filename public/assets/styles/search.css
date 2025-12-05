@@ -1,3 +1,5 @@
+/* T15 - Andy Salcedo: Estilos de buscador y filtros */
+/* T30 - Andy Salcedo: Estilos de búsqueda avanzada */
 .search-page {
   background: #f9faf9;
 }
@@ -28,6 +30,7 @@
   gap: var(--space-12);
 }
 
+/* T30 - Andy Salcedo: Estilos para Búsquedas Guardadas */
 .saved-searches {
   margin-top: 1rem;
   background: white;
@@ -77,6 +80,7 @@
   font-weight: bold;
 }
 
+/* T30 - Andy Salcedo: Estilos para Favoritos */
 .item-card__favorite {
   position: absolute;
   top: 10px;
@@ -140,6 +144,7 @@
   border-radius: var(--space-16);
   box-shadow: var(--shadow-sm);
   padding: var(--space-20, 20px);
+  /* Horizontal layout */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -196,7 +201,8 @@
   }
 
   .map-panel {
-    order: -1; 
+    order: -1; /* Map on top on tablet? Or bottom? Let's keep default (bottom) or maybe hide it? */
+    /* Keeping it at bottom for now */
   }
 }
 
