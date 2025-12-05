@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!-- 
+  Tarea: T28 - Responsable: Leonardo Chavez - Descripción: Login social, gestión de sesiones y seguridad avanzada.
+-->
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -7,6 +10,11 @@
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <link rel="stylesheet" href="./assets/styles/styles.css" />
     <link rel="stylesheet" href="./assets/styles/auth.css" />
+    <link rel="stylesheet" href="./assets/styles/auth-advanced.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
   </head>
   <body class="auth-page">
     <!-- T12 - Leonardo Chavez: Header simple para auth -->
@@ -86,6 +94,27 @@
             novalidate
             aria-labelledby="auth-tab-login"
           >
+            <!-- T28 - Leonardo Chavez: Social Login (HU21) -->
+            <div class="social-login">
+              <button
+                type="button"
+                class="btn btn-social btn-google"
+                onclick="simulateSocialLogin('Google')"
+              >
+                <i class="fab fa-google"></i> Continuar con Google
+              </button>
+              <button
+                type="button"
+                class="btn btn-social btn-facebook"
+                onclick="simulateSocialLogin('Facebook')"
+              >
+                <i class="fab fa-facebook-f"></i> Continuar con Facebook
+              </button>
+            </div>
+            <div class="auth-divider">
+              <span>o ingresa con tu correo</span>
+            </div>
+
             <div class="form__group">
               <label for="login-email">Correo electrónico</label>
               <input
@@ -135,6 +164,27 @@
             novalidate
             aria-labelledby="auth-tab-register"
           >
+            <!-- T28 - Leonardo Chavez: Social Login (HU21) -->
+            <div class="social-login">
+              <button
+                type="button"
+                class="btn btn-social btn-google"
+                onclick="simulateSocialLogin('Google')"
+              >
+                <i class="fab fa-google"></i> Registrarse con Google
+              </button>
+              <button
+                type="button"
+                class="btn btn-social btn-facebook"
+                onclick="simulateSocialLogin('Facebook')"
+              >
+                <i class="fab fa-facebook-f"></i> Registrarse con Facebook
+              </button>
+            </div>
+            <div class="auth-divider">
+              <span>o completa el formulario</span>
+            </div>
+
             <div class="form__group">
               <label for="register-name">Nombre completo</label>
               <input
@@ -190,7 +240,17 @@
             </div>
             <label class="form__checkbox">
               <input type="checkbox" name="terms" required />
-              <span>Acepto los Términos y la Política de Privacidad</span>
+              <!-- T28 - Leonardo Chavez: Consentimiento Legal (HU22) -->
+              <span
+                >Acepto los
+                <a href="#" onclick="alert('Términos y Condiciones simulados')"
+                  >Términos</a
+                >
+                y la
+                <a href="#" onclick="alert('Política de Privacidad simulada')"
+                  >Política de Privacidad</a
+                ></span
+              >
             </label>
             <button
               type="submit"

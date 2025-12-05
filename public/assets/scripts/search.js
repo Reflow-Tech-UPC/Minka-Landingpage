@@ -1,4 +1,5 @@
 // T15 - Andy Salcedo: Buscador con filtros simulados (categoría, reputación, distancia)
+// T30 - Andy Salcedo: Búsquedas guardadas y filtros avanzados
 const mockItems = [
   {
     id: "itm-001",
@@ -68,7 +69,8 @@ const PUBLISHED_KEY = "minka_published_items";
 const state = {
   query: "",
   category: "",
-  exclude: "",
+  exclude: "", // T30 - Exclusiones
+  userLocation: "", // T31
   minRating: 0,
   maxDistance: 15,
   sort: "relevance",
@@ -90,7 +92,8 @@ const el = {
   historyList: document.getElementById("search-history-list"), // T30
   category: document.getElementById("filter-category"),
   exclude: document.getElementById("filter-exclude"), // T30
-  category: document.getElementById("filter-category"),
+  userLocation: document.getElementById("filter-user-location"), // T31
+  getLocationBtn: document.getElementById("btn-get-location"), // T31
   rating: document.getElementById("filter-rating"),
   ratingValue: document.getElementById("filter-rating-value"),
   distance: document.getElementById("filter-distance"),
@@ -126,6 +129,40 @@ function attachEvents() {
       persist();
     });
   }
+
+  // T31 - Tu Ubicación (HU36)
+  if (el.userLocation) {
+    el.userLocation.addEventListener("change", (e) => {
+      state.userLocation = e.target.value;
+      render();
+      persist();
+    });
+  }
+
+  if (el.getLocationBtn) {
+    el.getLocationBtn.addEventListener("click", () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            // Simular geocodificación inversa
+            const mockAddress = "Miraflores, Lima";
+            el.userLocation.value = mockAddress;
+            state.userLocation = mockAddress;
+            render();
+            persist();
+          },
+          (err) => {
+            alert(
+              "No se pudo obtener la ubicación. Por favor ingrésala manualmente."
+            );
+          }
+        );
+      } else {
+        alert("Geolocalización no soportada.");
+      }
+    });
+  }
+
   el.query.addEventListener("keyup", (e) => {
     if (e.key === "Enter") {
       state.query = el.query.value.trim().toLowerCase();
@@ -193,7 +230,8 @@ function persist() {
 function syncUI() {
   el.query.value = state.query;
   el.category.value = state.category;
-  if (el.exclude) el.exclude.value = state.exclude || "";//31
+  if (el.exclude) el.exclude.value = state.exclude || ""; // T30
+  if (el.userLocation) el.userLocation.value = state.userLocation || ""; // T31
   el.rating.value = state.minRating;
   el.ratingValue.textContent = state.minRating;
   el.distance.value = state.maxDistance;
@@ -238,11 +276,13 @@ function render() {
 
   el.count.textContent = `${sorted.length} resultados`;
   el.results.innerHTML = sorted
-.map((item) => {
+    .map((item) => {
       const isFav = favorites.includes(item.id);
 
+      // T31 - Simular cálculo de distancia (HU36)
       let displayDist = item.distanceKm;
       if (state.userLocation) {
+        // Simular cambio de distancia basado en ubicación
         const offset = (state.userLocation.length % 3) + 1;
         displayDist = Math.abs(item.distanceKm - offset).toFixed(1);
         if (displayDist == 0) displayDist = 0.5;
@@ -289,6 +329,7 @@ function render() {
     })
     .join("");
 }
+
 // T30 - Funciones de Favoritos (HU33)
 function getFavorites() {
   return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");

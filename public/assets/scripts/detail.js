@@ -77,46 +77,6 @@ const ECO_FACTORS = {
   Otros: { co2: 2, water: 20 },
 };
 
-// T25 - Ronel Rojas: Factores de impacto ambiental (CO2 kg, Agua L)
-const ECO_FACTORS = {
-  Ropa: { co2: 5, water: 2000 },
-  Electrónica: { co2: 20, water: 500 },
-  Muebles: { co2: 15, water: 0 },
-  Libros: { co2: 1, water: 10 },
-  Juguetes: { co2: 3, water: 50 },
-  Otros: { co2: 2, water: 20 },
-};
-
-const forms = {
-  rating: document.getElementById("rating-form"),
-  report: document.getElementById("report-form"),
-  offline: document.getElementById("offline-form"), // T33
-  closeReason: document.getElementById("close-reason-form"), // T25
-};
-
-const feedback = {
-  rating: document.getElementById("rating-feedback"),
-  report: document.getElementById("report-feedback"),
-  offline: document.getElementById("offline-feedback"), // T33
-};
-
-const controls = {
-  rateBtn: document.getElementById("action-rate"),
-  reportBtn: document.getElementById("action-report"),
-  closeTriggers: document.querySelectorAll("[data-close-modal]"),
-  pauseBtn: document.getElementById("action-pause"),
-  reserveBtn: document.getElementById("action-reserve"),
-  activateBtn: document.getElementById("action-activate"),
-  reissueQrBtn: document.getElementById("qr-reissue"), // T33
-  offlineCloseBtn: document.getElementById("action-offline-close"), // T33
-};
-
-let currentCode = "";
-let itemState = "activo";
-let currentItem = null;
-const PUBLISHED_KEY = "minka_published_items";
-
-
 const forms = {
   rating: document.getElementById("rating-form"),
   report: document.getElementById("report-form"),

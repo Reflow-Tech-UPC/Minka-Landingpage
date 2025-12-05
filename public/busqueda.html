@@ -1,5 +1,8 @@
 <!DOCTYPE html>
- <html lang="es">
+<!-- 
+  Tarea: T30 - Responsable: Andy Salcedo - Descripción: Búsquedas guardadas, favoritos y filtros avanzados.
+-->
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -59,11 +62,14 @@
               id="search-query"
               placeholder="Buscar por título, tags o distrito"
               aria-label="Buscar publicaciones"
+              list="search-history-list"
             />
+            <datalist id="search-history-list"></datalist>
             <button type="button" class="btn btn-primary" id="search-btn">
               Buscar
             </button>
-             <button
+            <!-- T30 - Andy Salcedo: Botón Guardar Búsqueda (HU32) -->
+            <button
               type="button"
               class="btn btn-outline"
               id="save-search-btn"
@@ -101,10 +107,11 @@
                   <option value="Hogar">Hogar</option>
                   <option value="Servicios">Servicios</option>
                   <option value="Otros">Otros</option>
+                  <option value="favorites">❤️ Mis Favoritos</option>
                 </select>
               </div>
 
-                            <!-- T30 - Andy Salcedo: Exclusiones (HU34) -->
+              <!-- T30 - Andy Salcedo: Exclusiones (HU34) -->
               <div class="filter-group">
                 <label for="filter-exclude">Excluir Categoría</label>
                 <select id="filter-exclude">
@@ -131,6 +138,28 @@
                   <div class="filter-group__hint">
                     <span id="filter-rating-value">0</span> estrellas o más
                   </div>
+                </div>
+              </div>
+
+              <!-- T31 - Andy Salcedo: Tu Ubicación (HU36) -->
+              <div class="filter-group">
+                <label for="filter-user-location">Tu Ubicación</label>
+                <div style="display: flex; gap: 0.5rem">
+                  <input
+                    type="text"
+                    id="filter-user-location"
+                    placeholder="Ej. Miraflores"
+                    style="flex: 1"
+                  />
+                  <button
+                    type="button"
+                    id="btn-get-location"
+                    class="btn btn-outline"
+                    title="Usar mi ubicación actual"
+                    style="padding: 0.5rem"
+                  >
+                    <i class="fa-solid fa-crosshairs"></i>
+                  </button>
                 </div>
               </div>
 
