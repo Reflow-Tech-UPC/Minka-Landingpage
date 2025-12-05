@@ -1,6 +1,8 @@
 // T16 - Miguel Sanca: Lógica de ficha de detalle (datos simulados + QR)
 // T18 - Leonardo Chavez: Modales de rating y reporte con validación
 // T23 - Ronel Rojas: Gestión de estados de publicación
+// T25 - Ronel Rojas: Métricas Ambientales
+// T33 - Miguel Sanca: Trazabilidad Avanzada (Timeline)
 const mockDetail = {
   id: "itm-001",
   title: "Bicicleta urbana vintage",
@@ -60,6 +62,19 @@ const ratingUser = document.getElementById("rating-user");
 const modals = {
   rating: document.getElementById("rating-modal"),
   report: document.getElementById("report-modal"),
+  eco: document.getElementById("eco-modal"),
+  offline: document.getElementById("offline-modal"), // T33
+  closeReason: document.getElementById("close-reason-modal"), // T25
+};
+
+// T25 - Ronel Rojas: Factores de impacto ambiental (CO2 kg, Agua L)
+const ECO_FACTORS = {
+  Ropa: { co2: 5, water: 2000 },
+  Electrónica: { co2: 20, water: 500 },
+  Muebles: { co2: 15, water: 0 },
+  Libros: { co2: 1, water: 10 },
+  Juguetes: { co2: 3, water: 50 },
+  Otros: { co2: 2, water: 20 },
 };
 
 // T25 - Ronel Rojas: Factores de impacto ambiental (CO2 kg, Agua L)
@@ -105,11 +120,14 @@ const PUBLISHED_KEY = "minka_published_items";
 const forms = {
   rating: document.getElementById("rating-form"),
   report: document.getElementById("report-form"),
+  offline: document.getElementById("offline-form"), // T33
+  closeReason: document.getElementById("close-reason-form"), // T25
 };
 
 const feedback = {
   rating: document.getElementById("rating-feedback"),
   report: document.getElementById("report-feedback"),
+  offline: document.getElementById("offline-feedback"), // T33
 };
 
 const controls = {
@@ -119,11 +137,42 @@ const controls = {
   pauseBtn: document.getElementById("action-pause"),
   reserveBtn: document.getElementById("action-reserve"),
   activateBtn: document.getElementById("action-activate"),
+  reissueQrBtn: document.getElementById("qr-reissue"), // T33
+  offlineCloseBtn: document.getElementById("action-offline-close"), // T33
 };
 
 let currentCode = "";
 let itemState = "activo";
+let currentItem = null;
 const PUBLISHED_KEY = "minka_published_items";
+
+// T33 - Mock Timeline Data
+const mockTimeline = [
+  {
+    date: "2025-12-01 10:00",
+    title: "Publicado",
+    desc: "Objeto publicado por Lucero P.",
+    completed: true,
+  },
+  {
+    date: "2025-12-02 15:30",
+    title: "Reservado",
+    desc: "Reservado para intercambio con Carlos R.",
+    completed: true,
+  },
+  {
+    date: "2025-12-03 09:00",
+    title: "Encuentro Programado",
+    desc: "Punto de encuentro: Parque Kennedy",
+    completed: false,
+  },
+  {
+    date: "-",
+    title: "Intercambio Cerrado",
+    desc: "Pendiente de confirmación",
+    completed: false,
+  },
+];
 
 init();
 
@@ -144,6 +193,7 @@ function init() {
     }
   }
 
+  currentItem = item;
   renderDetail(item);
 
   if (item.qrCode) {
@@ -158,7 +208,29 @@ function init() {
     setPlaceholderQr();
   }
 
+  renderTimeline(); // T33
   bindActions();
+}
+
+// T33 - Render Timeline (HU40)
+function renderTimeline() {
+  const container = document.getElementById("item-timeline");
+  if (!container) return;
+
+  container.innerHTML = mockTimeline
+    .map(
+      (event) => `
+    <li class="timeline-item ${event.completed ? "completed" : ""}">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <h4>${event.title}</h4>
+        <span class="timeline-date">${event.date}</span>
+        <p class="timeline-desc">${event.desc}</p>
+      </div>
+    </li>
+  `
+    )
+    .join("");
 }
 
 function renderDetail(item) {
@@ -236,14 +308,32 @@ function bindActions() {
   }); */
 
   closeBtn?.addEventListener("click", () => {
-    const confirmClose = confirm(
-      "¿Cerrar publicación? Ya no aparecerá en búsquedas."
-    );
-    if (confirmClose) {
-      setPlaceholderQr("Cerrado");
-      setStatus("Cerrado");
-    }
+    // T25 - Ronel Rojas: Usar modal en lugar de prompt
+    openModal(modals.closeReason);
   });
+
+  // T25 - Manejo del formulario de motivo de cierre
+  if (forms.closeReason) {
+    forms.closeReason.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const reason = document.querySelector(
+        'input[name="close-reason"]:checked'
+      )?.value;
+
+      closeModal(modals.closeReason);
+
+      if (reason === "exchanged") {
+        setPlaceholderQr("Intercambiado");
+        setStatus("Intercambiado");
+        // Use currentItem category if available, else fallback
+        const category = currentItem ? currentItem.category : "Otros";
+        showEcoMetrics(category);
+      } else {
+        setPlaceholderQr("Cerrado");
+        setStatus("Cerrado");
+      }
+    });
+  }
 
   deleteBtn?.addEventListener("click", () => {
     const confirmDel = confirm(
@@ -297,6 +387,76 @@ function bindActions() {
       alert("No se pudo compartir el QR en este navegador.");
     }
   });
+
+  // T33 - Reemitir QR (HU39)
+  if (controls.reissueQrBtn) {
+    controls.reissueQrBtn.addEventListener("click", () => {
+      if (
+        confirm(
+          "¿Estás seguro de que deseas reemitir el código QR? El código anterior dejará de ser válido."
+        )
+      ) {
+        generateQr();
+        alert("Nuevo código QR generado exitosamente.");
+        // Agregar evento al timeline
+        mockTimeline.push({
+          date: new Date().toLocaleString(),
+          title: "QR Reemitido",
+          desc: "El usuario solicitó un nuevo código QR.",
+          completed: true,
+        });
+        renderTimeline();
+      }
+    });
+  }
+
+  // T33 - Cierre Offline (HU41)
+  if (controls.offlineCloseBtn) {
+    controls.offlineCloseBtn.addEventListener("click", () => {
+      openModal(modals.offline);
+    });
+  }
+
+  if (forms.offline) {
+    forms.offline.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const codeInput = document.getElementById("offline-code");
+      const code = codeInput.value.trim().toUpperCase();
+
+      // Simular validación
+      if (code.length >= 8) {
+        feedback.offline.textContent =
+          "Código validado correctamente. Cerrando intercambio...";
+        feedback.offline.className = "form-feedback is-success";
+
+        setTimeout(() => {
+          closeModal(modals.offline);
+          alert("¡Intercambio cerrado exitosamente!");
+
+          // Actualizar estado
+          updateState("intercambiado"); // Nuevo estado simulado
+          qrStatus.textContent = "Intercambiado";
+
+          // Actualizar timeline
+          mockTimeline.push({
+            date: new Date().toLocaleString(),
+            title: "Intercambio Cerrado (Offline)",
+            desc: `Código validado: ${code}`,
+            completed: true,
+          });
+          renderTimeline();
+
+          // Mostrar modal de impacto ambiental (existente)
+          const category = currentItem ? currentItem.category : "Otros";
+          showEcoMetrics(category);
+        }, 1500);
+      } else {
+        feedback.offline.textContent =
+          "Código inválido. Verifica e intenta nuevamente.";
+        feedback.offline.className = "form-feedback is-error";
+      }
+    });
+  }
 
   generateQr();
 }
@@ -517,4 +677,25 @@ function setupReportModal() {
       closeModal(modals.report);
     }, 900);
   });
+}
+
+// T25 - Ronel Rojas: Mostrar métricas ambientales
+function showEcoMetrics(category) {
+  const factors = ECO_FACTORS[category] || ECO_FACTORS["Otros"];
+
+  // Update modal content
+  document.getElementById("eco-co2").textContent = `${factors.co2} kg`;
+  document.getElementById("eco-water").textContent = `${factors.water} L`;
+
+  // Simulate comparison (randomly better or average)
+  const isBetter = Math.random() > 0.3;
+  const comparisonEl = document.getElementById("eco-comparison-val");
+  if (comparisonEl) {
+    comparisonEl.textContent = isBetter ? "superior" : "similar";
+    comparisonEl.style.color = isBetter
+      ? "var(--color-primary)"
+      : "var(--color-secondary)";
+  }
+
+  openModal(modals.eco);
 }
