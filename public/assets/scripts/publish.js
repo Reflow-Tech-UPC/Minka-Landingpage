@@ -42,48 +42,56 @@ document.addEventListener("DOMContentLoaded", () => {
     Electrónica: [
       {
         key: "power",
-        label: "Potencia / voltaje",
-        placeholder: "Ej. 220V, 500W",
+        labelKey: "publish.dynamic.power",
+        placeholderKey: "publish.dynamic.powerPlaceholder",
       },
       {
         key: "accessories",
-        label: "Accesorios incluidos",
-        placeholder: "Cargador, manual",
+        labelKey: "publish.dynamic.accessories",
+        placeholderKey: "publish.dynamic.accessoriesPlaceholder",
       },
     ],
     "Ropa y accesorios": [
-      { key: "size", label: "Talla", placeholder: "M, 38, 30x32" },
-      { key: "gender", label: "Fit", placeholder: "Unisex, Mujer, Hombre" },
+      {
+        key: "size",
+        labelKey: "publish.dynamic.size",
+        placeholderKey: "publish.dynamic.sizePlaceholder",
+      },
+      {
+        key: "gender",
+        labelKey: "publish.dynamic.fit",
+        placeholderKey: "publish.dynamic.fitPlaceholder",
+      },
     ],
     Libros: [
       {
         key: "author",
-        label: "Autor / Editorial",
-        placeholder: "Ej. Le Guin, Minotauro",
+        labelKey: "publish.dynamic.author",
+        placeholderKey: "publish.dynamic.authorPlaceholder",
       },
       {
         key: "edition",
-        label: "Edición / idioma",
-        placeholder: "3ra, Español",
+        labelKey: "publish.dynamic.edition",
+        placeholderKey: "publish.dynamic.editionPlaceholder",
       },
     ],
     Servicios: [
       {
         key: "hours",
-        label: "Horas disponibles",
-        placeholder: "Ej. 4h semanales",
+        labelKey: "publish.dynamic.hours",
+        placeholderKey: "publish.dynamic.hoursPlaceholder",
       },
       {
         key: "modality",
-        label: "Modalidad",
-        placeholder: "Presencial / Remoto",
+        labelKey: "publish.dynamic.modality",
+        placeholderKey: "publish.dynamic.modalityPlaceholder",
       },
     ],
     Hogar: [
       {
         key: "materials",
-        label: "Materiales",
-        placeholder: "Madera reciclada, metal",
+        labelKey: "publish.dynamic.materials",
+        placeholderKey: "publish.dynamic.materialsPlaceholder",
       },
     ],
   };
@@ -104,7 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   saveDraftBtn.addEventListener("click", () => {
     saveDraft();
-    setSuccess("Borrador guardado localmente.");
+    setSuccess(
+      window.I18n
+        ? window.I18n.t("publish.messages.draftSaved")
+        : "Borrador guardado localmente."
+    );
   });
 
   /*
@@ -131,6 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSummary();
   });
 
+  window.addEventListener("languageChanged", () => {
+    renderDynamicFields(inputRefs.category.value);
+    updateSummary();
+  });
+
   hydrateDraft();
   updateSummary();
   // setPlaceholderQr();
@@ -150,7 +167,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const field = inputRefs[key];
       const errorEl = document.querySelector(`[data-error-for="${field.id}"]`);
       if (!field.value.trim()) {
-        errorEl.textContent = "Este campo es obligatorio.";
+        errorEl.textContent = window.I18n
+          ? window.I18n.t("publish.messages.required")
+          : "Este campo es obligatorio.";
         isValid = false;
       } else {
         errorEl.textContent = "";
@@ -159,13 +178,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (fileInput.files.length === 0) {
       setSuccess("");
-      alert("Sube al menos 1 foto.");
+      alert(
+        window.I18n
+          ? window.I18n.t("publish.messages.uploadOne")
+          : "Sube al menos 1 foto."
+      );
       isValid = false;
     }
 
     if (fileInput.files.length > 5) {
       setSuccess("");
-      alert("Sube máximo 5 fotos.");
+      alert(
+        window.I18n
+          ? window.I18n.t("publish.messages.uploadMax")
+          : "Sube máximo 5 fotos."
+      );
       isValid = false;
     }
 
@@ -173,7 +200,10 @@ document.addEventListener("DOMContentLoaded", () => {
     dynInputs.forEach((field) => {
       const errorEl = field.nextElementSibling;
       if (field.required && !field.value.trim()) {
-        if (errorEl) errorEl.textContent = "Completa este dato";
+        if (errorEl)
+          errorEl.textContent = window.I18n
+            ? window.I18n.t("publish.messages.completeData")
+            : "Completa este dato";
         isValid = false;
       } else if (errorEl) {
         errorEl.textContent = "";
@@ -191,15 +221,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const fragment = document.createDocumentFragment();
     const title = document.createElement("p");
     title.className = "form__hint form__hint--title";
-    title.textContent = "Campos sugeridos para esta categoría";
+    title.textContent = window.I18n
+      ? window.I18n.t("publish.dynamic.suggested")
+      : "Campos sugeridos para esta categoría";
     fragment.appendChild(title);
 
     config.forEach((field) => {
       const wrap = document.createElement("div");
       wrap.className = "form__group dynamic-field";
+      const labelText = window.I18n
+        ? window.I18n.t(field.labelKey)
+        : field.labelKey;
+      const placeholderText = window.I18n
+        ? window.I18n.t(field.placeholderKey)
+        : field.placeholderKey;
+
       wrap.innerHTML = `
-        <label for="dynamic-${field.key}">${field.label}</label>
-        <input id="dynamic-${field.key}" data-dynamic="${field.key}" placeholder="${field.placeholder}" />
+        <label for="dynamic-${field.key}">${labelText}</label>
+        <input id="dynamic-${field.key}" data-dynamic="${field.key}" placeholder="${placeholderText}" />
         <p class="form__error"></p>
       `;
       const input = wrap.querySelector("input");
@@ -296,7 +335,11 @@ document.addEventListener("DOMContentLoaded", () => {
     qrImage.src = qrCanvas.toDataURL("image/png");
     downloadBtn.disabled = false;
     */
-    setSuccess("QR generado y datos guardados localmente.");
+    setSuccess(
+      window.I18n
+        ? window.I18n.t("publish.messages.published")
+        : "QR generado y datos guardados localmente."
+    );
   }
 
   /*
@@ -346,8 +389,16 @@ document.addEventListener("DOMContentLoaded", () => {
     summaryFields.location.textContent = inputRefs.location.value.trim() || "—";
     summaryFields.availability.textContent =
       inputRefs.availability.value || "—";
-    summaryFields.status.textContent = statusSelect.value;
-    summaryFields.reserved.textContent = reservedToggle.checked ? "Sí" : "No";
+
+    const statusKey = `publish.mainInfo.pubStatuses.${statusSelect.value}`;
+    summaryFields.status.textContent = window.I18n
+      ? window.I18n.t(statusKey)
+      : statusSelect.value;
+
+    const yes = window.I18n ? window.I18n.t("publish.messages.yes") : "Sí";
+    const no = window.I18n ? window.I18n.t("publish.messages.no") : "No";
+    summaryFields.reserved.textContent = reservedToggle.checked ? yes : no;
+
     checkFormValidity();
   }
 

@@ -77,14 +77,21 @@ function renderMyItems() {
   const items = JSON.parse(localStorage.getItem(PUBLISHED_KEY) || "[]");
 
   if (items.length === 0) {
-    myItemsList.innerHTML =
-      '<p class="form__hint">No tienes publicaciones activas.</p>';
+    myItemsList.innerHTML = `<p class="form__hint">${
+      window.I18n
+        ? window.I18n.t("profile.noItems")
+        : "No tienes publicaciones activas."
+    }</p>`;
     return;
   }
 
   myItemsList.innerHTML = items
-    .map(
-      (item) => `
+    .map((item) => {
+      const statusKey = `publish.mainInfo.pubStatuses.${item.status}`;
+      const statusText = window.I18n
+        ? window.I18n.t(statusKey)
+        : item.status || "Activo";
+      return `
     <div class="profile-item-card" onclick="window.location.href='detalle.html?id=${
       item.id
     }'">
@@ -93,11 +100,11 @@ function renderMyItems() {
       }" alt="${item.title}" />
       <div class="profile-item-info">
         <h4>${item.title}</h4>
-        <span class="badge">${item.status || "Activo"}</span>
+        <span class="badge">${statusText}</span>
       </div>
     </div>
-  `
-    )
+  `;
+    })
     .join("");
 }
 
@@ -144,7 +151,9 @@ function handleVerification(level) {
   // Simulación de proceso
   const btn = document.querySelector(`[data-verify-action="${level}"]`);
   const originalText = btn.textContent;
-  btn.textContent = "Procesando...";
+  btn.textContent = window.I18n
+    ? window.I18n.t("profile.identityModal.processing")
+    : "Procesando...";
   btn.disabled = true;
 
   setTimeout(() => {
@@ -155,14 +164,16 @@ function handleVerification(level) {
       // HU27: Basic <= 5 mins (Simulated instant)
       profileState.verified = true;
       profileState.verificationLevel = "basic";
-      identitySuccess.textContent =
-        "✓ Teléfono verificado. Insignia 'Brote Verificado' otorgada.";
+      identitySuccess.textContent = window.I18n
+        ? window.I18n.t("profile.identityModal.successBasic")
+        : "✓ Teléfono verificado. Insignia 'Brote Verificado' otorgada.";
     } else if (level === "advanced") {
       // HU27: Advanced <= 24 hours (Simulated instant for demo)
       profileState.verified = true;
       profileState.verificationLevel = "advanced";
-      identitySuccess.textContent =
-        "✓ Documentos enviados. Insignia 'Raíz Verificada' otorgada.";
+      identitySuccess.textContent = window.I18n
+        ? window.I18n.t("profile.identityModal.successAdvanced")
+        : "✓ Documentos enviados. Insignia 'Raíz Verificada' otorgada.";
     }
 
     identitySuccess.hidden = false;
@@ -204,29 +215,47 @@ const setFormSuccess = (form, message) => {
 };
 
 const validateEmail = (input) => {
-  if (!input.value.trim()) return "El correo es obligatorio";
+  if (!input.value.trim())
+    return window.I18n
+      ? window.I18n.t("profile.messages.emailRequired")
+      : "El correo es obligatorio";
   if (!emailPattern.test(input.value.trim()))
-    return "Formato de correo inválido";
+    return window.I18n
+      ? window.I18n.t("profile.messages.emailInvalid")
+      : "Formato de correo inválido";
   return "";
 };
 
 const validatePhone = (input) => {
-  if (!input.value.trim()) return "El teléfono es obligatorio";
-  if (input.value.trim().length < 9) return "Ingresa un teléfono válido";
+  if (!input.value.trim())
+    return window.I18n
+      ? window.I18n.t("profile.messages.phoneRequired")
+      : "El teléfono es obligatorio";
+  if (input.value.trim().length < 9)
+    return window.I18n
+      ? window.I18n.t("profile.messages.phoneInvalid")
+      : "Ingresa un teléfono válido";
   return "";
 };
 
 const validateLocation = (input) => {
   if (!input.value.trim())
-    return "El distrito es obligatorio para guardar cambios";
-  if (input.value.trim().length < 3) return "Ingresa un distrito válido";
+    return window.I18n
+      ? window.I18n.t("profile.messages.locationRequired")
+      : "El distrito es obligatorio para guardar cambios";
+  if (input.value.trim().length < 3)
+    return window.I18n
+      ? window.I18n.t("profile.messages.locationInvalid")
+      : "Ingresa un distrito válido";
   return "";
 };
 
 const validateBio = (textarea) => {
   const value = textarea.value.trim();
   if (value.length > 150)
-    return "La descripción no puede exceder 150 caracteres";
+    return window.I18n
+      ? window.I18n.t("profile.messages.bioLimit")
+      : "La descripción no puede exceder 150 caracteres";
   return "";
 };
 
@@ -312,11 +341,15 @@ const updateProfileProgress = () => {
   if (profileState.verified && profileBadge) {
     // T29 - Lucero Pipa: Niveles de verificación (HU27)
     if (profileState.verificationLevel === "advanced") {
-      profileBadge.textContent = "Raíz Verificada";
+      profileBadge.textContent = window.I18n
+        ? window.I18n.t("profile.badges.verifiedAdvanced")
+        : "Raíz Verificada";
       profileBadge.classList.add("profile-card__badge--verified");
       profileBadge.style.backgroundColor = "var(--color-primary-darker)";
     } else {
-      profileBadge.textContent = "Brote Verificado";
+      profileBadge.textContent = window.I18n
+        ? window.I18n.t("profile.badges.verifiedBasic")
+        : "Brote Verificado";
       profileBadge.classList.add("profile-card__badge--verified");
       profileBadge.style.backgroundColor = ""; // Reset to default verified color
     }
@@ -407,7 +440,12 @@ function bindEvents() {
       event.preventDefault();
       const hasErrors = handleProfileValidation(profileForm);
       if (!hasErrors) {
-        setFormSuccess(profileForm, "Perfil actualizado (simulado).");
+        setFormSuccess(
+          profileForm,
+          window.I18n
+            ? window.I18n.t("profile.messages.profileUpdated")
+            : "Perfil actualizado (simulado)."
+        );
         const user = {
           name: profileForm.name.value,
           email: profileForm.email.value,
@@ -454,6 +492,12 @@ function bindEvents() {
       window.location.href = "auth.html";
     });
   }
+
+  window.addEventListener("languageChanged", () => {
+    renderMyItems();
+    renderReviews();
+    updateProfileProgress();
+  });
 }
 
 const sessionUser = getSessionUser();
@@ -535,7 +579,11 @@ function renderReviews() {
           ? `
         <div class="review-actions">
           <button class="btn-appeal" onclick="openAppealModal(${review.id})">
-            <i class="fas fa-flag"></i> Apelar reseña
+            <i class="fas fa-flag"></i> ${
+              window.I18n
+                ? window.I18n.t("profile.messages.appealAction")
+                : "Apelar reseña"
+            }
           </button>
         </div>
       `
@@ -570,11 +618,15 @@ if (appealForm) {
     const submitBtn = appealForm.querySelector("button[type='submit']");
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
-    submitBtn.textContent = "Enviando...";
+    submitBtn.textContent = window.I18n
+      ? window.I18n.t("profile.appealModal.sending")
+      : "Enviando...";
 
     setTimeout(() => {
       alert(
-        "Tu apelación ha sido enviada y será revisada por nuestro equipo de moderación."
+        window.I18n
+          ? window.I18n.t("profile.appealModal.success")
+          : "Tu apelación ha sido enviada y será revisada por nuestro equipo de moderación."
       );
       submitBtn.disabled = false;
       submitBtn.textContent = originalText;

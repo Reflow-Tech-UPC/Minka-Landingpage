@@ -274,7 +274,9 @@ function render() {
     sorted.sort((a, b) => b.rating - a.rating);
   }
 
-  el.count.textContent = `${sorted.length} resultados`;
+  el.count.textContent = `${sorted.length} ${
+    window.I18n ? window.I18n.t("search_results_count") : "resultados"
+  }`;
   el.results.innerHTML = sorted
     .map((item) => {
       const isFav = favorites.includes(item.id);
@@ -319,7 +321,9 @@ function render() {
               <div class="result-card__actions">
                 <a class="btn btn-secondary" href="detalle.html?id=${
                   item.id
-                }">Ver detalle</a>
+                }">${
+        window.I18n ? window.I18n.t("card_view_detail") : "Ver detalle"
+      }</a>
                 <a class="btn btn-primary" href="chat.html">Quiero intercambiar</a>
               </div>
             </div>
@@ -329,6 +333,16 @@ function render() {
     })
     .join("");
 }
+
+// Escuchar cambios de idioma para re-renderizar
+document.addEventListener("languageChanged", () => {
+  // Actualizar placeholder
+  if (el.query) {
+    el.query.placeholder = window.I18n.t("search_placeholder");
+  }
+  // Re-renderizar resultados para actualizar textos dinámicos
+  render();
+});
 
 // T30 - Funciones de Favoritos (HU33)
 function getFavorites() {

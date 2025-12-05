@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="./assets/styles/styles.css" />
     <link rel="stylesheet" href="./assets/styles/home.css" />
     <link rel="stylesheet" href="./assets/styles/publish.css" />
+    <!-- T27 - Miguel Sanca: Scripts de Internacionalización Global -->
+    <script src="./assets/scripts/translations.js"></script>
+    <script src="./assets/scripts/i18n.js"></script>
   </head>
   <body class="publish-page">
     <!-- T14 - Ronel Rojas: Formulario de publicación con carga de fotos y QR -->
@@ -22,14 +25,27 @@
           />
         </a>
         <nav class="auth-header__nav" aria-label="Navegación principal">
-          <a href="home.html" class="auth-header__link">Inicio</a>
-          <a href="busqueda.html" class="auth-header__link">Buscar</a>
-          <a href="publicar.html" class="auth-header__link" aria-current="page"
+          <a href="home.html" class="auth-header__link" data-i18n="nav_home"
+            >Inicio</a
+          >
+          <a
+            href="busqueda.html"
+            class="auth-header__link"
+            data-i18n="nav_search"
+            >Buscar</a
+          >
+          <a
+            href="publicar.html"
+            class="auth-header__link"
+            aria-current="page"
+            data-i18n="nav_publish"
             >Publicar</a
           >
-          <a href="chat.html" class="auth-header__link">Chats</a>
+          <a href="chat.html" class="auth-header__link" data-i18n="nav_chats"
+            >Chats</a
+          >
           <a href="notificaciones.html" class="auth-header__link">
-            Notificaciones
+            <span data-i18n="nav_notifications">Notificaciones</span>
             <span
               class="nav-badge"
               data-unread-badge
@@ -37,8 +53,15 @@
               >0</span
             >
           </a>
-          <a href="perfil.html" class="auth-header__link">Perfil</a>
-          <a href="auth.html" class="auth-header__link">Salir</a>
+          <a
+            href="perfil.html"
+            class="auth-header__link"
+            data-i18n="nav_profile"
+            >Perfil</a
+          >
+          <a href="auth.html" class="auth-header__link" data-i18n="nav_logout"
+            >Salir</a
+          >
         </nav>
       </div>
     </header>
@@ -48,8 +71,8 @@
       <section class="publish-hero">
         <div class="container">
           <div class="publish-hero__content">
-            <h1>Publica un objeto</h1>
-            <p>
+            <h1 data-i18n="publish.title">Publica un objeto</h1>
+            <p data-i18n="publish.subtitle">
               Completa los datos, sube fotos y te generamos un QR único para
               compartir tu publicación.
             </p>
@@ -63,17 +86,24 @@
           <form id="publish-form" class="publish-form" novalidate>
             <div class="card">
               <div class="card__header">
-                <h2>Información principal</h2>
-                <p>Define qué ofreces y en qué estado se encuentra.</p>
+                <h2 data-i18n="publish.mainInfo.title">
+                  Información principal
+                </h2>
+                <p data-i18n="publish.mainInfo.subtitle">
+                  Define qué ofreces y en qué estado se encuentra.
+                </p>
               </div>
               <div class="card__body">
                 <div class="form__group">
-                  <label for="item-title">Título del objeto</label>
+                  <label for="item-title" data-i18n="publish.mainInfo.itemTitle"
+                    >Título del objeto</label
+                  >
                   <input
                     type="text"
                     id="item-title"
                     name="title"
                     placeholder="Ej. Bicicleta urbana vintage"
+                    data-i18n-placeholder="publish.mainInfo.itemTitlePlaceholder"
                     required
                   />
                   <p class="form__error" data-error-for="item-title"></p>
@@ -81,29 +111,95 @@
 
                 <div class="form__row">
                   <div class="form__group">
-                    <label for="item-category">Categoría</label>
+                    <label
+                      for="item-category"
+                      data-i18n="publish.mainInfo.category"
+                      >Categoría</label
+                    >
                     <select id="item-category" name="category" required>
-                      <option value="">Selecciona una opción</option>
-                      <option value="Ropa y accesorios">
+                      <option
+                        value=""
+                        data-i18n="publish.mainInfo.selectOption"
+                      >
+                        Selecciona una opción
+                      </option>
+                      <option
+                        value="Ropa y accesorios"
+                        data-i18n="publish.mainInfo.categories.clothing"
+                      >
                         Ropa y accesorios
                       </option>
-                      <option value="Libros">Libros</option>
-                      <option value="Electrónica">Electrónica</option>
-                      <option value="Hogar">Hogar</option>
-                      <option value="Servicios">Servicios</option>
-                      <option value="Otros">Otros</option>
+                      <option
+                        value="Libros"
+                        data-i18n="publish.mainInfo.categories.books"
+                      >
+                        Libros
+                      </option>
+                      <option
+                        value="Electrónica"
+                        data-i18n="publish.mainInfo.categories.electronics"
+                      >
+                        Electrónica
+                      </option>
+                      <option
+                        value="Hogar"
+                        data-i18n="publish.mainInfo.categories.home"
+                      >
+                        Hogar
+                      </option>
+                      <option
+                        value="Servicios"
+                        data-i18n="publish.mainInfo.categories.services"
+                      >
+                        Servicios
+                      </option>
+                      <option
+                        value="Otros"
+                        data-i18n="publish.mainInfo.categories.others"
+                      >
+                        Otros
+                      </option>
                     </select>
                     <p class="form__error" data-error-for="item-category"></p>
                   </div>
 
                   <div class="form__group">
-                    <label for="item-condition">Estado</label>
+                    <label
+                      for="item-condition"
+                      data-i18n="publish.mainInfo.condition"
+                      >Estado</label
+                    >
                     <select id="item-condition" name="condition" required>
-                      <option value="">Selecciona una opción</option>
-                      <option value="Nuevo">Nuevo</option>
-                      <option value="Como nuevo">Como nuevo</option>
-                      <option value="Buen estado">Buen estado</option>
-                      <option value="Para reparar">Para reparar</option>
+                      <option
+                        value=""
+                        data-i18n="publish.mainInfo.selectOption"
+                      >
+                        Selecciona una opción
+                      </option>
+                      <option
+                        value="Nuevo"
+                        data-i18n="publish.mainInfo.conditions.new"
+                      >
+                        Nuevo
+                      </option>
+                      <option
+                        value="Como nuevo"
+                        data-i18n="publish.mainInfo.conditions.likeNew"
+                      >
+                        Como nuevo
+                      </option>
+                      <option
+                        value="Buen estado"
+                        data-i18n="publish.mainInfo.conditions.good"
+                      >
+                        Buen estado
+                      </option>
+                      <option
+                        value="Para reparar"
+                        data-i18n="publish.mainInfo.conditions.repair"
+                      >
+                        Para reparar
+                      </option>
                     </select>
                     <p class="form__error" data-error-for="item-condition"></p>
                   </div>
@@ -111,25 +207,53 @@
 
                 <div class="form__row">
                   <div class="form__group">
-                    <label for="item-status">Estado de la publicación</label>
+                    <label
+                      for="item-status"
+                      data-i18n="publish.mainInfo.pubStatus"
+                      >Estado de la publicación</label
+                    >
                     <select id="item-status" name="status">
-                      <option value="activo">Activo</option>
-                      <option value="pausado">Pausado</option>
-                      <option value="reservado">Reservado</option>
+                      <option
+                        value="active"
+                        data-i18n="publish.mainInfo.pubStatuses.active"
+                      >
+                        Activo
+                      </option>
+                      <option
+                        value="paused"
+                        data-i18n="publish.mainInfo.pubStatuses.paused"
+                      >
+                        Pausado
+                      </option>
+                      <option
+                        value="reserved"
+                        data-i18n="publish.mainInfo.pubStatuses.reserved"
+                      >
+                        Reservado
+                      </option>
                     </select>
-                    <p class="form__hint">
+                    <p
+                      class="form__hint"
+                      data-i18n="publish.mainInfo.pauseHint"
+                    >
                       Pausar oculta la publicación de búsquedas.
                     </p>
                   </div>
                   <div class="form__group form__group--inline">
-                    <label class="inline-label" for="item-reserved"
+                    <label
+                      class="inline-label"
+                      for="item-reserved"
+                      data-i18n="publish.mainInfo.reserved"
                       >Reserva</label
                     >
                     <label class="switch">
                       <input type="checkbox" id="item-reserved" />
                       <span class="switch-slider"></span>
                     </label>
-                    <p class="form__hint">
+                    <p
+                      class="form__hint"
+                      data-i18n="publish.mainInfo.reservedHint"
+                    >
                       Marca si ya tienes un interesado confirmado.
                     </p>
                   </div>
@@ -140,26 +264,34 @@
                 </div>
 
                 <div class="form__group">
-                  <label for="item-description">Descripción</label>
+                  <label
+                    for="item-description"
+                    data-i18n="publish.mainInfo.description"
+                    >Descripción</label
+                  >
                   <textarea
                     id="item-description"
                     name="description"
                     rows="4"
                     placeholder="Cuenta detalles, medidas, funcionamiento y qué buscas a cambio"
+                    data-i18n-placeholder="publish.mainInfo.descriptionPlaceholder"
                     required
                   ></textarea>
                   <p class="form__error" data-error-for="item-description"></p>
                 </div>
 
                 <div class="form__group">
-                  <label for="item-tags">Etiquetas</label>
+                  <label for="item-tags" data-i18n="publish.mainInfo.tags"
+                    >Etiquetas</label
+                  >
                   <input
                     type="text"
                     id="item-tags"
                     name="tags"
                     placeholder="ej. urbano, mujer, talla M, poco uso"
+                    data-i18n-placeholder="publish.mainInfo.tagsPlaceholder"
                   />
-                  <p class="form__hint">
+                  <p class="form__hint" data-i18n="publish.mainInfo.tagsHint">
                     Separadas por coma · Mejora el hallazgo en búsquedas.
                   </p>
                 </div>
@@ -168,32 +300,66 @@
 
             <div class="card">
               <div class="card__header">
-                <h2>Ubicación y entrega</h2>
-                <p>
+                <h2 data-i18n="publish.location.title">Ubicación y entrega</h2>
+                <p data-i18n="publish.location.subtitle">
                   Indica dónde está el objeto y cómo prefieres el intercambio.
                 </p>
               </div>
               <div class="card__body">
                 <div class="form__row">
                   <div class="form__group">
-                    <label for="item-location">Distrito / Ciudad</label>
+                    <label
+                      for="item-location"
+                      data-i18n="publish.location.district"
+                      >Distrito / Ciudad</label
+                    >
                     <input
                       type="text"
                       id="item-location"
                       name="location"
                       placeholder="Ej. Miraflores, Lima"
+                      data-i18n-placeholder="publish.location.districtPlaceholder"
                       required
                     />
                     <p class="form__error" data-error-for="item-location"></p>
                   </div>
                   <div class="form__group">
-                    <label for="item-availability">Disponibilidad</label>
+                    <label
+                      for="item-availability"
+                      data-i18n="publish.location.availability"
+                      >Disponibilidad</label
+                    >
                     <select id="item-availability" name="availability" required>
-                      <option value="">Selecciona una opción</option>
-                      <option value="Mañanas">Mañanas</option>
-                      <option value="Tardes">Tardes</option>
-                      <option value="Noches">Noches</option>
-                      <option value="Fines de semana">Fines de semana</option>
+                      <option
+                        value=""
+                        data-i18n="publish.mainInfo.selectOption"
+                      >
+                        Selecciona una opción
+                      </option>
+                      <option
+                        value="Mañanas"
+                        data-i18n="publish.location.availabilities.mornings"
+                      >
+                        Mañanas
+                      </option>
+                      <option
+                        value="Tardes"
+                        data-i18n="publish.location.availabilities.afternoons"
+                      >
+                        Tardes
+                      </option>
+                      <option
+                        value="Noches"
+                        data-i18n="publish.location.availabilities.nights"
+                      >
+                        Noches
+                      </option>
+                      <option
+                        value="Fines de semana"
+                        data-i18n="publish.location.availabilities.weekends"
+                      >
+                        Fines de semana
+                      </option>
                     </select>
                     <p
                       class="form__error"
@@ -204,7 +370,9 @@
 
                 <div class="form__row">
                   <div class="form__group">
-                    <label>Modalidad</label>
+                    <label data-i18n="publish.location.modality"
+                      >Modalidad</label
+                    >
                     <div
                       class="chip-group"
                       role="group"
@@ -217,7 +385,9 @@
                           value="Recojo en persona"
                           checked
                         />
-                        <span>Recojo en persona</span>
+                        <span data-i18n="publish.location.modalities.pickup"
+                          >Recojo en persona</span
+                        >
                       </label>
                       <label class="chip">
                         <input
@@ -225,17 +395,22 @@
                           name="mode"
                           value="Envío coordinado"
                         />
-                        <span>Envío coordinado</span>
+                        <span data-i18n="publish.location.modalities.shipping"
+                          >Envío coordinado</span
+                        >
                       </label>
                     </div>
                   </div>
                   <div class="form__group">
-                    <label for="item-notes">Notas para el encuentro</label>
+                    <label for="item-notes" data-i18n="publish.location.notes"
+                      >Notas para el encuentro</label
+                    >
                     <textarea
                       id="item-notes"
                       name="notes"
                       rows="3"
                       placeholder="Punto de referencia, seguridad, horarios exactos"
+                      data-i18n-placeholder="publish.location.notesPlaceholder"
                     ></textarea>
                   </div>
                 </div>
@@ -244,8 +419,10 @@
 
             <div class="card">
               <div class="card__header">
-                <h2>Fotos del objeto</h2>
-                <p>Sube hasta 5 fotos. Formatos JPG o PNG.</p>
+                <h2 data-i18n="publish.photos.title">Fotos del objeto</h2>
+                <p data-i18n="publish.photos.subtitle">
+                  Sube hasta 5 fotos. Formatos JPG o PNG.
+                </p>
               </div>
               <div class="card__body">
                 <div class="upload-area">
@@ -258,14 +435,22 @@
                     aria-describedby="photo-help"
                   />
                   <label for="item-photos" class="upload-area__label">
-                    <span class="upload-area__title"
+                    <span
+                      class="upload-area__title"
+                      data-i18n="publish.photos.dragDrop"
                       >Arrastra o selecciona fotos</span
                     >
-                    <span class="upload-area__hint"
+                    <span
+                      class="upload-area__hint"
+                      data-i18n="publish.photos.hint"
                       >Máximo 5 imágenes · 4MB c/u</span
                     >
                   </label>
-                  <p id="photo-help" class="form__hint">
+                  <p
+                    id="photo-help"
+                    class="form__hint"
+                    data-i18n="publish.photos.example"
+                  >
                     Las fotos son de ejemplo.
                   </p>
                 </div>
@@ -278,13 +463,19 @@
             </div>
 
             <div class="form__actions">
-              <button type="button" class="btn btn-secondary" id="save-draft">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="save-draft"
+                data-i18n="publish.actions.saveDraft"
+              >
                 Guardar borrador
               </button>
               <button
                 type="submit"
                 class="btn btn-primary btn-large"
                 id="generate-qr"
+                data-i18n="publish.actions.publish"
               >
                 Publicar
               </button>
@@ -299,33 +490,40 @@
 
           <aside class="publish-summary" aria-label="Resumen y QR">
             <div class="summary-card">
-              <h3>Resumen rápido</h3>
+              <h3 data-i18n="publish.summary.title">Resumen rápido</h3>
               <ul class="summary-list">
                 <li>
-                  <strong>Título:</strong> <span id="summary-title">—</span>
+                  <strong data-i18n="publish.summary.itemTitle">Título:</strong>
+                  <span id="summary-title">—</span>
                 </li>
                 <li>
-                  <strong>Categoría:</strong>
+                  <strong data-i18n="publish.summary.category"
+                    >Categoría:</strong
+                  >
                   <span id="summary-category">—</span>
                 </li>
                 <li>
-                  <strong>Ubicación:</strong>
+                  <strong data-i18n="publish.summary.location"
+                    >Ubicación:</strong
+                  >
                   <span id="summary-location">—</span>
                 </li>
                 <li>
-                  <strong>Disponibilidad:</strong>
+                  <strong data-i18n="publish.summary.availability"
+                    >Disponibilidad:</strong
+                  >
                   <span id="summary-availability">—</span>
                 </li>
                 <li>
-                  <strong>Estado:</strong>
+                  <strong data-i18n="publish.summary.status">Estado:</strong>
                   <span id="summary-status">Activo</span>
                 </li>
                 <li>
-                  <strong>Reserva:</strong>
+                  <strong data-i18n="publish.summary.reserved">Reserva:</strong>
                   <span id="summary-reserved">No</span>
                 </li>
               </ul>
-              <p class="form__hint">
+              <p class="form__hint" data-i18n="publish.summary.qrHint">
                 El QR se generará automáticamente al publicar.
               </p>
             </div>

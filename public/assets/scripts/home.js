@@ -51,17 +51,31 @@ function setWelcomeName() {
   if (!userNameEl) return;
   try {
     const raw = localStorage.getItem(SESSION_KEY);
-    if (!raw) {
-      userNameEl.textContent = "Hola, Mink'a user";
-      return;
+    let name = "Mink'a user";
+
+    if (raw) {
+      const user = JSON.parse(raw);
+      name = user.name || user.email || "Mink'a user";
     }
-    const user = JSON.parse(raw);
-    const name = user.name || user.email || "Mink'a user";
-    userNameEl.textContent = `Hola, ${name}`;
+
+    // Usar traducción si está disponible
+    if (window.I18n && typeof window.I18n.t === "function") {
+      const greetingTemplate = window.I18n.t("home_welcome_user"); // "Hola, Mink'a user" o "Rimaykullayki, Mink'a user"
+      // Reemplazamos el placeholder por defecto con el nombre real
+      // Asumimos que la traducción contiene "Mink'a user" como placeholder
+      userNameEl.textContent = greetingTemplate.replace("Mink'a user", name);
+    } else {
+      userNameEl.textContent = `Hola, ${name}`;
+    }
   } catch (error) {
     console.warn("No se pudo leer la sesión", error);
   }
 }
+
+// Escuchar cambios de idioma para actualizar el saludo dinámicamente
+document.addEventListener("languageChanged", () => {
+  setWelcomeName();
+});
 
 function renderPopular() {
   if (!popularListEl) return;
@@ -92,10 +106,14 @@ function renderPopular() {
             <div class="popular-card__footer">
               <a class="btn btn-secondary" href="busqueda.html?category=${encodeURIComponent(
                 item.category
-              )}" onclick="event.stopPropagation()">Ver similar</a>
+              )}" onclick="event.stopPropagation()">${
+        window.I18n ? window.I18n.t("card_view_similar") : "Ver similar"
+      }</a>
               <a class="btn btn-primary" href="detalle.html?id=${
                 item.id
-              }" onclick="event.stopPropagation()">Ver detalle</a>
+              }" onclick="event.stopPropagation()">${
+        window.I18n ? window.I18n.t("card_view_detail") : "Ver detalle"
+      }</a>
             </div>
           </div>
         </article>
@@ -103,6 +121,11 @@ function renderPopular() {
     )
     .join("");
 }
+
+// Escuchar cambios de idioma para re-renderizar las tarjetas
+document.addEventListener("languageChanged", () => {
+  renderPopular();
+});
 
 // T19 - Andy Salcedo: Mejorar interactividad de búsqueda
 const searchForm = document.querySelector(".home-search__form");
@@ -127,7 +150,9 @@ if (searchForm && searchInput) {
   });
 
   searchInput.addEventListener("blur", () => {
-    searchInput.placeholder = "Buscar objetos, categorías, ubicaciones...";
+    searchInput.placeholder = window.I18n
+      ? window.I18n.t("home_search_placeholder")
+      : "Buscar objetos, categorías, ubicaciones...";
   });
 
   // Validación antes de enviar
