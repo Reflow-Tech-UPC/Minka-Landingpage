@@ -1,3 +1,4 @@
+// T19 - Andy Salcedo: Home app con datos simulados de populares
 const SESSION_KEY = "minka-demo-session";
 
 const popularItems = [
@@ -66,6 +67,7 @@ function renderPopular() {
   if (!popularListEl) return;
 
   const localItems = JSON.parse(localStorage.getItem(PUBLISHED_KEY) || "[]");
+  // Combine local items with mock items
   const allItems = [...localItems, ...popularItems];
 
   popularListEl.innerHTML = allItems
@@ -102,10 +104,12 @@ function renderPopular() {
     .join("");
 }
 
+// T19 - Andy Salcedo: Mejorar interactividad de búsqueda
 const searchForm = document.querySelector(".home-search__form");
 const searchInput = document.querySelector(".home-search__input");
 
 if (searchForm && searchInput) {
+  // Autocompletar sugerencias básicas
   const suggestions = [
     "bicicleta",
     "libros",
@@ -126,6 +130,7 @@ if (searchForm && searchInput) {
     searchInput.placeholder = "Buscar objetos, categorías, ubicaciones...";
   });
 
+  // Validación antes de enviar
   searchForm.addEventListener("submit", (e) => {
     const query = searchInput.value.trim();
     if (!query) {

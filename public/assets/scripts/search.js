@@ -1,4 +1,5 @@
- const mockItems = [
+// T15 - Andy Salcedo: Buscador con filtros simulados (categoría, reputación, distancia)
+const mockItems = [
   {
     id: "itm-001",
     title: "Bicicleta urbana vintage",
