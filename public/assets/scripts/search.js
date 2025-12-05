@@ -1,0 +1,235 @@
+ const mockItems = [
+  {
+    id: "itm-001",
+    title: "Bicicleta urbana vintage",
+    category: "Electrónica",
+    tags: ["movilidad", "urbano", "bicicleta"],
+    rating: 4.8,
+    distanceKm: 4,
+    location: "Miraflores",
+    image: "./assets/images/items/bicicleta-vintage.jpg",
+  },
+  {
+    id: "itm-002",
+    title: "Set de libros ciencia ficción",
+    category: "Libros",
+    tags: ["libros", "sci-fi", "colección"],
+    rating: 4.2,
+    distanceKm: 9,
+    location: "San Borja",
+    image: "./assets/images/items/set-libros.jpg",
+  },
+  {
+    id: "itm-003",
+    title: "Laptop ligera i5",
+    category: "Electrónica",
+    tags: ["tech", "trabajo", "portátil"],
+    rating: 4.9,
+    distanceKm: 18,
+    location: "Pueblo Libre",
+    image:
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: "itm-004",
+    title: "Mesa de centro reciclada",
+    category: "Hogar",
+    tags: ["madera", "reciclado", "hogar"],
+    rating: 4.1,
+    distanceKm: 6,
+    location: "Barranco",
+    image: "./assets/images/items/mesa-centro.jpg",
+  },
+  {
+    id: "itm-005",
+    title: "Clases de guitarra",
+    category: "Servicios",
+    tags: ["música", "clases", "servicio"],
+    rating: 4.5,
+    distanceKm: 12,
+    location: "Surco",
+    image: "./assets/images/items/guitarra-acustica.jpg",
+  },
+  {
+    id: "itm-006",
+    title: "Abrigo de lana mujer M",
+    category: "Ropa y accesorios",
+    tags: ["ropa", "abrigo", "mujer"],
+    rating: 3.9,
+    distanceKm: 3,
+    location: "La Molina",
+    image: "./assets/images/items/abrigo-lana-mujer.jpg",
+  },
+];
+
+const PUBLISHED_KEY = "minka_published_items";
+
+const state = {
+  query: "",
+  category: "",
+  minRating: 0,
+  maxDistance: 15,
+  sort: "relevance",
+};
+
+const STORAGE_KEY = "minka_search_filters";
+
+const el = {
+  results: document.getElementById("results-list"),
+  count: document.getElementById("results-count"),
+  query: document.getElementById("search-query"),
+  searchBtn: document.getElementById("search-btn"),
+  category: document.getElementById("filter-category"),
+  rating: document.getElementById("filter-rating"),
+  ratingValue: document.getElementById("filter-rating-value"),
+  distance: document.getElementById("filter-distance"),
+  distanceValue: document.getElementById("filter-distance-value"),
+  sort: document.getElementById("filter-sort"),
+  reset: document.getElementById("reset-filters"),
+};
+
+restoreFilters();
+attachEvents();
+render();
+
+function attachEvents() {
+  el.searchBtn.addEventListener("click", () => {
+    state.query = el.query.value.trim().toLowerCase();
+    render();
+    persist();
+  });
+
+  el.query.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") {
+      state.query = el.query.value.trim().toLowerCase();
+      render();
+      persist();
+    }
+  });
+
+  el.category.addEventListener("change", () => {
+    state.category = el.category.value;
+    render();
+    persist();
+  });
+
+  el.rating.addEventListener("input", () => {
+    const value = Number(el.rating.value);
+    state.minRating = value;
+    el.ratingValue.textContent = value;
+    render();
+    persist();
+  });
+
+  el.distance.addEventListener("input", () => {
+    const value = Number(el.distance.value);
+    state.maxDistance = value;
+    el.distanceValue.textContent = value;
+    render();
+    persist();
+  });
+
+  el.sort.addEventListener("change", () => {
+    state.sort = el.sort.value;
+    render();
+    persist();
+  });
+
+  el.reset.addEventListener("click", () => {
+    state.query = "";
+    state.category = "";
+    state.minRating = 0;
+    state.maxDistance = 15;
+    state.sort = "relevance";
+    syncUI();
+    render();
+    persist();
+  });
+}
+
+function restoreFilters() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return syncUI();
+  try {
+    const saved = JSON.parse(raw);
+    Object.assign(state, saved);
+  } catch (error) {
+    console.warn("No se pudo leer filtros guardados", error);
+  }
+  syncUI();
+}
+
+function persist() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function syncUI() {
+  el.query.value = state.query;
+  el.category.value = state.category;
+  el.rating.value = state.minRating;
+  el.ratingValue.textContent = state.minRating;
+  el.distance.value = state.maxDistance;
+  el.distanceValue.textContent = state.maxDistance;
+  el.sort.value = state.sort;
+}
+
+function render() {
+  const localItems = JSON.parse(localStorage.getItem(PUBLISHED_KEY) || "[]");
+  const allItems = [...localItems, ...mockItems];
+
+  const results = allItems
+    .filter((item) =>
+      state.category ? item.category === state.category : true
+    )
+    .filter((item) => item.rating >= state.minRating)
+    .filter((item) => item.distanceKm <= state.maxDistance)
+    .filter((item) => {
+      if (!state.query) return true;
+      const blob = `${item.title} ${item.tags ? item.tags.join(" ") : ""} ${
+        item.location
+      }`.toLowerCase();
+      return blob.includes(state.query);
+    });
+
+  const sorted = [...results];
+  if (state.sort === "distance") {
+    sorted.sort((a, b) => a.distanceKm - b.distanceKm);
+  } else if (state.sort === "rating") {
+    sorted.sort((a, b) => b.rating - a.rating);
+  }
+
+  el.count.textContent = `${sorted.length} resultados`;
+  el.results.innerHTML = sorted
+    .map(
+      (item) => `
+        <article class="result-card" aria-label="${item.title}">
+          <img src="${item.images ? item.images[0] : item.image}" alt="${
+        item.title
+      }" class="result-card__img" loading="lazy" style="object-fit: cover;" />
+          <div class="result-card__body">
+            <h3 class="result-card__title">${item.title}</h3>
+            <div class="result-card__meta">
+              <span class="badge">${item.category}</span>
+              <span>${item.location}</span>
+              <span>${item.distanceKm} km</span>
+              <span><i class="fa-solid fa-star star-rating"></i> ${item.rating.toFixed(
+                1
+              )}</span>
+            </div>
+            <div class="result-card__tags">
+              Tags: ${item.tags ? item.tags.join(", ") : ""}
+            </div>
+            <div class="result-card__footer">
+              <div class="result-card__actions">
+                <a class="btn btn-secondary" href="detalle.html?id=${
+                  item.id
+                }">Ver detalle</a>
+                <a class="btn btn-primary" href="chat.html">Quiero intercambiar</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+}
