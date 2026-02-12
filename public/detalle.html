@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!-- 
   Tarea: T25 - Responsable: Ronel Rojas - Descripción: Cálculo y visualización de métricas ambientales (CO₂, agua) al cerrar trueques.
   Tarea: T31 - Responsable: Andy Salcedo - Descripción: Compartir ubicación en tiempo real y cálculo de distancia.
@@ -14,46 +14,22 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-    <link rel="stylesheet" href="./assets/styles/styles.css" />
-    <link rel="stylesheet" href="./assets/styles/home.css" />
-    <link rel="stylesheet" href="./assets/styles/detail.css" />
-    <link rel="stylesheet" href="./assets/styles/timeline.css" />
-    <!-- T27 - Miguel Sanca: Scripts de Internacionalización Global -->
-    <script src="./assets/scripts/translations.js"></script>
-    <script src="./assets/scripts/i18n.js"></script>
+    <!-- Arquitectura CSS modular -->
+    <link rel="stylesheet" href="./assets/styles/base.css" />
+    <link rel="stylesheet" href="./assets/styles/components.css" />
+    <link rel="stylesheet" href="./assets/styles/layout.css" />
+    <link rel="stylesheet" href="./assets/styles/pages/home.css" />
+    <link rel="stylesheet" href="./assets/styles/pages/detail.css" />
+    <link rel="stylesheet" href="./assets/styles/pages/timeline.css" />
+    <link rel="stylesheet" href="./assets/styles/responsive.css" />
+    <!-- Scripts core -->
+    <script defer src="./assets/scripts/core/components.js"></script>
+    <script defer src="./assets/scripts/core/translations.js"></script>
+    <script defer src="./assets/scripts/core/i18n.js"></script>
   </head>
   <body class="detail-page">
-    <!-- T16 - Miguel Sanca: Ficha de detalle con QR y acciones -->
-    <!-- T18 - Leonardo Chavez: Modales de calificación y reporte -->
-    <!-- T23 - Ronel Rojas: Controles de estado (pausar/reservar/activar) -->
-    <header class="auth-header">
-      <div class="auth-header__container">
-        <a href="home.html" class="auth-header__logo" aria-label="Ir a inicio">
-          <img
-            src="./assets/images/minka-logo.png"
-            alt="Mink'a"
-            class="logo-image"
-          />
-        </a>
-        <nav class="auth-header__nav" aria-label="Navegación principal">
-          <a href="home.html" class="auth-header__link">Inicio</a>
-          <a href="busqueda.html" class="auth-header__link">Buscar</a>
-          <a href="publicar.html" class="auth-header__link">Publicar</a>
-          <a href="chat.html" class="auth-header__link">Chats</a>
-          <a href="notificaciones.html" class="auth-header__link">
-            Notificaciones
-            <span
-              class="nav-badge"
-              data-unread-badge
-              aria-label="notificaciones no leídas"
-              >0</span
-            >
-          </a>
-          <a href="perfil.html" class="auth-header__link">Perfil</a>
-          <a href="auth.html" class="auth-header__link">Salir</a>
-        </nav>
-      </div>
-    </header>
+    <!-- Navegación generada por components.js -->
+    <header id="app-header" class="auth-header"></header>
 
     <main class="detail-main">
       <section class="detail-hero">
@@ -465,8 +441,8 @@
       </div>
     </section>
 
-    <script src="./assets/scripts/notif-badge.js" defer></script>
-    <!-- <script src="./assets/scripts/detail.js"></script> Moved to end of body -->
+    <script src="./assets/scripts/core/notif-badge.js" defer></script>
+    <!-- <script src="./assets/scripts/pages/detail.js"></script> Moved to end of body -->
 
     <!-- Modal de Motivo de Cierre -->
     <section class="modal" id="close-reason-modal" aria-hidden="true">
@@ -659,6 +635,6 @@
         </footer>
       </div>
     </section>
-    <script src="./assets/scripts/detail.js"></script>
+    <script src="./assets/scripts/pages/detail.js"></script>
   </body>
 </html>

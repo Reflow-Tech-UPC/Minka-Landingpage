@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!-- 
   Tarea: T28 - Responsable: Leonardo Chavez - Descripción: Login social, gestión de sesiones y seguridad avanzada.
 -->
@@ -8,16 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mink'a - Autenticación</title>
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-    <link rel="stylesheet" href="./assets/styles/styles.css" />
-    <link rel="stylesheet" href="./assets/styles/auth.css" />
-    <link rel="stylesheet" href="./assets/styles/auth-advanced.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-    <!-- T27 - Miguel Sanca: Scripts de Internacionalización Global -->
-    <script src="./assets/scripts/translations.js"></script>
-    <script src="./assets/scripts/i18n.js"></script>
+    <!-- Arquitectura CSS modular -->
+    <link rel="stylesheet" href="./assets/styles/base.css" />
+    <link rel="stylesheet" href="./assets/styles/components.css" />
+    <link rel="stylesheet" href="./assets/styles/layout.css" />
+    <link rel="stylesheet" href="./assets/styles/pages/auth.css" />
+    <link rel="stylesheet" href="./assets/styles/pages/auth-advanced.css" />
+    <link rel="stylesheet" href="./assets/styles/responsive.css" />
+    <!-- Scripts core -->
+    <script defer src="./assets/scripts/core/translations.js"></script>
+    <script defer src="./assets/scripts/core/i18n.js"></script>
   </head>
   <body class="auth-page">
     <!-- T12 - Leonardo Chavez: Header simple para auth -->
@@ -387,6 +391,6 @@
       </div>
     </div>
 
-    <script src="./assets/scripts/auth.js" defer></script>
+    <script src="./assets/scripts/pages/auth.js" defer></script>
   </body>
 </html>

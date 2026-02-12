@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!-- 
   Tarea: T24 
   Responsable: Lucero Pipa 
@@ -14,42 +14,20 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-    <link rel="stylesheet" href="./assets/styles/styles.css" />
-    <link rel="stylesheet" href="./assets/styles/gamification.css" />
-    <!-- T27 - Miguel Sanca: Scripts de Internacionalización Global -->
-    <script src="./assets/scripts/translations.js"></script>
-    <script src="./assets/scripts/i18n.js"></script>
+    <!-- Arquitectura CSS modular -->
+    <link rel="stylesheet" href="./assets/styles/base.css" />
+    <link rel="stylesheet" href="./assets/styles/components.css" />
+    <link rel="stylesheet" href="./assets/styles/layout.css" />
+    <link rel="stylesheet" href="./assets/styles/pages/gamification.css" />
+    <link rel="stylesheet" href="./assets/styles/responsive.css" />
+    <!-- Scripts core -->
+    <script defer src="./assets/scripts/core/components.js"></script>
+    <script defer src="./assets/scripts/core/translations.js"></script>
+    <script defer src="./assets/scripts/core/i18n.js"></script>
   </head>
   <body class="gamification-page">
-    <!-- T24 - Lucero Pipa: Header de navegación principal -->
-    <header class="auth-header">
-      <div class="auth-header__container">
-        <a href="home.html" class="auth-header__logo" aria-label="Ir a inicio">
-          <img
-            src="./assets/images/minka-logo.png"
-            alt="Mink'a"
-            class="logo-image"
-          />
-        </a>
-        <nav class="auth-header__nav" aria-label="Navegación principal">
-          <a href="home.html" class="auth-header__link">Inicio</a>
-          <a href="busqueda.html" class="auth-header__link">Buscar</a>
-          <a href="publicar.html" class="auth-header__link">Publicar</a>
-          <a href="chat.html" class="auth-header__link">Chats</a>
-          <a href="notificaciones.html" class="auth-header__link">
-            Notificaciones
-            <span
-              class="nav-badge"
-              data-unread-badge
-              aria-label="notificaciones no leídas"
-              >0</span
-            >
-          </a>
-          <a href="perfil.html" class="auth-header__link">Perfil</a>
-          <a href="auth.html" class="auth-header__link">Salir</a>
-        </nav>
-      </div>
-    </header>
+    <!-- Navegación generada por components.js -->
+    <header id="app-header" class="auth-header"></header>
 
     <main class="gamification-main">
       <div class="container">
@@ -132,7 +110,7 @@
       </div>
     </main>
 
-    <script src="./assets/scripts/notif-badge.js"></script>
-    <script src="./assets/scripts/gamification.js"></script>
+    <script src="./assets/scripts/core/notif-badge.js"></script>
+    <script src="./assets/scripts/pages/gamification.js"></script>
   </body>
 </html>

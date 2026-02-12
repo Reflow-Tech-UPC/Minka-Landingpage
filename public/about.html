@@ -1,13 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sobre Nosotros - Mink'a</title>
-    <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
-    <link rel="stylesheet" href="./assets/styles/styles.css" />
-    <script src="./assets/scripts/translations.js"></script>
-    <script src="./assets/scripts/i18n.js"></script>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <!-- Arquitectura CSS modular -->
+    <link rel="stylesheet" href="./assets/styles/base.css" />
+    <link rel="stylesheet" href="./assets/styles/components.css" />
+    <link rel="stylesheet" href="./assets/styles/layout.css" />
+    <link rel="stylesheet" href="./assets/styles/responsive.css" />
+    <!-- Scripts core -->
+    <script defer src="./assets/scripts/core/translations.js"></script>
+    <script defer src="./assets/scripts/core/i18n.js"></script>
   </head>
   <body>
     <header class="header">
@@ -81,7 +86,8 @@
               max-width: 900px;
               margin: 0 auto;
               border-radius: 1rem;
-              box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              box-shadow:
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
                 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             "
           >
@@ -96,7 +102,15 @@
                 height: 100%;
                 border: 0;
               "
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+                web-share;
+              "
               allowfullscreen
             >
             </iframe>
@@ -189,6 +203,6 @@
         </div>
       </div>
     </footer>
-    <script src="./assets/scripts/main.js" defer></script>
+    <script src="./assets/scripts/core/main.js" defer></script>
   </body>
 </html>
